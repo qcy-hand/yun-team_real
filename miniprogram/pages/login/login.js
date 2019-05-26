@@ -19,6 +19,20 @@ Page({
           })
           that.getUserInfo()
         } else {
+          wx.getUserInfo({
+            success(res){
+              wx.setStorage({
+                key: 'key',
+                data: {
+                  nickName: res.userInfo.nickName,
+                  avatarUrl: res.userInfo.avatarUrl
+                },
+                success(res){
+                  console.log(res)
+                }
+              })
+            }
+          })
           that.setData({
             scope: false
           })

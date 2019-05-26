@@ -23,15 +23,10 @@
 <!-- 输出面板 -->
 <view class='content' wx:for="{{arrcar}}" wx:key="125">
   <view style="display:flex;justify-content:flex-start;">
-    <view class="container">
-      <view class="userinfo">
-
-        <block >
-          <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-          <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-        </block>
-      </view>
-    </view>
+    <block>
+      <image class="userinfo-avatar" src="{{item.touxiang}}" mode="cover"></image>
+      <text class="userinfo-nickname">{{item.nickname}}</text>
+    </block>
   </view>
   <van-panel desc="发布时间:{{item.Nowtime}}">
     <view class="push">

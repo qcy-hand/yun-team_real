@@ -21,8 +21,8 @@ Page({
     id_mess: '',
     beizhu: '',
     article: [],
-    userInfo: {},
-    
+    nickname:"",
+    touxiang: ''
   },
 
 
@@ -78,6 +78,8 @@ Page({
     this.setData({
       Nowtime: getNowDate()
     });
+    console.log(that.data.nickname)
+    console.log(that.data.touxiang)
     wx.cloud.callFunction({
       name: 'sendcar',
       data: {
@@ -87,7 +89,9 @@ Page({
         zhongdian: that.data.zhongdian,
         id_mess: that.data.id_mess,
         beizhu: that.data.beizhu,
-        Nowtime: that.data.Nowtime
+        Nowtime: that.data.Nowtime,
+        nickname:that.data.nickname,
+        touxiang:that.data.touxiang,
       },
       success(res) {
         wx.cloud.callFunction({
@@ -162,7 +166,6 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onload: function () {
-    console.log(app.globalData.userInfo)
     let that = this;
     wx.cloud.callFunction({
       name: "getcar",
@@ -173,52 +176,23 @@ Page({
         })
       }
     })
-
-    //自动获取昵称
-    if (app.globalData.userInfo) {
-      console.log(1)
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse) {
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        console.log(res)
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          console.log(res)
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
-      })
-    }
-  },
-  getUserInfo: function (e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
+    
   },
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
-    console.log(app.globalData.userInfo)
+    let that = this
+    wx.getStorage({
+      key: 'key',
+      success(res){
+        console.log(res)
+        that.setData({
+          nickname:res.data.nickName,
+          touxiang:res.data.avatarUrl,
+        })
+      }
+    })
   },
 
   /**

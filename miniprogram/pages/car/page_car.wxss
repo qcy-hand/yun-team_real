@@ -1,9 +1,13 @@
 /* pages/car/page_car.wxss */
 
-.headpic{
+.userinfo-avatar{
 width: 10vw;
 height: 10vw;
 padding:0 0 0 4vw;
+}
+.userinfo-nickname
+{
+    font-size:12px;
 }
 .Nickname{
     font-size: 70%;

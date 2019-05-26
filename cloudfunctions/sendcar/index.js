@@ -17,7 +17,9 @@ exports.main = async (event, context) => {
         zhongdian: event.zhongdian,
         id_mess: event.id_mess,
         beizhu: event.beizhu,
-        Nowtime: event.Nowtime
+        Nowtime: event.Nowtime,
+        nickname:event.nickname,
+        touxiang:event.touxiang,
       }
     })
   } catch(e){
