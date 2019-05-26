@@ -1,0 +1,4 @@
+<!-- miniprogram/pages/login/login.wxml -->
+
+<van-popup show="{{ show }}" bind:close="onClose">内容
+<button wx:if="{{scope}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo" >获取头像昵称</button></van-popup>
