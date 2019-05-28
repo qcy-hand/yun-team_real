@@ -1,5 +1,9 @@
 /* pages/home/page.wxss */
 
+.box{
+    font-size: 20px;
+}
+
 li {
     list-style: none;
 }

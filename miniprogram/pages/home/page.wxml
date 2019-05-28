@@ -60,9 +60,9 @@
     <swiper-item>
         <view>
             <view style="height:5vw;"></view>
-            <van-tabs type="card" color="rgba(153,153,153,0.5);" animated >
-                <van-tab title="拼车" title-style="color: #24343b;" >内容 1</van-tab>
-                <van-tab title="运动" title-style="color: #24343b;">内容 2</van-tab>
+            <van-tabs type="card" color="rgba(153,153,153,0.5);" animated tab-active-class='box'>
+                <van-tab title="拼车" title-style="color: #24343b;" tab-class="box">内容 1</van-tab>
+                <van-tab title="运动" title-style="color: #24343b;" >内容 2</van-tab>
                 <van-tab title="学习" title-style="color: #24343b;">内容 3</van-tab>
                 <van-tab title="自定义" title-style="color: #24343b;">内容 3</van-tab>
             </van-tabs>
