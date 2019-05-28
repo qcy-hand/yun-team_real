@@ -1,13 +1,28 @@
 /* pages/attention/page_attention.wxss */
+
+.attent{
+    width:100vw;
+    height:100vh;
+    display:flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: rgb(251, 251, 251); */
+}
+
 .attentionbox {
     width: 100vw;
-    height: 92vh;
+    height: 20vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 90%;
+    font-size: 4vw;
     text-align: center;
-    background-color: rgb(251, 251, 251);
+   
+}
 
+.logo_jser{
+height:14vw;
+width:23vw;
 }

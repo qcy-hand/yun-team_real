@@ -1,1 +1,37 @@
 /* miniprogram/pages/login/login.wxss */
+
+.signonbox {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 4.5vw;
+    text-align: center;
+    background-color: rgb(251, 251, 251);
+    text-align: center;
+}
+
+.head {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    width: 23vw;
+    height: 23vw;
+}
+
+.signup {
+    height: 10vw;
+    line-height: 10vw;
+    width: 21vw;
+    font-size: 4.5vw;
+    border: 0.2vw solid #24343b;
+    border-radius: 3vw;
+    background-color: rgb(251, 251, 251);
+
+}

@@ -1,6 +1,4 @@
 // pages/car/page_car.js
-const app = getApp();
-
 
 Page({
   data: {
@@ -20,9 +18,9 @@ Page({
     Nowtime: '',
     id_mess: '',
     beizhu: '',
-    article: [],
-    nickname:"",
-    touxiang: ''
+    nickname: "",
+    touxiang: '',
+    Timestamp: "",
   },
 
 
@@ -54,11 +52,36 @@ Page({
     });
   },
 
-
-  //获取当前时间
+  //确定按钮事件
+  Push() {
+    //回调函数中不能直接使用this，需要在外面定义var that = this 然后 that.自定义的方法
+    let that = this;
+    wx.showModal({
+      content: '填好啦？',
+      cancelText: "再瞅瞅",
+      confirmText: "对头嘞",
+      confirmColor: " #669999",
+  
+      success(res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          that.Ntime();
+          wx.showToast({
+            title: '成功',
+            icon: 'success',
+            duration: 2000,
+          });
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+  },
+ 
+  
   Ntime() {
     let that = this
-
+    //传当前时间
     function getNowDate() {
       var date = new Date(),
         month = date.getMonth() + 1,
@@ -71,15 +94,29 @@ Page({
       if (strDate >= 0 && strDate <= 9) {
         strDate = "0" + strDate;
       }
+      if (hourDate >= 0 && hourDate <= 9) {
+        hourDate = "0" + hourDate;
+      }
+      if (minuteDate >= 0 && minuteDate <= 9) {
+        minuteDate = "0" + minuteDate;
+      }
       return month + "-" + strDate +
         " " + hourDate + ":" + minuteDate;
-      
     };
     this.setData({
       Nowtime: getNowDate()
     });
-    console.log(that.data.nickname)
-    console.log(that.data.touxiang)
+
+    //传时间戳
+    function gettimestamp() {
+      var timestamp = new Date().getTime();
+      return timestamp;
+    };
+    this.setData({
+      Timestamp: gettimestamp()
+    });
+
+    //向数据库传数据
     wx.cloud.callFunction({
       name: 'sendcar',
       data: {
@@ -90,10 +127,13 @@ Page({
         id_mess: that.data.id_mess,
         beizhu: that.data.beizhu,
         Nowtime: that.data.Nowtime,
-        nickname:that.data.nickname,
-        touxiang:that.data.touxiang,
+        nickname: that.data.nickname,
+        touxiang: that.data.touxiang,
+        Timestamp: that.data.Timestamp,
       },
       success(res) {
+        console.log(res);
+        //成功后接住数据并封装
         wx.cloud.callFunction({
           name: "getcar",
           data: {},
@@ -106,6 +146,7 @@ Page({
       }
     })
   },
+
   //按钮点击显示时间选择器
   onTap() {
     this.setData({
@@ -161,12 +202,29 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
+  onload: function (options) {
+    let that = this;
 
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onload: function () {
-    let that = this;
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    let that = this
+    wx.getStorage({
+      key: 'key',
+      success(res) {
+        console.log(res)
+        that.setData({
+          nickname: res.data.nickName,
+          touxiang: res.data.avatarUrl,
+        })
+      }
+    })
     wx.cloud.callFunction({
       name: "getcar",
       data: {},
@@ -176,24 +234,10 @@ Page({
         })
       }
     })
-    
   },
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    let that = this
-    wx.getStorage({
-      key: 'key',
-      success(res){
-        console.log(res)
-        that.setData({
-          nickname:res.data.nickName,
-          touxiang:res.data.avatarUrl,
-        })
-      }
-    })
-  },
+
+
+
 
   /**
    * 生命周期函数--监听页面隐藏

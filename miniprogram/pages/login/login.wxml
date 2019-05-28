@@ -1,4 +1,10 @@
 <!-- miniprogram/pages/login/login.wxml -->
-
-<van-popup show="{{ show }}" bind:close="onClose">内容
-<button wx:if="{{scope}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo" >获取头像昵称</button></van-popup>
+<view class="signonbox">
+        <view class="head">
+            <image src="https://neauhand.hhp.im/img/zudui.png" class="logo"></image>
+            <view style="padding:5vw 0 0 0;">
+                Let's team up !
+            </view>
+        </view>
+        <button wx:if="{{scope}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo" class="signup">登陆</button>
+    </view>

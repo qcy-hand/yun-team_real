@@ -13,7 +13,7 @@
   <van-cell-group>
     <!-- 输入框 -->
     <van-field value="{{ beizhu }}" center clearable label="备注" placeholder="说点你想补充的" border="{{ false }}" bind:input="Input_beizhu" use-button-slot>
-      <van-button slot="button" size="small" type="primary" bind:click="Ntime">发布</van-button>
+      <van-button slot="button" size="small" type="primary" bind:click="Push">发布</van-button>
     </van-field>
   </van-cell-group>
   <!-- 弹出框 -->
@@ -25,11 +25,13 @@
 <view style="height:10vw;background-color:rgb(251,251,251);"></view>
 <!-- 输出面板 -->
  <view class='content' wx:for="{{arrsport}}" wx:key="121">
-  <view style="display:flex;justify-content:flex-start;">
-    <!-- <image class="headpic" src="../../image/tx1.png"></image> -->
-    <view class="Nickname">昵称</view>
+   <view class="userinfo">
+    <block>
+      <image class="userinfo-avatar" src="{{item.touxiang}}" ></image>
+      <text class="userinfo-nickname">{{item.nickname}}</text>
+    </block>
   </view>
-  <van-panel desc="发布时间:{{item.Nowtime}}">
+  <van-panel desc="发布时间：{{item.Nowtime}}">
     <view class="push">
       <view class="item">时间：{{item.time}}</view>
       <view class="item">地点：{{item.didian}}</view>
@@ -44,6 +46,6 @@
     <view style="height:5vw;background-color:rgb(251,251,251);"></view>
   </van-panel>
 </view>
-<view style="text-align:center; position: relative; bottom: 1px;width:100vw;height:7vh;font-size:65%;">
+<view style="text-align:center; position: relative; bottom: 1px;width:100vw;height:7vh;font-size:3vw;">
         已经到底了哦~
     </view>

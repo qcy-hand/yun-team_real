@@ -17,6 +17,9 @@ Page({
     id_study: '',
     id_mess: '',
     beizhu: '',
+    nickname:"",
+    touxiang:"",
+    Timestamp:"",
   },
 
 
@@ -49,6 +52,31 @@ Page({
     });
   },
 
+  Push(){
+    let that = this;
+    wx.showModal({
+      content: '填完啦？',
+      cancelText:"再瞅瞅",
+      confirmText:"对头嘞",
+      confirmColor:" #669999",
+      
+      success(res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          that.Ntime();
+          wx.showToast({
+            title: '成功',
+            icon: 'success',
+            duration: 2000,
+          });
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+
+  },
+
 
   //获取当前时间
   Ntime() {
@@ -73,13 +101,22 @@ Page({
       if (minuteDate >= 0 && minuteDate <= 9) {
         minuteDate = "0" + minuteDate;
       }
-      var navtime = month + "-" + strDate +
+      return month + "-" + strDate +
         " " + hourDate + ":" + minuteDate;
-      return navtime
     };
     this.setData({
       Nowtime: getNowDate()
     });
+
+    function gettimestamp() {
+      var timestamp = new Date().getTime();
+      return timestamp;
+    };
+    this.setData({
+      Timestamp: gettimestamp()
+    });
+
+    
     wx.cloud.callFunction({
       name: 'sendstudy',
       data: {
@@ -90,6 +127,9 @@ Page({
         id_study: that.data.id_study,
         id_mess: that.data.id_mess,
         beizhu: that.data.beizhu,
+        nickname:that.data.nickname,
+        touxiang:that.data.touxiang,
+        Timestamp:that.data.Timestamp,
       },
       success(res) {
         wx.cloud.callFunction({
@@ -150,15 +190,7 @@ Page({
    */
   onLoad: function (options) {
     let that = this;
-    wx.cloud.callFunction({
-      name: "getstudy",
-      data: {},
-      success(res) {
-        that.setData({
-          arrstudy: res.result.data
-        })
-      }
-    })
+    
   },
 
   /**
@@ -172,7 +204,26 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    let that = this;
+    wx.getStorage({
+      key:"key",
+      success(res){
+        console.log(res);
+        that.setData({
+          nickname:res.data.nickName,
+          touxiang:res.data.avatarUrl,
+        })
+      }
+    })
+    wx.cloud.callFunction({
+      name: "getstudy",
+      data: {},
+      success(res) {
+        that.setData({
+          arrstudy: res.result.data
+        })
+      }
+    })
   },
 
   /**

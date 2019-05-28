@@ -20,6 +20,8 @@ exports.main = async (event, context) => {
         Nowtime: event.Nowtime,
         nickname:event.nickname,
         touxiang:event.touxiang,
+        Timestamp:event.Timestamp,
+        openid:wxContext.OPENID,
       }
     })
   } catch(e){

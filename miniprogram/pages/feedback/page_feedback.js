@@ -8,17 +8,43 @@ Page({
     feedinfo: '',
     Nowtime: '',
     text: '',
-    concent:'',
+   
   },
-  Input_feedback(event) {
-    // event.detail 为当前输入的值
-    this.setData({
-      feedinfo: event.detail,
+  // Input_feedback(event) {
+  //   // event.detail 为当前输入的值
+  //   this.setData({
+  //     feedinfo: event.detail,
+  //   })
+  // },
+
+  //提交按钮事件
+  Push() {
+    //回调函数中不能直接使用this，需要在外面定义var that = this 然后 that.自定义的方法
+    let that = this;
+    wx.showModal({
+      content: '感谢您的支持与反馈！',
+      showCancel:false,
+      confirmText: "确定",
+      confirmColor: " #669999",
+      success(res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          that.Ntime();
+          wx.showToast({
+            title: '成功',
+            icon: 'success',
+            duration: 2000,
+          });
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
     })
   },
 
   //获取当前时间
   Ntime() {
+    let that = this
     function getNowDate() {
       var date = new Date(),
         month = date.getMonth() + 1,
@@ -31,33 +57,53 @@ Page({
       if (strDate >= 0 && strDate <= 9) {
         strDate = "0" + strDate;
       }
-      var navtime = month + "-" + strDate +
+      if (hourDate >= 0 && hourDate <= 9) {
+        hourDate = "0" + hourDate;
+      }
+      if (minuteDate >= 0 && minuteDate <= 9) {
+        minuteDate = "0" + minuteDate;
+      }
+      return  month + "-" + strDate +
         " " + hourDate + ":" + minuteDate;
-      return navtime
+     
     }
 
     this.setData({
       Nowtime: getNowDate()
     });
+
+    //向数据库传数据
+    wx.cloud.callFunction({
+      name: 'sendfeedback',
+      data: {
+        feedinfo:that.data.feedinfo,
+        Nowtime: that.data.Nowtime,
+        nickname: that.data.nickname,
+        touxiang: that.data.touxiang,
+      },
+      success(res) {
+        console.log(res);
+      }
+    })
   },
 
   //失去焦点时获取里面评论内容
   bindTextAreaBlur: function (e) {
-    console.log(e.detail.value)
+    // console.log(e.detail.value)
     this.setData({
-      concent: e.detail.value,
+      feedinfo: e.detail.value,
     })
   },
 
 
-  //点击按钮时得到里面的值
-  fabiao: function (e) {
-    this.setData({
-      focus: 'false',
-      concent1: this.data.concent,
-    })
-    console.log(this.data.concent)
-  },
+  // //点击按钮时得到里面的值
+  // fabiao: function (e) {
+  //   this.setData({
+  //     focus: 'false',
+  //     concent1: this.data.concent,
+  //   })
+  //   console.log(this.data.concent)
+  // },
 
   /**
    * 生命周期函数--监听页面加载
@@ -77,7 +123,17 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    let that = this
+    wx.getStorage({
+      key: 'key',
+      success(res) {
+        console.log(res)
+        that.setData({
+          nickname: res.data.nickName,
+          touxiang: res.data.avatarUrl,
+        })
+      }
+    })
   },
 
   /**

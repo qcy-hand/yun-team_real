@@ -1,7 +1,7 @@
 /* pages/mine/page_mine.wxss */
 .name_mine {
     width: 100vw;
-    height: 15vh;
+    height: 14vh;
     margin: 0 0 3vw 0;
     display: flex;
     align-items: center;
@@ -16,16 +16,20 @@
 }
 
 .Input_mine {
-    width: 29vw;
-    height: 22vh;
+    width: 25vw;
+    height: 13vw;
     padding-left: 4vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
 }
 
 .Input_Nick_mine {
     height: 6vw;
-    margin-top: 11vw;
+    line-height: 6vw;
     color: #333366;
-    font-size: 65%;
+    font-size: 3vw;
     border-bottom: 1px solid #999999;
     white-space: nowrap;
     overflow: hidden;
@@ -33,21 +37,20 @@
 }
 
 .Input_trans_mine {
-    height: 8.5vw;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-/* .Input_location {
-    list-style: none;
-    color: #336666;
-    font-size: 80%;
-} */
-.Input_mine li {
+    height: 6vw;
     list-style: none;
     color: #24343b;
-    font-size: 65%;
+    font-size: 3vw;
+    line-height: 6vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.Input_mine li {
+    list-style: none;
+    color: #336666;
+    font-size: 3vw;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

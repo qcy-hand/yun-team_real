@@ -9,6 +9,5 @@
     "van-panel": "/vant-weapp/dist/panel/index",
     "van-collapse": "/vant-weapp/dist/collapse/index",
     "van-collapse-item": "/vant-weapp/dist/collapse-item/index"
-    
   }
 }

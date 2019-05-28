@@ -1,4 +1,5 @@
 /* pages/home/page.wxss */
+
 li {
     list-style: none;
 }
@@ -42,15 +43,19 @@ image {
 
 .Input {
     width: 25vw;
-    height: 22vh;
+    height: 13vw;
     padding-left: 4vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
 }
 
 .Input_Nick {
     height: 6vw;
-    margin-top: 11vw;
+    line-height: 6vw;
     color: #333366;
-    font-size: 65%;
+    font-size: 3vw;
     border-bottom: 1px solid #999999;
     white-space: nowrap;
     overflow: hidden;
@@ -58,16 +63,20 @@ image {
 }
 
 .Input_trans {
-    height: 8.5vw;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    height: 6vw;
+    list-style: none;
+    color: #24343b;
+    font-size: 3vw;
+    line-height: 6vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .Input li {
     list-style: none;
     color: #24343b;
-    font-size: 65%;
+    font-size: 3vw;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -115,52 +124,15 @@ image {
     flex-direction: column;
 }
 
-.daohang {
-    position: fixed;
-    
-    /* bottom: 0vh; */
-}
-
-
 
 /* page_history页面 */
 
-.back_picture {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* background-image: url(./img/back.jpg); */
-    /* background-size: 100% 100%; */
-    text-align: center;
+.tabstyle{
+    height:10vw;
 }
 
-.circle {
-    width: 100vw;
-    height: 20vh;
-    border: 2px solid;
-    border-color: transparent transparent #333366;
-    border-bottom-right-radius: 50% 240%;
-    border-bottom-left-radius: 50% 240%;
-    /* border-radius: 0 0 90% 90%/0 0 120% 120% ; */
-    border-top: none;
-}
 
-.renwu {
-    width: 60vw;
-    display: flex;
-    justify-content: center;
-}
 
-.renwu_title {
-    width: 30vw;
-    height: 8vw;
-    border-radius:5vw;
-    line-height: 8vw;
-    font-size: 80%;
-    background-color:rgba(153,153,153,0.3);
-}
 
 /* mine页面 */
 .name_mine {
@@ -181,15 +153,19 @@ image {
 
 .Input_mine {
     width: 25vw;
-    height: 22vh;
+    height: 13vw;
     padding-left: 4vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
 }
 
 .Input_Nick_mine {
     height: 6vw;
-    margin-top: 11vw;
+    line-height: 6vw;
     color: #333366;
-    font-size: 65%;
+    font-size: 3vw;
     border-bottom: 1px solid #999999;
     white-space: nowrap;
     overflow: hidden;
@@ -197,16 +173,20 @@ image {
 }
 
 .Input_trans_mine {
-    height: 8.5vw;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    height: 6vw;
+    list-style: none;
+    color: #24343b;
+    font-size: 3vw;
+    line-height: 6vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .Input_mine li {
     list-style: none;
     color: #336666;
-    font-size: 65%;
+    font-size: 3vw;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

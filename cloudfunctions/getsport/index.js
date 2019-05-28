@@ -11,7 +11,7 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
 return await db.collection('datas').where({
   type:"sport"
-}).orderBy('Nowtime', 'desc').get({
+}).orderBy('Timestamp', 'desc').get({
   success(res){
     console.log(res);
   }

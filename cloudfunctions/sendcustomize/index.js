@@ -20,6 +20,10 @@ exports.main = async (event, context) => {
         id_customize: event.id_customize,
         id_mess: event.id_mess,
         beizhu: event.beizhu,
+        nickname:event.nickname,
+        touxiang:event.touxiang,
+        Timestamp:event.Timestamp,
+        openid:wxContext.OPENID,
       }
       
     })

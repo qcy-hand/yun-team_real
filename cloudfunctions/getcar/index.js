@@ -11,8 +11,8 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   console.log(event)
   return await db.collection('datas').where({
-    type:"car"
-  }).orderBy('Nowtime', 'desc')
+    type:"car",
+  }).orderBy('Timestamp', 'desc')
   .get({
     success(res){
       console.log(res);

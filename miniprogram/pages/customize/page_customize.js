@@ -17,7 +17,11 @@ Page({
     id_customize: '',
     id_mess: '',
     beizhu: '',
-    arrcustomize: []
+    arrcustomize: [],
+    nickname:"",
+    touxiang:"",
+    Timestamp:"",
+    
   },
 
 
@@ -49,6 +53,29 @@ Page({
     });
   },
 
+  Push(){
+    let that = this;
+    wx.showModal({
+      content: '填完啦？',
+      cancelText:"再瞅瞅",
+      confirmText:"对头嘞",
+      confirmColor:" #669999",
+      
+      success(res) {
+        if (res.confirm) {
+          console.log('用户点击确定');
+          that.Ntime();
+          wx.showToast({
+            title: '成功',
+            icon: 'success',
+            duration: 2000,
+          });
+        } else if (res.cancel) {
+          console.log('用户点击取消');
+        }
+      }
+    })
+  },
 
   //获取当前时间
   Ntime() {
@@ -66,14 +93,28 @@ Page({
       if (strDate >= 0 && strDate <= 9) {
         strDate = "0" + strDate;
       }
-      var navtime = month + "-" + strDate +
+      if (hourDate >= 0 && hourDate <= 9) {
+        hourDate = "0" + hourDate;
+      }
+      if (minuteDate >= 0 && minuteDate <= 9) {
+        minuteDate = "0" + minuteDate;
+      }
+      return  month + "-" + strDate +
         " " + hourDate + ":" + minuteDate;
-      return navtime
     }
 
     this.setData({
       Nowtime: getNowDate()
     });
+
+    function gettimestamp() {
+      var timestamp = new Date().getTime();
+      return timestamp;
+    };
+    this.setData({
+      Timestamp: gettimestamp()
+    });
+
     wx.cloud.callFunction({
       name: "sendcustomize",
       data: {
@@ -84,6 +125,9 @@ Page({
         id_customize: that.data.id_customize,
         id_mess: that.data.id_mess,
         beizhu: that.data.beizhu,
+        nickname:that.data.nickname,
+        touxiang:that.data.touxiang,
+        Timestamp:that.data.Timestamp,
       },
       success(res) {
         wx.cloud.callFunction({
@@ -145,15 +189,7 @@ Page({
    */
   onLoad: function(options){
     let that = this
-    wx.cloud.callFunction({
-      name: 'getcustomize',
-      data: {},
-      success(res) {
-        that.setData({
-          arrcustomize: res.result.data
-        })
-      }
-    })
+    
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -166,7 +202,26 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    let that = this;
+    wx.getStorage({
+      key:"key",
+      success(res){
+        console.log(res);
+        that.setData({
+          nickname:res.data.nickName,
+          touxiang:res.data.avatarUrl,
+        })
+      }
+    })
+    wx.cloud.callFunction({
+      name: 'getcustomize',
+      data: {},
+      success(res) {
+        that.setData({
+          arrcustomize: res.result.data
+        })
+      }
+    })
   },
 
   /**
