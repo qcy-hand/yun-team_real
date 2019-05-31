@@ -209,15 +209,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    wx.cloud.callFunction({
-      name:"getsport",
-      data:{},
-      success(res){
-        that.setData({
-          arrsport:res.result.data
-        })
-      }
-    })
+   
   },
 
   /**
