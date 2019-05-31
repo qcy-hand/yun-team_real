@@ -194,14 +194,30 @@ Page({
    */
   onLoad: function (options) {
     let that = this;
-   
+    wx.cloud.callFunction({
+      name:"getsport",
+      data:{},
+      success(res){
+        that.setData({
+          arrsport:res.result.data
+        })
+      }
+    })
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    wx.cloud.callFunction({
+      name:"getsport",
+      data:{},
+      success(res){
+        that.setData({
+          arrsport:res.result.data
+        })
+      }
+    })
   },
 
   /**
@@ -219,15 +235,7 @@ Page({
         })
       }
     })
-    wx.cloud.callFunction({
-      name:"getsport",
-      data:{},
-      success(res){
-        that.setData({
-          arrsport:res.result.data
-        })
-      }
-    })
+   
   },
 
   /**
@@ -248,7 +256,26 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    let that = this;
+   
+    wx.cloud.callFunction({
+      name:"getsport",
+      data:{},
+      success(res){
+        that.setData({
+          arrsport:res.result.data
+        })
+      }
+    });
+    
+    setTimeout(() => {
+      wx.stopPullDownRefresh({
+        success(res) {
+          console.log(1)
+        }
+      })
+    }, 1000)
+    
   },
 
   /**

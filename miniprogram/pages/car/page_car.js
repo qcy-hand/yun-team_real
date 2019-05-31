@@ -9,6 +9,8 @@ Page({
     maxDate: new Date(2029, 11, 1).getTime(),
     currentDate: new Date().getTime(),
     showTime: false,
+
+    scope: true,
     //返回时间转换结果
     max: false,
     activeNames: ['1'],
@@ -21,6 +23,10 @@ Page({
     nickname: "",
     touxiang: '',
     Timestamp: "",
+
+    loading: false, //加载图标
+    end: false, //到底文字
+    list: 10, //初始取回条数
   },
 
 
@@ -61,7 +67,7 @@ Page({
       cancelText: "再瞅瞅",
       confirmText: "对头嘞",
       confirmColor: " #669999",
-  
+
       success(res) {
         if (res.confirm) {
           console.log('用户点击确定')
@@ -77,8 +83,8 @@ Page({
       }
     })
   },
- 
-  
+
+
   Ntime() {
     let that = this
     //传当前时间
@@ -147,11 +153,48 @@ Page({
     })
   },
 
+  //上滑加载完成后判比信息条数
+  // loadingup(res){
+  //   console.log(res);
+  //   let list1 = that.data.list - 10;
+  //   if(res.result.data.length){}
+
+
+  // },
+
   //按钮点击显示时间选择器
   onTap() {
     this.setData({
       showTime: true
     })
+  },
+
+  getUserLocationstart() {
+    let that = this
+    // wx.getSetting({
+    //   success(res) {
+    //     console.log(res.authSetting['scope.userLocation'])
+    //     if (!res.authSetting['scope.userLocation']) {
+    //       wx.authorize({
+    //         scope: 'scope.userLocation',
+    //         success() {
+    //           console.log(1)
+    //         },
+    //         fail(){
+    //         }
+    //       })
+    //     } else {
+    wx.chooseLocation({
+      type: 'wgs84',
+      success(res) {
+        that.setData({
+          qidian: res.name,
+        })
+      }
+    })
+    //     }
+    //   }
+    // })
   },
 
   //起点地址选择
@@ -202,9 +245,18 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onload: function (options) {
+  onLoad: function (options) {
     let that = this;
-
+    wx.cloud.callFunction({
+      name: "getcar",
+      data: {},
+      success(res) {
+        console.log(res);
+        that.setData({
+          arrcar: res.result.data
+        })
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -214,7 +266,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    let that = this
+    let that = this;
     wx.getStorage({
       key: 'key',
       success(res) {
@@ -225,19 +277,7 @@ Page({
         })
       }
     })
-    wx.cloud.callFunction({
-      name: "getcar",
-      data: {},
-      success(res) {
-        that.setData({
-          arrcar: res.result.data
-        })
-      }
-    })
   },
-
-
-
 
   /**
    * 生命周期函数--监听页面隐藏
@@ -257,6 +297,24 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
+    let that = this;
+    wx.cloud.callFunction({
+      name: "getcar",
+      data: {},
+      success(res) {
+        that.setData({
+          arrcar: res.result.data
+        })
+      }
+    });
+
+    setTimeout(() => {
+      wx.stopPullDownRefresh({
+        success(res) {
+          console.log(1)
+        }
+      })
+    }, 1000)
 
   },
 
@@ -264,6 +322,10 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
+    // let that = this;
+    // if(!that.data.end){
+
+    // }
 
   },
 

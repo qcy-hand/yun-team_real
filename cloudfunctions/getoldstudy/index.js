@@ -12,7 +12,7 @@ exports.main = async (event, context) => {
   return await db.collection('datas').where({
     type:"study",
     openid:wxContext.OPENID,
-  }).orderBy('xmp', 'desc').get({
+  }).orderBy('Timestamp', 'desc').get({
     success(res){
       console.log(res);
     }

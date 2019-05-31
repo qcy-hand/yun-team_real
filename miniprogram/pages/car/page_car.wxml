@@ -2,7 +2,7 @@
 <view class="all">
   <view class="head_input">
     <van-cell title="时间" icon="clock-o" is-link bind:click="onTap" value="{{time}}" />
-    <van-cell title="起点" icon="location-o" is-link bind:click="chooseLocationStart" value="{{qidian}}" center="{{true}}" />
+    <van-cell title="起点" icon="location-o" is-link bind:click="getUserLocationstart" value="{{qidian}}" center="{{true}}"/>
     <van-cell title="终点" icon="location-o" is-link bind:click="chooseLocationOver" value="{{zhongdian}}" center="{{true}}" />
     <van-cell-group>
       <!-- 输入框 -->
@@ -44,7 +44,10 @@
       <view style="height:5vw;background-color:rgb(251,251,251);"></view>
     </van-panel>
   </view>
-  <view style="text-align:center; position: relative; bottom: 1px;width:100vw;height:7vh;font-size:3vw;">
+  <view class="loading" wx:if="{{loading}}">
+    <van-loading type="spinner" color="#faf9f9" size="6vw" />
+  </view>
+  <view wx:if="{{end}}" style="text-align:center; position: relative; bottom: 1px;width:100vw;height:7vh;font-size:3vw;background-color:rgb(251,251,251);">
     已经到底了哦~
   </view>
 </view>

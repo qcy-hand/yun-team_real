@@ -8,9 +8,10 @@
       "van-cell": "/vant-weapp/dist/cell/index",
       "van-cell-group": "/vant-weapp/dist/cell-group/index",
       "van-tab": "/vant-weapp/dist/tab/index",
-      "van-tabs": "/vant-weapp/dist/tabs/index"
+      "van-tabs": "/vant-weapp/dist/tabs/index",
+
+      "van-dialog": "/vant-weapp/dist/dialog/index"
 
     
   }
-  
 }

@@ -16,7 +16,6 @@ Page({
           that.setData({
             scope: true
           })
-          that.getUserInfo()
         } else {
           wx.getUserInfo({
             success(res){
@@ -32,6 +31,7 @@ Page({
               })
             }
           })
+        
           that.setData({
             scope: false
           })
@@ -42,9 +42,9 @@ Page({
   },
 
   tohome() {
-    wx.redirectTo({
+    wx.reLaunch({
       url: '/pages/home/page'
-    })
+    })                        
   },
   onClose() {
     
@@ -54,6 +54,8 @@ Page({
    */
   onLoad: function (options) {
     this.getUserInfo()
+    
+    
   },
 
   /**
