@@ -1,0 +1,24 @@
+/* miniprogram/pages/search/page_search.wxss */
+.searchbox{
+    width: 100vw;
+    height: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(251, 251, 251);
+}
+
+.head {
+   
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 3.5vw;
+    text-align: center;
+    
+}
+
+.logo {
+    width: 17vw;
+    height: 17vw;
+}

@@ -1,0 +1,14 @@
+<!-- miniprogram/pages/search/page_search.wxml -->
+<view class="searchbox">
+    <view class="head">
+        <image src="https://neauhand.hhp.im/img/zudui.png" class="logo"></image>
+        <view style="padding:2vw 0 0 0;">To seek,to find!</view>
+    </view>
+</view>
+<view class="searchtab">
+    <van-button type="default">默认按钮</van-button>
+    <!-- 弹出框 -->
+    <van-popup show="{{ showTime }}" position="bottom" overlay="{{ true }}" bind:click-overlay="onClose">
+     <van-picker columns="{{ columns }}" bind:change="onChange" />
+    </van-popup>
+</view>

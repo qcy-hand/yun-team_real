@@ -21,6 +21,7 @@ Page({
   },
 
 
+
   //点击事件
   tz_car: function () {
     wx.navigateTo({

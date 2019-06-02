@@ -1,68 +1,68 @@
 <swiper current="{{currentData}}" class='swiper' style="height:100vh;" duration="500" bindchange='swiperChange'>
     <swiper-item>
-        <!-- <scroll-view scroll-y style="height: 100vh;"> -->
-            <view class="beijing">
-                <view class="name ">
-                    <view class="tx">
-                        <open-data type="userAvatarUrl"></open-data>
-                    </view>
-                    <view class="Input">
-                        <view class="Input_Nick">
-                            <open-data type="userNickName"></open-data>
-                        </view>
-                        <view class="Input_trans">
-                            <li type="text">全宇宙最棒的崽~</li>
-                        </view>
-                    </view>
+        <scroll-view scroll-y style="height: 100vh;">
+        <view class="beijing">
+            <view class="name ">
+                <view class="tx">
+                    <open-data type="userAvatarUrl"></open-data>
                 </view>
-                <view class="car hezi" bindtap="tz_car">
-                    <view>
-                        <image src="https://neauhand.hhp.im/img/pc1.png" class="car_img"></image>
+                <view class="Input">
+                    <view class="Input_Nick">
+                        <open-data type="userNickName"></open-data>
                     </view>
-                    <view class="car_li">
-                        <li style="font-size:4.5vw; color:#333366; padding:0 0 2vw 0;">组队拼车</li>
-                        <li style="color:#336666;font-size:3.5vw; ">Car pooling</li>
-                    </view>
-                </view>
-                <view class="sport hezi" bindtap="tz_sport">
-                    <view>
-                        <image src="https://neauhand.hhp.im/img/yd2.png" alt="" class="sport_img"></image>
-                    </view>
-                    <view class="sport_li">
-                        <li style="font-size:4.5vw; color:#333366; padding:0 0 2vw 0;">
-                            组队运动{{userAvatarUrl}}
-                        </li>
-                        <li style="color:#336666;font-size:3.5vw;">Team sports</li>
-                    </view>
-                </view>
-                <view class="study hezi" bindtap="tz_study">
-                    <view>
-                        <image src="https://neauhand.hhp.im/img/xx1.png" alt="" class="study_img"></image>
-                    </view>
-                    <view class="study_li">
-                        <li style="font-size:4.5vw; color:#333366; padding:0 0 2vw 0;">组队学习</li>
-                        <li style="color:#336666;font-size:3.5vw;">Team learning</li>
-                    </view>
-                </view>
-                <view class="customize hezi" bindtap="tz_customize">
-                    <view>
-                        <image src="https://neauhand.hhp.im/img/zdy1.png" alt="" class="customize_img"></image>
-                    </view>
-                    <view class="study_li">
-                        <li style="font-size:4.5vw; color:#333366; padding:0 0 2vw 0;">自定义</li>
-                        <li style="color:#336666;font-size:3.5vw;">Custom items</li>
+                    <view class="Input_trans">
+                        <li type="text">全宇宙最棒的崽~</li>
                     </view>
                 </view>
             </view>
-        <!-- </scroll-view> -->
+            <view class="car hezi" bindtap="tz_car">
+                <view>
+                    <image src="https://neauhand.hhp.im/img/pc1.png" class="car_img"></image>
+                </view>
+                <view class="car_li">
+                    <li style="font-size:4.5vw; color:#333366; padding:0 0 2vw 0;">组队拼车</li>
+                    <li style="color:#336666;font-size:3.5vw; ">Car pooling</li>
+                </view>
+            </view>
+            <view class="sport hezi" bindtap="tz_sport">
+                <view>
+                    <image src="https://neauhand.hhp.im/img/yd2.png" alt="" class="sport_img"></image>
+                </view>
+                <view class="sport_li">
+                    <li style="font-size:4.5vw; color:#333366; padding:0 0 2vw 0;">
+                        组队运动{{userAvatarUrl}}
+                    </li>
+                    <li style="color:#336666;font-size:3.5vw;">Team sports</li>
+                </view>
+            </view>
+            <view class="study hezi" bindtap="tz_study">
+                <view>
+                    <image src="https://neauhand.hhp.im/img/xx1.png" alt="" class="study_img"></image>
+                </view>
+                <view class="study_li">
+                    <li style="font-size:4.5vw; color:#333366; padding:0 0 2vw 0;">组队学习</li>
+                    <li style="color:#336666;font-size:3.5vw;">Team learning</li>
+                </view>
+            </view>
+            <view class="customize hezi" bindtap="tz_customize">
+                <view>
+                    <image src="https://neauhand.hhp.im/img/zdy1.png" alt="" class="customize_img"></image>
+                </view>
+                <view class="study_li">
+                    <li style="font-size:4.5vw; color:#333366; padding:0 0 2vw 0;">自定义</li>
+                    <li style="color:#336666;font-size:3.5vw;">Custom items</li>
+                </view>
+            </view>
+        </view>
+        </scroll-view>
     </swiper-item>
     <!-- 历史feedback -->
     <swiper-item>
-     <view style="height:5vw;"></view>
-         <van-tabs  color="rgba(153,153,153,0.5);"  animated nav-class="width:100vw;">
+        <view style="height:5vw;"></view>
+        <van-tabs color="rgba(153,153,153,0.5);" animated sticky >
             <!-- 我的拼车历史界面 -->
-            <van-tab title="拼车" title-style="color: #24343b;">
-                <view class='content' wx:for="{{arroldcar}}" wx:key="225">
+            <van-tab title="拼车" title-style="color: #24343b;" >
+                <view class='content' wx:for="{{arroldcar}}" wx:key="225" >
                     <view class="userinfo">
                         <block>
                             <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
@@ -87,9 +87,7 @@
                     你还没有发布任何组队拼车信息呐~
                     快去发布吧!
                 </view>
-                <view class="tishi" wx:if="{{arroldcar.length}}">
-                    已经到底了哦~
-                </view>
+                <view class="tishi" wx:if="{{arroldcar.length}}">已经到底了哦~</view>
             </van-tab>
             <!-- 我的运动历史界面 -->
             <van-tab title="运动" title-style="color: #24343b;">
@@ -118,9 +116,7 @@
                     你还没有发布任何组队运动信息呐~
                     快去发布吧!
                 </view>
-                <view class="tishi" wx:if="{{arroldsport.length}}">
-                    已经到底了哦~
-                </view>
+                <view class="tishi" wx:if="{{arroldsport.length}}">已经到底了哦~</view>
             </van-tab>
             <!-- 我的学习历史界面 -->
             <van-tab title="学习" title-style="color: #24343b;">
@@ -149,9 +145,7 @@
                     你还没有发布任何组队学习信息呐~
                     快去发布吧!
                 </view>
-                <view class="tishi" wx:if="{{arroldstudy.length}}">
-                    已经到底了哦~
-                </view>
+                <view class="tishi" wx:if="{{arroldstudy.length}}">已经到底了哦~</view>
             </van-tab>
             <!-- 我的自定义历史界面 -->
             <van-tab title="自定义" title-style="color: #24343b;">
@@ -180,9 +174,7 @@
                     你还没有发布任何其它组队信息呐~
                     快去发布吧!
                 </view>
-                <view class="tishi" wx:if="{{arroldcustomize.length}}">
-                    已经到底了哦~
-                </view>
+                <view class="tishi" wx:if="{{arroldcustomize.length}}">已经到底了哦~</view>
             </van-tab>
         </van-tabs>
     </swiper-item>

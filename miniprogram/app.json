@@ -9,7 +9,9 @@
     "pages/history/page_history",
     "pages/mine/page_mine",
     "pages/attention/page_attention",
-    "pages/feedback/page_feedback"
+    "pages/feedback/page_feedback",
+    "pages/search",
+    "pages/search/page_search"
   ],
   "window": {
     "backgroundColor": "#b3cacc",
