@@ -1,5 +1,15 @@
 {
   "usingComponents": {
-    "van-search": "/vant-weapp/dist/search/index"
+    "van-search": "/vant-weapp/dist/search/index",
+    "van-icon": "/vant-weapp/dist/icon/index",
+   
+
+   
+      "van-cell": "/vant-weapp/dist/cell/index",
+      "van-cell-group": "/vant-weapp/dist/cell-group/index",
+     
+
+      "van-dialog": "/vant-weapp/dist/dialog/index"
+
   }
 }
