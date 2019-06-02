@@ -160,10 +160,10 @@ Page({
   },
 
   // 
-  Location_study(event) {
+  Location_customize(event) {
     // event.detail 为当前输入的值
     this.setData({
-      didian_study: event.detail,
+      didian_customize: event.detail,
     })
   },
   Input_customize(event) {

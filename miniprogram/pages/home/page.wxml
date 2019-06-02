@@ -1,6 +1,6 @@
-<swiper current="{{currentData}}" class='swiper' style="height:100vh;" duration="300" bindchange='swiperChange'>
+<swiper current="{{currentData}}" class='swiper' style="height:100vh;" duration="500" bindchange='swiperChange'>
     <swiper-item>
-        <scroll-view scroll-y style="height: 100vh;">
+        <!-- <scroll-view scroll-y style="height: 100vh;"> -->
             <view class="beijing">
                 <view class="name ">
                     <view class="tx">
@@ -54,11 +54,12 @@
                     </view>
                 </view>
             </view>
-        </scroll-view>
+        <!-- </scroll-view> -->
     </swiper-item>
     <!-- 历史feedback -->
     <swiper-item>
-         <van-tabs type="card" color="rgba(153,153,153,0.5);" animated>
+     <view style="height:5vw;"></view>
+         <van-tabs  color="rgba(153,153,153,0.5);"  animated nav-class="width:100vw;">
             <!-- 我的拼车历史界面 -->
             <van-tab title="拼车" title-style="color: #24343b;">
                 <view class='content' wx:for="{{arroldcar}}" wx:key="225">
@@ -69,7 +70,6 @@
                             <button class="shanchu" size="{{mini}}" type="warn" bindtap="delete" data-id='{{item._id}}'>
                                 删除
                             </button>
-                            <van-dialog id="van-dialog" />
                         </block>
                     </view>
                     <van-panel desc="发布时间:{{item.Nowtime}}">

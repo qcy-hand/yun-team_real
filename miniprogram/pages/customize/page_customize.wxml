@@ -1,22 +1,21 @@
 <!-- pages/car/page_car.wxml -->
 <view class="head_input">
   <van-cell title="时间" icon="clock-o" is-link bind:click="onTap" value="{{time}}" />
-  <!-- <van-cell title="地点" icon="location-o" is-link bind:click="chooseLocationStart" value="{{didian}}" center="{{true}}" /> -->
   <van-cell-group>
     <!-- 输入框 -->
-    <van-field value="{{ didian_study }}" left-icon="location-o" center clearable label="地点" placeholder="请输入地址" border="{{ false }}" bind:input="Location_study" use-button-slot></van-field>
+    <van-field value="{{ didian_customize }}" left-icon="location-o" center clearable label="地点" placeholder="请输入地址" border="{{ false }}" bind:input="Location_customize" use-button-slot></van-field>
   </van-cell-group>
   <van-cell-group>
     <!-- 输入框 -->
-    <van-field value="{{ id_customize }}" center clearable label="自定义项目" placeholder="干点啥好嘞..." border="{{ false }}" bind:input="Input_customize" use-button-slot></van-field>
+    <van-field value="{{ id_customize }}"left-icon="qr" center clearable label="自定义项目" placeholder="干点啥好嘞..." border="{{ false }}" bind:input="Input_customize" use-button-slot></van-field>
   </van-cell-group>
   <van-cell-group>
     <!-- 输入框 -->
-    <van-field value="{{ id_mess }}" center clearable label="联系方式" placeholder="官方更建议输入QQ或者微信号" border="{{ false }}" bind:input="Input_mess" use-button-slot></van-field>
+    <van-field value="{{ id_mess }}" left-icon="phone-o" center clearable label="联系方式" placeholder="官方更建议输入QQ或者微信号" border="{{ false }}" bind:input="Input_mess" use-button-slot></van-field>
   </van-cell-group>
   <van-cell-group>
     <!-- 输入框 -->
-    <van-field value="{{ beizhu }}" center clearable label="备注" placeholder="说点你想补充的" border="{{ false }}" bind:input="Input_beizhu" use-button-slot>
+    <van-field value="{{ beizhu }}" left-icon="edit" center clearable label="备注" placeholder="说点你想补充的" border="{{ false }}" bind:input="Input_beizhu" use-button-slot>
       <van-button slot="button" size="small" type="primary" bind:click="Push">发布</van-button>
     </van-field>
   </van-cell-group>

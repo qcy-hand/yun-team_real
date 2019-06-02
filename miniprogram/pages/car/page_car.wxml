@@ -6,11 +6,11 @@
     <van-cell title="终点" icon="location-o" is-link bind:click="chooseLocationOver" value="{{zhongdian}}" center="{{true}}" />
     <van-cell-group>
       <!-- 输入框 -->
-      <van-field value="{{ id_mess }}" center clearable label="联系方式" placeholder="官方更建议输入QQ或者微信号" border="{{ false }}" bind:input="Input_mess" use-button-slot></van-field>
+      <van-field value="{{ id_mess }}" left-icon="phone-o" center clearable label="联系方式" placeholder="官方更建议输入QQ或者微信号" border="{{ false }}" bind:input="Input_mess" use-button-slot></van-field>
     </van-cell-group>
     <van-cell-group>
       <!-- 输入框 -->
-      <van-field value="{{ beizhu }}" center clearable label="备注" placeholder="可以上点小要求" border="{{ false }}" bind:input="Input_beizhu" use-button-slot>
+      <van-field value="{{ beizhu }}" left-icon="edit" center clearable label="备注" placeholder="可以上点小要求" border="{{ false }}" bind:input="Input_beizhu" use-button-slot>
         <van-button slot="button" size="small" type="primary" bind:click="Push">发布</van-button>
       </van-field>
     </van-cell-group>
