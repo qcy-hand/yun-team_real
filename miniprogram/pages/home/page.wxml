@@ -207,11 +207,11 @@
             <view class="cell">
                 <view style="height:10vw;"></view>
                 <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-                <van-cell title="发布历史" is-link url="/pages/history/page_history" link-type="navigateTo" />
-                <view style="height:5vw;background-color:rgb(251,251,251);"></view>
                 <van-cell title="提交反馈" is-link url="/pages/feedback/page_feedback" link-type="navigateTo" />
                 <view style="height:5vw;background-color:rgb(251,251,251);"></view>
                 <van-cell title="使用注意" is-link url="/pages/attention/page_attention" link-type="navigateTo" />
+                <view style="height:5vw;background-color:rgb(251,251,251);"></view>
+                <van-cell title="开发者选项" is-link url="/pages/history/page_history" link-type="navigateTo" />
                 <view style="height:5vw;background-color:rgb(251,251,251);"></view>
                 <view style="font-size:3vw;text-align:center;color: #333366;padding:2vw 0 0 0;">
                     更多好用功能敬请期待！
