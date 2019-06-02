@@ -85,7 +85,8 @@ image {
 .car,
 .sport,
 .study,
-.customize {
+.customize,
+.search {
     width: 76vw;
     height: 15vh;
     background-color: rgba(153, 153, 153, 0.3);
@@ -114,12 +115,20 @@ image {
 .customize_img {
     width: 16vw;
     height: 16vw;
-    padding: 0 12vw 0 12vw;
+    padding: 0 13vw 0 11.5vw;
+}
+
+.search_img {
+    width: 14vw;
+    height: 14vw;
+    padding: 0 14vw 0 12.5vw;
 }
 
 .car_li,
 .sport_li,
-.study_li {
+.study_li,
+.customize_li,
+.search_li {
     display: flex;
     flex-direction: column;
 }

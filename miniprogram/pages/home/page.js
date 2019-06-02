@@ -45,7 +45,11 @@ Page({
       url: '../customize/page_customize'
     });
   },
-  
+  tz_search: function () {
+    wx.navigateTo({
+      url: '../search/page_search'
+    });
+  },
 
   // 切换标签时触发
   //tabbar监听切换swiper
