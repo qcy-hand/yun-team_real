@@ -1,5 +1,5 @@
-<swiper current="{{currentData}}" class='swiper' style="height:100vh;" duration="500" bindchange='swiperChange'>
-    <swiper-item>
+
+  
         <scroll-view scroll-y style="height: 113vh;">
             <view class="beijing">
                 <view class="name ">
@@ -64,164 +64,10 @@
                 </view>
             </view>
         </scroll-view>
-    </swiper-item>
-    <!-- 历史feedback -->
-    <swiper-item>
-        <view style="height:5vw;"></view>
-        <van-tabs color="rgba(153,153,153,0.5);" animated >
-            <!-- 我的拼车历史界面 -->
-            <van-tab title="拼车" title-style="color: #24343b;">
-                <view class='content' wx:for="{{arroldcar}}" wx:key="225">
-                    <view class="userinfo">
-                        <block>
-                            <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-                            <text class="userinfo-nickname">{{item.nickname}}</text>
-                            <button class="shanchu" size="{{mini}}" type="warn" bindtap="delete" data-id='{{item._id}}'>
-                                删除
-                            </button>
-                        </block>
-                    </view>
-                    <van-panel desc="发布时间:{{item.Nowtime}}">
-                        <view class="push">
-                            <view class="item">时间:{{item.time}}</view>
-                            <view class="item">起点:{{item.qidian}}</view>
-                            <view class="item">终点:{{item.zhongdian}}</view>
-                            <view class="item">联系方式:{{ item.id_mess }}</view>
-                            <view class="item">备注:{{ item.beizhu }}</view>
-                        </view>
-                        <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-                    </van-panel>
-                </view>
-                <view class="tishi1" wx:if="{{arroldcar.length==0}}">
-                    你还没有发布任何组队拼车信息呐~
-                    快去发布吧!
-                </view>
-                <view class="tishi" wx:if="{{arroldcar.length}}">已经到底了哦~</view>
-            </van-tab>
-            <!-- 我的运动历史界面 -->
-            <van-tab title="运动" title-style="color: #24343b;">
-                <view class='content' wx:for="{{arroldsport}}" wx:key="221">
-                    <view class="userinfo">
-                        <block>
-                            <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-                            <text class="userinfo-nickname">{{item.nickname}}</text>
-                            <button class="shanchu" bindtap="delete" data-id='{{item._id}}'>
-                                删除
-                            </button>
-                        </block>
-                    </view>
-                    <van-panel desc="发布时间:{{item.Nowtime}}">
-                        <view class="push">
-                            <view class="item">时间：{{item.time}}</view>
-                            <view class="item">地点：{{item.didian}}</view>
-                            <view class="item">运动项目：{{item.id_sport}}</view>
-                            <view class="item">联系方式：{{item.id_mess}}</view>
-                            <view class="item">备注：{{item.beizhu}}</view>
-                        </view>
-                        <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-                    </van-panel>
-                </view>
-                <view class="tishi1" wx:if="{{arroldsport.length==0}}">
-                    你还没有发布任何组队运动信息呐~
-                    快去发布吧!
-                </view>
-                <view class="tishi" wx:if="{{arroldsport.length}}">已经到底了哦~</view>
-            </van-tab>
-            <!-- 我的学习历史界面 -->
-            <van-tab title="学习" title-style="color: #24343b;">
-                <view class='content' wx:for="{{arroldstudy}}" wx:key="222">
-                    <view class="userinfo">
-                        <block>
-                            <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-                            <text class="userinfo-nickname">{{item.nickname}}</text>
-                            <button class="shanchu" bindtap="delete" data-id='{{item._id}}'>
-                                删除
-                            </button>
-                        </block>
-                    </view>
-                    <van-panel desc="发布时间:{{item.Nowtime}}">
-                        <view class="push">
-                            <view class="item">时间：{{item.time}}</view>
-                            <view class="item">地点：{{item.didian_study}}</view>
-                            <view class="item">学习项目：{{item.id_study}}</view>
-                            <view class="item">联系方式：{{ item.id_mess }}</view>
-                            <view class="item">备注:{{ item.beizhu }}</view>
-                        </view>
-                        <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-                    </van-panel>
-                </view>
-                <view class="tishi1" wx:if="{{arroldstudy.length==0}}">
-                    你还没有发布任何组队学习信息呐~
-                    快去发布吧!
-                </view>
-                <view class="tishi" wx:if="{{arroldstudy.length}}">已经到底了哦~</view>
-            </van-tab>
-            <!-- 我的自定义历史界面 -->
-            <van-tab title="自定义" title-style="color: #24343b;">
-                <view class='content' wx:for="{{arroldcustomize}}" wx:key="223">
-                    <view class="userinfo">
-                        <block>
-                            <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-                            <text class="userinfo-nickname">{{item.nickname}}</text>
-                            <button class="shanchu" bindtap="delete" data-id='{{item._id}}'>
-                                删除
-                            </button>
-                        </block>
-                    </view>
-                    <van-panel desc="发布时间:{{item.Nowtime}}">
-                        <view class="push">
-                            <view class="item">时间:{{item.time}}</view>
-                            <view class="item">地点:{{item.didian_customize}}</view>
-                            <view class="item">项目:{{item.id_customize}}</view>
-                            <view class="item">联系方式:{{ item.id_mess }}</view>
-                            <view class="item">备注:{{item.beizhu}}</view>
-                        </view>
-                        <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-                    </van-panel>
-                </view>
-                <view class="tishi1" wx:if="{{arroldcustomize.length==0}}">
-                    你还没有发布任何其它组队信息呐~
-                    快去发布吧!
-                </view>
-                <view class="tishi" wx:if="{{arroldcustomize.length}}">已经到底了哦~</view>
-            </van-tab>
-        </van-tabs>
-    </swiper-item>
-    <!-- 我的mine -->
-    <swiper-item>
-        <view class="minepage">
-            <view style="height:10vw;"></view>
-            <view class="name_mine">
-                <view class="tx_mine ">
-                    <open-data type="userAvatarUrl"></open-data>
-                </view>
-                <view class="Input_mine ">
-                    <view class="Input_Nick_mine ">
-                        <open-data type="userNickName"></open-data>
-                    </view>
-                    <view class="Input_trans_mine ">
-                        <li type="text">全宇宙最棒的崽~</li>
-                    </view>
-                </view>
-            </view>
-            <view class="cell">
-                <view style="height:10vw;"></view>
-                <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-                <van-cell title="提交反馈" is-link url="/pages/feedback/page_feedback" link-type="navigateTo" />
-                <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-                <van-cell title="使用注意" is-link url="/pages/attention/page_attention" link-type="navigateTo" />
-                <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-                <van-cell title="开发者选项" is-link url="/pages/history/page_history" link-type="navigateTo" />
-                <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-                <view style="font-size:3vw;text-align:center;color: #333366;padding:2vw 0 0 0;">
-                    更多好用功能敬请期待！
-                </view>
-            </view>
-        </view>
-    </swiper-item>
-</swiper>
+
+
 <view class="daohang">
-    <van-tabbar active="{{ active }}" bind:change="onChange">
+    <!-- <van-tabbar active="{{ active }}" bind:change="onChange"> -->
         <van-tabbar-item>
             <image slot="icon" src="{{ icon.normal }}" mode="aspectFit" />
             <image slot="icon-active" src="{{ icon.active }}" mode="aspectFit" />
@@ -237,5 +83,5 @@
             <image slot="icon-active" src="{{ icon2.active }}" mode="aspectFit" />
             我的
         </van-tabbar-item>
-    </van-tabbar>
+    <!-- </van-tabbar> -->
 </view>

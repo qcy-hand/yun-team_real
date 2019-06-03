@@ -1,11 +1,10 @@
 // pages/home/page.js
+
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    currentData: 0, //默认第一页
-    active: 0, //active是van-tabar属性类型是number
     icon: {
       normal: 'https://neauhand.hhp.im/img/zy.png',
       active: 'https://neauhand.hhp.im/img/zy-b.png'
@@ -19,8 +18,6 @@ Page({
       active: 'https://neauhand.hhp.im/img/mine-b.png'
     },
   },
-
-
 
   //点击事件
   tz_car: function () {
@@ -51,35 +48,35 @@ Page({
     });
   },
 
-  // 切换标签时触发
-  //tabbar监听切换swiper
-  onChange(event) {
+  // // 切换标签时触发
+  // //tabbar监听切换swiper
+  // onChange(event) {
 
-    console.log(event.detail);
+  //   console.log(event.detail);
 
-    this.setData({
+  //   this.setData({
 
-      page: event.detail,
+  //     page: event.detail,
 
-      currentData: event.detail
+  //     currentData: event.detail
 
-    })
+  //   })
 
-  },
+  // },
 
-  //swiper滑动监听切换tabbar
+  // //swiper滑动监听切换tabbar
 
-  swiperChange(event) {
+  // swiperChange(event) {
 
-    console.log(event.detail.current)
+  //   console.log(event.detail.current)
 
-    this.setData({
+  //   this.setData({
 
-      active: event.detail.current
+  //     active: event.detail.current
 
-    })
+  //   })
 
-  },
+  // },
 
   // 获取数据
   get:function()
@@ -122,24 +119,6 @@ Page({
         that.setData({
           arroldcustomize: res.result.data
         })
-      }
-    })
-  },
-
-  delete:function(e){
-    let that=this;
-    wx.cloud.callFunction({
-      name: "delete",
-      data:{
-        delid:e.currentTarget.dataset.id
-      },
-      success(res) {
-        console.log("删除成功");
-        that.get();
-      },
-      fail(res) {
-        console.log(res);
-        console.log("删除失败");
       }
     })
   },

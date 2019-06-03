@@ -8,6 +8,24 @@ Page({
 
   },
 
+  delete:function(e){
+    let that=this;
+    wx.cloud.callFunction({
+      name: "delete",
+      data:{
+        delid:e.currentTarget.dataset.id
+      },
+      success(res) {
+        console.log("删除成功");
+        that.get();
+      },
+      fail(res) {
+        console.log(res);
+        console.log("删除失败");
+      }
+    })
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */

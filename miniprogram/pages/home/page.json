@@ -10,8 +10,9 @@
       "van-tab": "/vant-weapp/dist/tab/index",
       "van-tabs": "/vant-weapp/dist/tabs/index",
 
-      "van-dialog": "/vant-weapp/dist/dialog/index"
+      "van-dialog": "/vant-weapp/dist/dialog/index",
 
-    
+      "van-badge": "/vant-weapp/dist/badge/index",
+      "van-badge-group": "/vant-weapp/dist/badge-group/index"
   }
 }

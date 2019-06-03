@@ -1,4 +1,5 @@
 /* pages/mine/page_mine.wxss */
+
 .name_mine {
     width: 100vw;
     height: 14vh;
@@ -55,3 +56,4 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+

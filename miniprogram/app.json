@@ -13,13 +13,34 @@
     "pages/search/page_search"
   ],
   "window": {
-    "backgroundColor": "#b3cacc",
+    "backgroundColor": "#c5d7d8",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
+    "navigationBarBackgroundColor": "#f3f6f6",
     "navigationBarTitleText": "组队",
     "navigationBarTextStyle": "black",
+    "onReachBottomDistance":1,
+    
     "enablePullDownRefresh": true
   },
+  "tabBar": {
+    "color": "#cdcdcd",
+    "selectedColor": "#1296db",
+    "list": [
+      {
+        "pagePath": "pages/home/page",
+        "iconPath": "https://neauhand.hhp.im/img/zy.png",
+        "selectedIconPath": "https://neauhand.hhp.im/img/zy-b.png",
+        "text": "主页"
+      },
+      {
+        "pagePath": "pages/history/page_history",
+        "iconPath": "https://neauhand.hhp.im/img/ls2.pngg",
+        "selectedIconPath": "https://neauhand.hhp.im/img/ls2-b.png",
+        "text": "历史"
+      }
+    ]
+  },
+
   "sitemapLocation": "sitemap.json",
   "permission": {
     "scope.userLocation": {
