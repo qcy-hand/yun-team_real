@@ -23,22 +23,35 @@
     "enablePullDownRefresh": true
   },
   "tabBar": {
-    "color": "#cdcdcd",
-    "selectedColor": "#1296db",
+    "borderStyle":"white",
+    "selectedColor": "#5483a0",
+    "backgroundColor":"#f3f6f6",
     "list": [
       {
         "pagePath": "pages/home/page",
-        "iconPath": "https://neauhand.hhp.im/img/zy.png",
-        "selectedIconPath": "https://neauhand.hhp.im/img/zy-b.png",
+        "iconPath": "./img/zy.png",
+        "selectedIconPath": "./img/zy-b.png",
         "text": "主页"
       },
       {
         "pagePath": "pages/history/page_history",
-        "iconPath": "https://neauhand.hhp.im/img/ls2.pngg",
-        "selectedIconPath": "https://neauhand.hhp.im/img/ls2-b.png",
+        "iconPath": "./img/ls2.png",
+        "selectedIconPath": "./img/ls2-b.png",
         "text": "历史"
+      },
+      {
+        "pagePath": "pages/mine/page_mine",
+        "iconPath": "./img/mine1.png",
+        "selectedIconPath": "./img/mine1-b.png",
+        "text": "我的"
       }
     ]
+  },
+  "networkTimeout": {
+    "request": 15000,
+    "connectSocket": 100000,
+    "uploadFile": 100000,
+    "downloadFile": 100000
   },
 
   "sitemapLocation": "sitemap.json",

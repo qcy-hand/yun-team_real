@@ -5,18 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    icon: {
-      normal: 'https://neauhand.hhp.im/img/zy.png',
-      active: 'https://neauhand.hhp.im/img/zy-b.png'
-    },
-    icon1: {
-      normal: 'https://neauhand.hhp.im/img/ls2.png',
-      active: 'https://neauhand.hhp.im/img/ls2-b.png'
-    },
-    icon2: {
-      normal: 'https://neauhand.hhp.im/img/mine.png',
-      active: 'https://neauhand.hhp.im/img/mine-b.png'
-    },
+    
   },
 
   //点击事件
@@ -48,87 +37,11 @@ Page({
     });
   },
 
-  // // 切换标签时触发
-  // //tabbar监听切换swiper
-  // onChange(event) {
-
-  //   console.log(event.detail);
-
-  //   this.setData({
-
-  //     page: event.detail,
-
-  //     currentData: event.detail
-
-  //   })
-
-  // },
-
-  // //swiper滑动监听切换tabbar
-
-  // swiperChange(event) {
-
-  //   console.log(event.detail.current)
-
-  //   this.setData({
-
-  //     active: event.detail.current
-
-  //   })
-
-  // },
-
-  // 获取数据
-  get:function()
-  {
-    let that = this;
-    wx.cloud.callFunction({
-      name: "getoldcar",
-      data: {},
-      success(res) {
-        that.setData({
-          arroldcar: res.result.data
-        })
-      }
-    })
-
-    wx.cloud.callFunction({
-      name: "getoldsports",
-      data: {},
-      success(res) {
-        that.setData({
-          arroldsport: res.result.data
-        })
-      }
-    })
-
-    wx.cloud.callFunction({
-      name: "getoldstudy",
-      data: {},
-      success(res) {
-        that.setData({
-          arroldstudy: res.result.data
-        })
-      }
-    })
-
-    wx.cloud.callFunction({
-      name: "getoldcustomize",
-      data: {},
-      success(res) {
-        that.setData({
-          arroldcustomize: res.result.data
-        })
-      }
-    })
-  },
-
-
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.get();
+    
   },
 
   /**

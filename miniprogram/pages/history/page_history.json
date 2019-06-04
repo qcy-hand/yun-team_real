@@ -3,6 +3,8 @@
    
       "van-tab": "/vant-weapp/dist/tab/index",
       "van-tabs": "/vant-weapp/dist/tabs/index",
-      "van-panel": "/vant-weapp/dist/panel/index"
+      "van-panel": "/vant-weapp/dist/panel/index",
+      "van-swipe-cell": "/vant-weapp/dist/swipe-cell/index"
+
   }
 }

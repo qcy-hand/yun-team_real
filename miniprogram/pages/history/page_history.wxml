@@ -1,119 +1,115 @@
 <!-- pages/card/page_card.wxml -->
-<van-tabs color="rgba(153,153,153,0.5);" animated >
-        <!-- 我的拼车历史界面 -->
-        <van-tab title="拼车" title-style="color: #24343b;">
-                <view class='content' wx:for="{{arroldcar}}" wx:key="225">
-                    <view class="userinfo">
-                        <block>
-                            <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-                            <text class="userinfo-nickname">{{item.nickname}}</text>
-                            <button class="shanchu" size="{{mini}}" type="warn" bindtap="delete" data-id='{{item._id}}'>
-                                删除
-                            </button>
-                        </block>
+<van-tabs color="rgba(153,153,153,0.5);" animated sticky>
+    <!-- 我的拼车历史界面 -->
+    <van-tab title="拼车" title-style="color: #24343b;">
+        <view class='content' wx:for="{{arroldcar}}" wx:key="225">
+            <van-swipe-cell id="swipe-cell" right-width="{{ 100 }}" async-close bind:close="onClose"  >
+                <view class="userinfo">
+                    <block>
+                        <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
+                        <text class="userinfo-nickname">{{item.nickname}}</text>
+                    </block>
+                </view>
+                <van-panel desc="发布时间:{{item.Nowtime}}">
+                    <view class="push">
+                        <view class="item">时间:{{item.time}}</view>
+                        <view class="item">起点:{{item.qidian}}</view>
+                        <view class="item">终点:{{item.zhongdian}}</view>
+                        <view class="item">联系方式:{{ item.id_mess }}</view>
+                        <view class="item">备注:{{ item.beizhu }}</view>
                     </view>
-                    <van-panel desc="发布时间:{{item.Nowtime}}">
-                        <view class="push">
-                            <view class="item">时间:{{item.time}}</view>
-                            <view class="item">起点:{{item.qidian}}</view>
-                            <view class="item">终点:{{item.zhongdian}}</view>
-                            <view class="item">联系方式:{{ item.id_mess }}</view>
-                            <view class="item">备注:{{ item.beizhu }}</view>
-                        </view>
-                        <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-                    </van-panel>
+                    <view style="height:5vw;background-color:rgb(251,251,251);"></view>
+                </van-panel>
+                <view slot="right" data-id='{{item._id}}' >
+                    <!-- <button plain bindtap="delete" data-id='{{item._id}}' class="ributton">删除</button> -->
                 </view>
-                <view class="tishi1" wx:if="{{arroldcar.length==0}}">
-                    你还没有发布任何组队拼车信息呐~
+            </van-swipe-cell>
+        </view>
+        <view class="tishi1" wx:if="{{arroldcar.length==0}}">
+            你还没有发布任何组队拼车信息呐~
                     快去发布吧!
+        </view>
+        <view class="tishi" wx:if="{{arroldcar.length}}">已经到底了哦~</view>
+    </van-tab>
+    <!-- 我的运动历史界面 -->
+    <van-tab title="运动" title-style="color: #24343b;">
+        <view class='content' wx:for="{{arroldsport}}" wx:key="221">
+            <view class="userinfo">
+                <block>
+                    <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
+                    <text class="userinfo-nickname">{{item.nickname}}</text>
+                    <button class="shanchu" bindtap="delete" data-id='{{item._id}}'>删除</button>
+                </block>
+            </view>
+            <van-panel desc="发布时间:{{item.Nowtime}}">
+                <view class="push">
+                    <view class="item">时间：{{item.time}}</view>
+                    <view class="item">地点：{{item.didian}}</view>
+                    <view class="item">运动项目：{{item.id_sport}}</view>
+                    <view class="item">联系方式：{{item.id_mess}}</view>
+                    <view class="item">备注：{{item.beizhu}}</view>
                 </view>
-                <view class="tishi" wx:if="{{arroldcar.length}}">已经到底了哦~</view>
-            </van-tab>
-        <!-- 我的运动历史界面 -->
-        <van-tab title="运动" title-style="color: #24343b;">
-                <view class='content' wx:for="{{arroldsport}}" wx:key="221">
-                    <view class="userinfo">
-                        <block>
-                            <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-                            <text class="userinfo-nickname">{{item.nickname}}</text>
-                            <button class="shanchu" bindtap="delete" data-id='{{item._id}}'>
-                                删除
-                            </button>
-                        </block>
-                    </view>
-                    <van-panel desc="发布时间:{{item.Nowtime}}">
-                        <view class="push">
-                            <view class="item">时间：{{item.time}}</view>
-                            <view class="item">地点：{{item.didian}}</view>
-                            <view class="item">运动项目：{{item.id_sport}}</view>
-                            <view class="item">联系方式：{{item.id_mess}}</view>
-                            <view class="item">备注：{{item.beizhu}}</view>
-                        </view>
-                        <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-                    </van-panel>
-                </view>
-                <view class="tishi1" wx:if="{{arroldsport.length==0}}">
-                    你还没有发布任何组队运动信息呐~
+                <view style="height:5vw;background-color:rgb(251,251,251);"></view>
+            </van-panel>
+        </view>
+        <view class="tishi1" wx:if="{{arroldsport.length==0}}">
+            你还没有发布任何组队运动信息呐~
                     快去发布吧!
+        </view>
+        <view class="tishi" wx:if="{{arroldsport.length}}">已经到底了哦~</view>
+    </van-tab>
+    <!-- 我的学习历史界面 -->
+    <van-tab title="学习" title-style="color: #24343b;">
+        <view class='content' wx:for="{{arroldstudy}}" wx:key="222">
+            <view class="userinfo">
+                <block>
+                    <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
+                    <text class="userinfo-nickname">{{item.nickname}}</text>
+                    <button class="shanchu" bindtap="delete" data-id='{{item._id}}'>删除</button>
+                </block>
+            </view>
+            <van-panel desc="发布时间:{{item.Nowtime}}">
+                <view class="push">
+                    <view class="item">时间：{{item.time}}</view>
+                    <view class="item">地点：{{item.didian_study}}</view>
+                    <view class="item">学习项目：{{item.id_study}}</view>
+                    <view class="item">联系方式：{{ item.id_mess }}</view>
+                    <view class="item">备注:{{ item.beizhu }}</view>
                 </view>
-                <view class="tishi" wx:if="{{arroldsport.length}}">已经到底了哦~</view>
-            </van-tab>
-        <!-- 我的学习历史界面 -->
-        <van-tab title="学习" title-style="color: #24343b;">
-                <view class='content' wx:for="{{arroldstudy}}" wx:key="222">
-                    <view class="userinfo">
-                        <block>
-                            <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-                            <text class="userinfo-nickname">{{item.nickname}}</text>
-                            <button class="shanchu" bindtap="delete" data-id='{{item._id}}'>
-                                删除
-                            </button>
-                        </block>
-                    </view>
-                    <van-panel desc="发布时间:{{item.Nowtime}}">
-                        <view class="push">
-                            <view class="item">时间：{{item.time}}</view>
-                            <view class="item">地点：{{item.didian_study}}</view>
-                            <view class="item">学习项目：{{item.id_study}}</view>
-                            <view class="item">联系方式：{{ item.id_mess }}</view>
-                            <view class="item">备注:{{ item.beizhu }}</view>
-                        </view>
-                        <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-                    </van-panel>
-                </view>
-                <view class="tishi1" wx:if="{{arroldstudy.length==0}}">
-                    你还没有发布任何组队学习信息呐~
+                <view style="height:5vw;background-color:rgb(251,251,251);"></view>
+            </van-panel>
+        </view>
+        <view class="tishi1" wx:if="{{arroldstudy.length==0}}">
+            你还没有发布任何组队学习信息呐~
                     快去发布吧!
+        </view>
+        <view class="tishi" wx:if="{{arroldstudy.length}}">已经到底了哦~</view>
+    </van-tab>
+    <!-- 我的自定义历史界面 -->
+    <van-tab title="自定义" title-style="color: #24343b;">
+        <view class='content' wx:for="{{arroldcustomize}}" wx:key="223">
+            <view class="userinfo">
+                <block>
+                    <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
+                    <text class="userinfo-nickname">{{item.nickname}}</text>
+                    <button class="shanchu" bindtap="delete" data-id='{{item._id}}'>删除</button>
+                </block>
+            </view>
+            <van-panel desc="发布时间:{{item.Nowtime}}">
+                <view class="push">
+                    <view class="item">时间:{{item.time}}</view>
+                    <view class="item">地点:{{item.didian_customize}}</view>
+                    <view class="item">项目:{{item.id_customize}}</view>
+                    <view class="item">联系方式:{{ item.id_mess }}</view>
+                    <view class="item">备注:{{item.beizhu}}</view>
                 </view>
-                <view class="tishi" wx:if="{{arroldstudy.length}}">已经到底了哦~</view>
-            </van-tab>
-        <!-- 我的自定义历史界面 -->
-        <van-tab title="自定义" title-style="color: #24343b;">
-                <view class='content' wx:for="{{arroldcustomize}}" wx:key="223">
-                    <view class="userinfo">
-                        <block>
-                            <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-                            <text class="userinfo-nickname">{{item.nickname}}</text>
-                            <button class="shanchu" bindtap="delete" data-id='{{item._id}}'>
-                                删除
-                            </button>
-                        </block>
-                    </view>
-                    <van-panel desc="发布时间:{{item.Nowtime}}">
-                        <view class="push">
-                            <view class="item">时间:{{item.time}}</view>
-                            <view class="item">地点:{{item.didian_customize}}</view>
-                            <view class="item">项目:{{item.id_customize}}</view>
-                            <view class="item">联系方式:{{ item.id_mess }}</view>
-                            <view class="item">备注:{{item.beizhu}}</view>
-                        </view>
-                        <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-                    </van-panel>
-                </view>
-                <view class="tishi1" wx:if="{{arroldcustomize.length==0}}">
-                    你还没有发布任何其它组队信息呐~
+                <view style="height:5vw;background-color:rgb(251,251,251);"></view>
+            </van-panel>
+        </view>
+        <view class="tishi1" wx:if="{{arroldcustomize.length==0}}">
+            你还没有发布任何其它组队信息呐~
                     快去发布吧!
-                </view>
-                <view class="tishi" wx:if="{{arroldcustomize.length}}">已经到底了哦~</view>
-            </van-tab>
-        </van-tabs>
+        </view>
+        <view class="tishi" wx:if="{{arroldcustomize.length}}">已经到底了哦~</view>
+    </van-tab>
+</van-tabs>
