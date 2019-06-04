@@ -31,34 +31,39 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size:3.7vw;
-    
+    font-size: 3.7vw;
+
 }
 
 .item {
     width: 93vw;
-    padding:1vw 0 1vw 1vw;
+    padding: 1vw 0 1vw 1vw;
 }
 
 
-
-.tishi {
-    top: 1vh;
-    text-align:center;
-    position: relative;
-    bottom: 1px;
-    width:100vw;
-    height:13vh;
-    font-size:3vw;
+.pickong {
+    width: 192rpx;
+    height: 192rpx;
 }
 
-.tishi1 {
-    top: 1vh;
-    text-align:center;
+.backnews {
+    height: 90vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 3.5vw;
+    background-color: rgb(251, 251, 251);
+}
+
+.newsdown {
+    padding-top: 2vw;
+    padding-bottom:2vw;
+    text-align: center;
     position: relative;
-    bottom: 1px;
-    width:100vw;
-    height:6vh;
-    font-size:3vw;
+    width: 100vw;
+    font-size: 3vw;
 }
 

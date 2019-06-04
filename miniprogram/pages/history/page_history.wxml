@@ -5,7 +5,7 @@
         <view style="height:5vw;background-color:rgb(251,251,251);"></view>
         <view class='content' wx:for="{{arroldcar}}" wx:key="225">
             <van-dialog id="van-dialog" />
-            <van-swipe-cell id="swipe-cell" right-width="{{ 90 }}" async-close bind:close="onClose" data-id='{{item._id}}'>
+            <van-swipe-cell id="swipe-cell" right-width="{{ 90 }}" async-close bind:close="onClose" data-id='{{item._id}}' data-index='{{index}}'>
                 <view class="userinfo">
                     <block>
                         <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
@@ -24,11 +24,11 @@
             </van-swipe-cell>
             <view style="height:5vw;background-color:rgb(251,251,251);"></view>
         </view>
-        <view class="tishi1" wx:if="{{arroldcar.length==0}}">
-            你还没有发布任何组队拼车信息呐~
-                    快去发布吧!
+        <view class="backnews" wx:if="{{arroldcar.length==0}}">
+            <image src="https://neauhand.hhp.im/img/kong.png" class="pickong"></image>
+            <view>快去发布新内容吧～～</view>
         </view>
-        <view class="tishi" wx:if="{{arroldcar.length}}">已经到底了哦~</view>
+        <view class="newsdown" wx:if="{{arroldcar.length}}">已经到底了哦~</view>
     </van-tab>
     <!-- 我的运动历史界面 -->
     <van-tab title="运动" title-style="color: #24343b;">
@@ -54,11 +54,11 @@
             </van-swipe-cell>
             <view style="height:5vw;background-color:rgb(251,251,251);"></view>
         </view>
-        <view class="tishi1" wx:if="{{arroldsport.length==0}}">
-            你还没有发布任何组队运动信息呐~
-                    快去发布吧!
+        <view class="backnews" wx:if="{{arroldsport.length==0}}">
+            <image src="https://neauhand.hhp.im/img/kong.png" class="pickong"></image>
+            <view>快去发布新内容吧～～</view>
         </view>
-        <view class="tishi" wx:if="{{arroldsport.length}}">已经到底了哦~</view>
+        <view class="newsdown" wx:if="{{arroldsport.length}}">已经到底了哦~</view>
     </van-tab>
     <!-- 我的学习历史界面 -->
     <van-tab title="学习" title-style="color: #24343b;">
@@ -84,11 +84,11 @@
             </van-swipe-cell>
             <view style="height:5vw;background-color:rgb(251,251,251);"></view>
         </view>
-        <view class="tishi1" wx:if="{{arroldstudy.length==0}}">
-            你还没有发布任何组队学习信息呐~
-                    快去发布吧!
+        <view class="backnews" wx:if="{{arroldstudy.length==0}}">
+            <image src="https://neauhand.hhp.im/img/kong.png" class="pickong"></image>
+            <view>快去发布新内容吧～～</view>
         </view>
-        <view class="tishi" wx:if="{{arroldstudy.length}}">已经到底了哦~</view>
+        <view class="newsdown" wx:if="{{arroldstudy.length}}">已经到底了哦~</view>
     </van-tab>
     <!-- 我的自定义历史界面 -->
     <van-tab title="自定义" title-style="color: #24343b;">
@@ -114,10 +114,10 @@
             </van-swipe-cell>
             <view style="height:5vw;background-color:rgb(251,251,251);"></view>
         </view>
-        <view class="tishi1" wx:if="{{arroldcustomize.length==0}}">
-            你还没有发布任何其它组队信息呐~
-                    快去发布吧!
+        <view class="backnews" wx:if="{{arroldcustomize.length==0}}">
+            <image src="https://neauhand.hhp.im/img/kong.png" class="pickong"></image>
+            <view>快去发布新内容吧～～</view>
         </view>
-        <view class="tishi" wx:if="{{arroldcustomize.length}}">已经到底了哦~</view>
+        <view class="newsdown" wx:if="{{arroldcustomize.length}}">已经到底了哦~</view>
     </van-tab>
 </van-tabs>

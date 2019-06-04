@@ -31,10 +31,6 @@ Page({
               })
             }
           })
-        
-          that.setData({
-            scope: false
-          })
           that.tohome()
         }
       }

@@ -10,7 +10,8 @@ const _ = db.command
 exports.main = async (event, context) => {
   try {
     return await db.collection('datas').where({
-      _id: event.delid
+      _id: event.delid,
+     
     }).remove()
   } catch(e) {
     console.error(e)
