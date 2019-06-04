@@ -1,18 +1,19 @@
 <!-- pages/car/page_car.wxml -->
 <view class="head_input">
   <van-cell title="时间" icon="clock-o" is-link bind:click="onTap" value="{{time}}" />
-  <van-cell title="地点" icon="location-o" is-link bind:click="chooseLocationStart" value="{{didian}}" center="{{true}}" />
+  <van-cell wx:if="{{opencell}}" title="地点" icon="location-o" is-link bind:click="getUserLocation" value="{{didian}}" center="{{true}}" />
+  <button wx:if="{{opentap}}" type="primary" bindtap="Opensetting">点我允许位置授权</button>
   <van-cell-group>
     <!-- 输入框 -->
-    <van-field value="{{ id_sport }}" left-icon="flag-o" center clearable label="运动项目" placeholder="球场走一波？" border="{{ false }}" bind:input="Input_sport" use-button-slot></van-field>
+    <van-field maxlength="30" value="{{ id_sport }}" left-icon="flag-o" center clearable label="运动项目" placeholder="球场走一波？" border="{{ false }}" bind:input="Input_sport" use-button-slot></van-field>
   </van-cell-group>
   <van-cell-group>
     <!-- 输入框 -->
-    <van-field value="{{ id_mess }}" left-icon="phone-o" center clearable label="联系方式" placeholder="官方更建议输入QQ或者微信号" border="{{ false }}" bind:input="Input_mess" use-button-slot></van-field>
+    <van-field maxlength="30" value="{{ id_mess }}" left-icon="phone-o" center clearable label="联系方式" placeholder="请注意保护敏感信息" border="{{ false }}" bind:input="Input_mess" use-button-slot></van-field>
   </van-cell-group>
   <van-cell-group>
     <!-- 输入框 -->
-    <van-field value="{{ beizhu }}" left-icon="edit" center clearable label="备注" placeholder="说点你想补充的" border="{{ false }}" bind:input="Input_beizhu" use-button-slot>
+    <van-field maxlength="150" value="{{ beizhu }}" left-icon="edit" center clearable label="备注" placeholder="说点想补充的吧" border="{{ false }}" bind:input="Input_beizhu" use-button-slot>
       <van-button slot="button" size="small" type="primary" bind:click="Push">发布</van-button>
     </van-field>
   </van-cell-group>

@@ -18,14 +18,14 @@ Page({
           })
         } else {
           wx.getUserInfo({
-            success(res){
+            success(res) {
               wx.setStorage({
                 key: 'key',
                 data: {
                   nickName: res.userInfo.nickName,
                   avatarUrl: res.userInfo.avatarUrl
                 },
-                success(res){
+                success(res) {
                   console.log(res)
                 }
               })
@@ -40,18 +40,18 @@ Page({
   tohome() {
     wx.reLaunch({
       url: '/pages/home/page'
-    })                        
+    })
   },
   onClose() {
-    
+
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     this.getUserInfo()
-    
-    
+
+
   },
 
   /**

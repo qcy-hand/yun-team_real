@@ -1,5 +1,5 @@
 <!-- pages/card/page_card.wxml -->
-<van-tabs color="rgba(153,153,153,0.5);" animated sticky>
+<van-tabs color="rgba(153,153,153,0.5);" animated sticky >
     <!-- 我的拼车历史界面 -->
     <van-tab title="拼车" title-style="color: #24343b;">
         <view style="height:5vw;background-color:rgb(251,251,251);"></view>
@@ -35,7 +35,7 @@
         <view style="height:5vw;background-color:rgb(251,251,251);"></view>
         <view class='content' wx:for="{{arroldsport}}" wx:key="221">
             <van-dialog id="van-dialog" />
-            <van-swipe-cell id="swipe-cell" right-width="{{ 90 }}" async-close bind:close="onClose" data-id='{{item._id}}'>
+            <van-swipe-cell id="swipe-cell" right-width="{{ 90 }}" async-close bind:close="onClose" data-id='{{item._id}}' data-index='{{index}}'>
                 <view class="userinfo">
                     <block>
                         <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
@@ -65,7 +65,7 @@
         <view style="height:5vw;background-color:rgb(251,251,251);"></view>
         <view class='content' wx:for="{{arroldstudy}}" wx:key="222">
             <van-dialog id="van-dialog" />
-            <van-swipe-cell id="swipe-cell" right-width="{{ 90 }}" async-close bind:close="onClose" data-id='{{item._id}}'>
+            <van-swipe-cell id="swipe-cell" right-width="{{ 90 }}" async-close bind:close="onClose" data-id='{{item._id}}' data-index='{{index}}'>
                 <view class="userinfo">
                     <block>
                         <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
@@ -95,7 +95,7 @@
         <view style="height:5vw;background-color:rgb(251,251,251);"></view>
         <view class='content' wx:for="{{arroldcustomize}}" wx:key="223">
             <van-dialog id="van-dialog" />
-            <van-swipe-cell id="swipe-cell" right-width="{{ 90 }}" async-close bind:close="onClose" data-id='{{item._id}}'>
+            <van-swipe-cell id="swipe-cell" right-width="{{ 90 }}" async-close bind:close="onClose" data-id='{{item._id}}' data-index='{{index}}'>
                 <view class="userinfo">
                     <block>
                         <image class="userinfo-avatar" src="{{item.touxiang}}"></image>

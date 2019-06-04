@@ -4,19 +4,19 @@
   <!-- <van-cell title="地点" icon="location-o" is-link bind:click="chooseLocationStart" value="{{didian}}" center="{{true}}" /> -->
   <van-cell-group>
     <!-- 输入框 -->
-    <van-field value="{{ didian_study }}" left-icon="location-o" center clearable label="地点" placeholder="教学楼or成栋？" border="{{ false }}" bind:input="Location_study" use-button-slot></van-field>
+    <van-field maxlength="30" value="{{ didian_study }}" left-icon="location-o" center clearable label="地点" placeholder="教学楼or成栋？" border="{{ false }}" bind:input="Location_study" use-button-slot></van-field>
   </van-cell-group>
   <van-cell-group>
     <!-- 输入框 -->
-    <van-field value="{{ id_study }}" left-icon="records" center clearable label="学习项目" placeholder="蹭课背书上自习..." border="{{ false }}" bind:input="Input_study" use-button-slot></van-field>
+    <van-field maxlength="30" value="{{ id_study }}" left-icon="records" center clearable label="学习项目" placeholder="蹭课背书上自习..." border="{{ false }}" bind:input="Input_study" use-button-slot></van-field>
   </van-cell-group>
   <van-cell-group>
     <!-- 输入框 -->
-    <van-field value="{{ id_mess }}"  left-icon="phone-o" center clearable label="联系方式" placeholder="官方更建议输入QQ或者微信号" border="{{ false }}" bind:input="Input_mess" use-button-slot></van-field>
+    <van-field maxlength="150" value="{{ id_mess }}"  left-icon="phone-o" center clearable label="联系方式" placeholder="请注意保护敏感信息" border="{{ false }}" bind:input="Input_mess" use-button-slot></van-field>
   </van-cell-group>
   <van-cell-group>
     <!-- 输入框 -->
-    <van-field value="{{ beizhu }}" left-icon="edit" center clearable label="备注" placeholder="说点你想补充的" border="{{ false }}" bind:input="Input_beizhu" use-button-slot>
+    <van-field value="{{ beizhu }}" left-icon="edit" center clearable label="备注" placeholder="说点想补充的吧" border="{{ false }}" bind:input="Input_beizhu" use-button-slot>
       <van-button slot="button" size="small" type="primary" bind:click="Push">发布</van-button>
     </van-field>
   </van-cell-group>

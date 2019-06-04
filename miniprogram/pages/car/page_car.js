@@ -24,6 +24,8 @@ Page({
     touxiang: '',
     Timestamp: "",
 
+    opencell: true, //输入栏默认开启
+    opentap: false, //button默认关闭状态
     loading: false, //加载图标
     end: false, //到底文字
     list: 10, //初始取回条数
@@ -178,25 +180,31 @@ Page({
           wx.authorize({
             scope: 'scope.userLocation',
             success() {
-              console.log(1)
+              console.log(2)
             },
             fail() {
               console.log('1');
-              wx.openSetting({
-                success (res) {
-                  console.log(res.authSetting)
-                  // res.authSetting = {
-                  //   "scope.userInfo": true,
-                  //   "scope.userLocation": true
-                  // }
-                },
-                fail(err){
-                  console.log(err);
+              wx.showModal({
+                content: '需要你手动允许位置授权',
+                cancelText: "取消",
+                confirmText: "确定",
+                confirmColor: " #669999",
+                success(res) {
+                  if (res.confirm) {
+                    that.setData({
+                      opentap: true,
+                      opencell: false,
+                    })
+                    console.log('用户点击确定')
+                  } else if (res.cancel) {
+                    console.log('用户点击取消')
+                  }
                 }
               })
             }
           })
         } else {
+          //起点地址选择
           wx.chooseLocation({
             type: 'wgs84',
             success(res) {
@@ -210,31 +218,77 @@ Page({
     })
   },
 
-  //起点地址选择
-  chooseLocationStart() {
+  getUserLocationover() {
     let that = this
-    wx.chooseLocation({
-      type: 'wgs84',
+    wx.getSetting({
       success(res) {
-        that.setData({
-          qidian: res.name,
+        console.log(res.authSetting['scope.userLocation'])
+        if (!res.authSetting['scope.userLocation']) {
+          wx.authorize({
+            scope: 'scope.userLocation',
+            success() {
+              console.log(2)
+            },
+            fail() {
+              console.log('1');
+              wx.showModal({
+                content: '需要你手动允许位置授权',
+                cancelText: "取消",
+                confirmText: "确定",
+                confirmColor: " #669999",
+                success(res) {
+                  if (res.confirm) {
+                    that.setData({
+                      opentap: true,
+                      opencell: false,
+                    })
+                    console.log('用户点击确定')
+                  } else if (res.cancel) {
+                    console.log('用户点击取消')
+                  }
+                }
+              })
+            }
+          })
+        } else {
+          //终点地址选择
+          wx.chooseLocation({
+            type: 'wgs84',
+            success(res) {
+              that.setData({
+                zhongdian: res.name
+              })
+            }
+          })
+        }
+      }
+    })
+  },
 
-        })
-      }
-    })
-  },
-  //终点地址选择
-  chooseLocationOver() {
-    let that = this
-    wx.chooseLocation({
-      type: 'wgs84',
+  //引导跳转设置页面
+  Opensetting() {
+    let that = this;
+    wx.openSetting({
       success(res) {
+        console.log(res.authSetting)
+        res.authSetting = {
+          "scope.userInfo": true,
+          "scope.userLocation": true
+        }
         that.setData({
-          zhongdian: res.name
+          opentap: false,
+          opencell: true,
         })
+      },
+      fail(err) {
+        that.setData({
+          opentap: true,
+          opencell: false,})
+        console.log(err);
       }
     })
   },
+
   // 折叠面板
   onChange(event) {
     this.setData({

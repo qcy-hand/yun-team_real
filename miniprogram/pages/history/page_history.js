@@ -17,6 +17,9 @@ Page({
     console.log(res);
     let index = res.currentTarget.dataset.index
     let arroldcar = this.data.arroldcar
+    let arroldsport = this.data.arroldsport
+    let arroldstudy = this.data.arroldstudy
+    let arroldcustomize = this.data.arroldcustomize
     let that = this
     console.log(index);
     const {
@@ -41,8 +44,14 @@ Page({
             },
             success(res) {
               arroldcar.splice(index,1)
+              arroldsport.splice(index,1)
+              arroldstudy.splice(index,1)
+              arroldcustomize.splice(index,1)
               that.setData({
-                arroldcar
+                arroldcar,
+                arroldsport,
+                arroldstudy,
+                arroldcustomize
               })
               instance.close();
             }

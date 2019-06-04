@@ -65,5 +65,6 @@
     position: relative;
     width: 100vw;
     font-size: 3vw;
+    color:#ccc;
 }
 

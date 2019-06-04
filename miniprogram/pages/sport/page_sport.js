@@ -20,6 +20,9 @@ Page({
     nickname:"",
     touxiang: '',
     Timestamp:"",
+
+    opencell: true, //输入栏默认开启
+    opentap: false, //button默认关闭状态
   },
 
 
@@ -149,19 +152,76 @@ Page({
     })
   },
 
-  //起点地址选择
-  chooseLocationStart() {
+  getUserLocation() {
     let that = this
-    wx.chooseLocation({
-      type: 'wgs84',
+    wx.getSetting({
       success(res) {
-        that.setData({
-          didian: res.name,
-
-        })
+        console.log(res.authSetting['scope.userLocation'])
+        if (!res.authSetting['scope.userLocation']) {
+          wx.authorize({
+            scope: 'scope.userLocation',
+            success() {
+              console.log(2)
+            },
+            fail() {
+              console.log('1');
+              wx.showModal({
+                content: '需要你手动允许位置授权',
+                cancelText: "取消",
+                confirmText: "确定",
+                confirmColor: " #669999",
+                success(res) {
+                  if (res.confirm) {
+                    that.setData({
+                      opentap: true,
+                      opencell: false,
+                    })
+                    console.log('用户点击确定')
+                  } else if (res.cancel) {
+                    console.log('用户点击取消')
+                  }
+                }
+              })
+            }
+          })
+        } else {
+          //地址选择
+          wx.chooseLocation({
+            type: 'wgs84',
+            success(res) {
+              that.setData({
+                didian: res.name,
+              })
+            }
+          })
+        }
       }
     })
   },
+
+//引导跳转设置页面
+Opensetting() {
+  let that = this;
+  wx.openSetting({
+    success(res) {
+      console.log(res.authSetting)
+      res.authSetting = {
+        "scope.userInfo": true,
+        "scope.userLocation": true
+      }
+      that.setData({
+        opentap: false,
+        opencell: true,
+      })
+    },
+    fail(err) {
+      that.setData({
+        opentap: true,
+        opencell: false,})
+      console.log(err);
+    }
+  })
+},
 
   // 折叠面板
   onChange(event) {
