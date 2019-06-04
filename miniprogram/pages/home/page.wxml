@@ -1,4 +1,4 @@
-<scroll-view scroll-y style="height: 107vh;">
+<scroll-view scroll-y style="height: {{scroll_height}}rpx;">
     <view class="beijing">
         <view class="name ">
             <view class="tx">

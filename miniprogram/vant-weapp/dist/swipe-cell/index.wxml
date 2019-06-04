@@ -13,7 +13,7 @@
       <slot name="left" />
     </view>
     <slot />
-    <view wx:if="{{ rightWidth }}" class="van-swipe-cell__right" data-key="right" catch:tap="onClick">
+    <view wx:if="{{ rightWidth }}" class="van-swipe-cell__right" style="width:{{rightWidth}}px" data-key="right" catch:tap="onClick">删除
       <slot name="right" />
     </view>
   </view>

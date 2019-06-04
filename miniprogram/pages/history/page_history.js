@@ -1,15 +1,17 @@
 // pages/card/page_card.js
+
+// import Dialog from '@/../../vant-weapp/dist/dialog/dialog';
+import Dialog from '../../vant-weapp/dist/dialog/dialog';
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-   
   },
 
   onClose(event) {
-    // console.log(event);
+    console.log(event);
     let that = this;
     const {
       position,
@@ -21,28 +23,52 @@ Page({
         instance.close();
         break;
       case 'right':
-        wx.showModal({
-          content: '确定删除？',
-          cancelText: "取消",
-          confirmText: "确定",
-          confirmColor: " #669999",
-          success(res) {
-            if (res.confirm) {
-              console.log('用户点击确定')
-              that.delete();
-              wx.showToast({
-                title: '成功',
-                icon: 'success',
-                // duration: 2000,
-              });
-            } else if (res.cancel) {
-              console.log('用户点击取消');
-              console.log(res);
+        // wx.showModal({
+        //   content: '确定删除？',
+        //   cancelText: "取消",
+        //   confirmText: "确定",
+        //   confirmColor: " #669999",
+        //   success(res) {
+        //     if (res.confirm) {
+        //       console.log('用户点击确定')
+        //       that.delete();
+        //       wx.showToast({
+        //         title: '成功',
+        //         icon: 'success',
+        //         // duration: 2000,
+        //       });
+        //     } else if (res.cancel) {
+        //       console.log('用户点击取消');
+        //       console.log(res);
+        //       instance.close();
+        //     }
+        //   }
+        // });
+        Dialog.confirm({
+          message: '确定删除吗？',
+          closeOnClickOverlay: true,
+        }).then(() => {
+          console.log('用户点击确定')
+          wx.cloud.callFunction({
+            name: "delete",
+            data: {
+              delid: event.currentTarget.dataset.id
+            },
+            success(res) {
               instance.close();
+              that.get();
             }
-          }
-        });
-       
+          })
+          wx.showToast({
+            title: '完成',
+            icon: 'success',
+            duration: 2000,
+          });
+          // instance.close();
+        }).catch(() => {
+          console.log('用户点击取消');
+          instance.close();
+        });;
         break;
     }
   },
@@ -50,11 +76,12 @@ Page({
 
   delete(e) {
     console.log(e);
+    // console.log(1);
     let that = this;
     wx.cloud.callFunction({
       name: "delete",
       data: {
-        delid: e.currentTarget.dataset.id
+        // delid: e.currentTarget.dataset.id
       },
       success(res) {
         that.get();

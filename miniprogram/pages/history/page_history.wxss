@@ -40,10 +40,7 @@
     padding:1vw 0 1vw 1vw;
 }
 
-/* .ributton{
-    width:27vw;
-    height:60vw;
-} */
+
 
 .tishi {
     top: 1vh;
@@ -65,7 +62,3 @@
     font-size:3vw;
 }
 
-.shanchu{
-    width:10vw;
-    height:50vw;
-}

@@ -5,7 +5,6 @@
     justify-content: flex-start;
     align-items: center;
     height: 12vw;
-
 }
 
 .userinfo-avatar {
@@ -29,7 +28,6 @@
     justify-content: center;
     align-items: center;
     font-size:3.7vw;
-    
 }
 
 .item {
