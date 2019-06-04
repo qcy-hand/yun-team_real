@@ -171,30 +171,43 @@ Page({
 
   getUserLocationstart() {
     let that = this
-    // wx.getSetting({
-    //   success(res) {
-    //     console.log(res.authSetting['scope.userLocation'])
-    //     if (!res.authSetting['scope.userLocation']) {
-    //       wx.authorize({
-    //         scope: 'scope.userLocation',
-    //         success() {
-    //           console.log(1)
-    //         },
-    //         fail(){
-    //         }
-    //       })
-    //     } else {
-    wx.chooseLocation({
-      type: 'wgs84',
+    wx.getSetting({
       success(res) {
-        that.setData({
-          qidian: res.name,
-        })
+        console.log(res.authSetting['scope.userLocation'])
+        if (!res.authSetting['scope.userLocation']) {
+          wx.authorize({
+            scope: 'scope.userLocation',
+            success() {
+              console.log(1)
+            },
+            fail() {
+              console.log('1');
+              wx.openSetting({
+                success (res) {
+                  console.log(res.authSetting)
+                  // res.authSetting = {
+                  //   "scope.userInfo": true,
+                  //   "scope.userLocation": true
+                  // }
+                },
+                fail(err){
+                  console.log(err);
+                }
+              })
+            }
+          })
+        } else {
+          wx.chooseLocation({
+            type: 'wgs84',
+            success(res) {
+              that.setData({
+                qidian: res.name,
+              })
+            }
+          })
+        }
       }
     })
-    //     }
-    //   }
-    // })
   },
 
   //起点地址选择
@@ -314,7 +327,7 @@ Page({
           console.log(1)
         }
       })
-    }, 1000)
+    }, 2000)
 
   },
 

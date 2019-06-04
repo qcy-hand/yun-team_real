@@ -1,62 +1,50 @@
 // pages/card/page_card.js
-
-// import Dialog from '@/../../vant-weapp/dist/dialog/dialog';
 import Dialog from '../../vant-weapp/dist/dialog/dialog';
-Page({
 
+Page({
   /**
    * 页面的初始数据
    */
   data: {
+    arroldcar: [],
+    arroldsport: [],
+    arroldstudy: [],
+    arroldcustomize: [],
+    delid: "",
   },
 
-  onClose(event) {
-    console.log(event);
-    let that = this;
+  onClose(res) {
+    console.log(res);
+    let index = res.currentTarget.dataset.index
+    let arroldcar = this.data.arroldcar
+    let that = this
+    console.log(index);
     const {
       position,
       instance
-    } = event.detail;
+    } = res.detail;
     switch (position) {
       case 'left':
       case 'cell':
         instance.close();
         break;
       case 'right':
-        // wx.showModal({
-        //   content: '确定删除？',
-        //   cancelText: "取消",
-        //   confirmText: "确定",
-        //   confirmColor: " #669999",
-        //   success(res) {
-        //     if (res.confirm) {
-        //       console.log('用户点击确定')
-        //       that.delete();
-        //       wx.showToast({
-        //         title: '成功',
-        //         icon: 'success',
-        //         // duration: 2000,
-        //       });
-        //     } else if (res.cancel) {
-        //       console.log('用户点击取消');
-        //       console.log(res);
-        //       instance.close();
-        //     }
-        //   }
-        // });
         Dialog.confirm({
-          message: '确定删除吗？',
+          message: '确定删除？',
           closeOnClickOverlay: true,
         }).then(() => {
           console.log('用户点击确定')
           wx.cloud.callFunction({
             name: "delete",
             data: {
-              delid: event.currentTarget.dataset.id
+              delid: res.currentTarget.dataset.id
             },
             success(res) {
+              arroldcar.splice(index,1)
+              that.setData({
+                arroldcar
+              })
               instance.close();
-              that.get();
             }
           })
           wx.showToast({
@@ -64,7 +52,6 @@ Page({
             icon: 'success',
             duration: 2000,
           });
-          // instance.close();
         }).catch(() => {
           console.log('用户点击取消');
           instance.close();
@@ -73,59 +60,11 @@ Page({
     }
   },
 
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
 
-  delete(e) {
-    console.log(e);
-    // console.log(1);
-    let that = this;
-    wx.cloud.callFunction({
-      name: "delete",
-      data: {
-        // delid: e.currentTarget.dataset.id
-      },
-      success(res) {
-        that.get();
-      }
-    })
-  },
-
-  //删除事件
-  // delete(e) {
-  //   console.log(e);
-  //   let that = this;
-  //   wx.showModal({
-  //     content: '确定删除？',
-  //     cancelText: "取消",
-  //     confirmText: "确定",
-  //     confirmColor: " #669999",
-  //     success(res) {
-  //       if (res.confirm) {
-  //         console.log('用户点击确定')
-  //         console.log("删除成功");
-  //         wx.cloud.callFunction({
-  //           name: "delete",
-  //           data: {
-  //             delid: e.currentTarget.dataset.id
-  //           },
-  //         });
-  //         wx.showToast({
-  //           title: '成功',
-  //           icon: 'success',
-  //           duration: 2000,
-  //         });
-  //         that.get();
-  //       } else if (res.cancel) {
-  //         console.log('用户点击取消');
-  //         console.log(res);
-  //         console.log("删除失败");
-  //       }
-  //     }
-
-  //   });
-  // },
-
-  // 获取数据
-  get() {
     let that = this;
     wx.cloud.callFunction({
       name: "getoldcar",
@@ -138,9 +77,10 @@ Page({
     })
 
     wx.cloud.callFunction({
-      name: "getoldsports",
+      name: "getoldsport",
       data: {},
       success(res) {
+        console.log(res);
         that.setData({
           arroldsport: res.result.data
         })
@@ -158,21 +98,15 @@ Page({
     })
 
     wx.cloud.callFunction({
-      name: "getoldcustomize",
+      name: "getoldcustom",
       data: {},
       success(res) {
+
         that.setData({
           arroldcustomize: res.result.data
         })
       }
     })
-  },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    this.get();
   },
 
   /**
@@ -208,6 +142,56 @@ Page({
    */
   onPullDownRefresh: function () {
 
+    let that = this;
+    wx.cloud.callFunction({
+      name: "getoldcar",
+      data: {},
+      success(res) {
+        that.setData({
+          arroldcar: res.result.data
+        })
+      }
+    })
+
+    wx.cloud.callFunction({
+      name: "getoldsport",
+      data: {},
+      success(res) {
+
+        that.setData({
+          arroldsport: res.result.data
+        })
+      }
+    })
+
+    wx.cloud.callFunction({
+      name: "getoldstudy",
+      data: {},
+      success(res) {
+        that.setData({
+          arroldstudy: res.result.data
+        })
+      }
+    })
+
+    wx.cloud.callFunction({
+      name: "getoldcustom",
+      data: {},
+      success(res) {
+        console.log(res);
+        that.setData({
+          arroldcustomize: res.result.data
+        })
+      }
+    })
+
+    setTimeout(() => {
+      wx.stopPullDownRefresh({
+        success(res) {
+          console.log(1)
+        }
+      })
+    }, 2000)
   },
 
   /**

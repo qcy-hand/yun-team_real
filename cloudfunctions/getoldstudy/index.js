@@ -12,7 +12,9 @@ exports.main = async (event, context) => {
   return await db.collection('datas').where({
     type:"study",
     openid:wxContext.OPENID,
-  }).orderBy('Timestamp', 'desc').get({
+  }).orderBy('Timestamp', 'desc')
+  .limit(10) // 限制返回数量为 10 条
+  .get({
     success(res){
       console.log(res);
     }

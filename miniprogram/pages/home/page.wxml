@@ -1,4 +1,4 @@
-<scroll-view scroll-y style="height: {{scroll_height}}rpx;">
+<!-- <scroll-view scroll-y style="height: {{scroll_height}}rpx;"> -->
     <view class="beijing">
         <view class="name ">
             <view class="tx">
@@ -61,4 +61,4 @@
             </view>
         </view>
     </view>
-</scroll-view>
+<!-- </scroll-view> -->
