@@ -9,6 +9,7 @@ Page({
     maxDate: new Date(2029, 11, 1).getTime(),
     currentDate: new Date().getTime(),
     showTime: false,
+    showlocation: false,
     //返回时间转换结果
     activeNames: ['1'],
     time: '',
@@ -17,12 +18,9 @@ Page({
     id_sport: '',
     id_mess: '',
     beizhu: '',
-    nickname:"",
+    nickname: "",
     touxiang: '',
-    Timestamp:"",
-
-    opencell: true, //输入栏默认开启
-    opentap: false, //button默认关闭状态
+    Timestamp: "",
   },
 
 
@@ -31,6 +29,13 @@ Page({
   onClose() {
     this.setData({
       showTime: false,
+    });
+  },
+
+  //关闭位置授权弹窗
+  onCloseload() {
+    this.setData({
+      showlocation: false,
     });
   },
 
@@ -54,14 +59,14 @@ Page({
     });
   },
 
-  Push(){
+  Push() {
     let that = this;
     wx.showModal({
       content: '填完啦？',
-      cancelText:"再瞅瞅",
-      confirmText:"对头嘞",
-      confirmColor:" #669999",
-      
+      cancelText: "再瞅瞅",
+      confirmText: "对头嘞",
+      confirmColor: " #669999",
+
       success(res) {
         if (res.confirm) {
           console.log('用户点击确定')
@@ -81,7 +86,8 @@ Page({
 
   //获取当前时间
   Ntime() {
-    let that = this ;
+    let that = this;
+
     function getNowDate() {
       var date = new Date(),
         month = date.getMonth() + 1,
@@ -115,29 +121,29 @@ Page({
       Timestamp: gettimestamp()
     });
 
-    
+
     wx.cloud.callFunction({
       name: "sendsport",
-      data:{
-        type:"sport",
+      data: {
+        type: "sport",
         time: that.data.time,
         didian: that.data.didian,
         Nowtime: that.data.Nowtime,
         id_sport: that.data.id_sport,
         id_mess: that.data.id_mess,
         beizhu: that.data.beizhu,
-        nickname:that.data.nickname,
-        touxiang:that.data.touxiang,
-        Timestamp:that.data.Timestamp,
+        nickname: that.data.nickname,
+        touxiang: that.data.touxiang,
+        Timestamp: that.data.Timestamp,
       },
-      success(res){
+      success(res) {
         console.log(res);
         wx.cloud.callFunction({
-          name:"getsport",
-          data:{},
-          success(res){
+          name: "getsport",
+          data: {},
+          success(res) {
             that.setData({
-              arrsport:res.result.data
+              arrsport: res.result.data
             })
           }
         })
@@ -165,22 +171,8 @@ Page({
             },
             fail() {
               console.log('1');
-              wx.showModal({
-                content: '需要你手动允许位置授权',
-                cancelText: "取消",
-                confirmText: "确定",
-                confirmColor: " #669999",
-                success(res) {
-                  if (res.confirm) {
-                    that.setData({
-                      opentap: true,
-                      opencell: false,
-                    })
-                    console.log('用户点击确定')
-                  } else if (res.cancel) {
-                    console.log('用户点击取消')
-                  }
-                }
+              that.setData({
+                showlocation: true
               })
             }
           })
@@ -199,29 +191,22 @@ Page({
     })
   },
 
-//引导跳转设置页面
-Opensetting() {
-  let that = this;
-  wx.openSetting({
-    success(res) {
-      console.log(res.authSetting)
-      res.authSetting = {
-        "scope.userInfo": true,
-        "scope.userLocation": true
+  //引导跳转设置页面
+  Opensetting() {
+
+    wx.openSetting({
+      success(res) {
+        console.log(res.authSetting)
+        res.authSetting = {
+          "scope.userInfo": true,
+          "scope.userLocation": true
+        }
+      },
+      fail(err) {
+        console.log(err);
       }
-      that.setData({
-        opentap: false,
-        opencell: true,
-      })
-    },
-    fail(err) {
-      that.setData({
-        opentap: true,
-        opencell: false,})
-      console.log(err);
-    }
-  })
-},
+    })
+  },
 
   // 折叠面板
   onChange(event) {
@@ -255,11 +240,11 @@ Opensetting() {
   onLoad: function (options) {
     let that = this;
     wx.cloud.callFunction({
-      name:"getsport",
-      data:{},
-      success(res){
+      name: "getsport",
+      data: {},
+      success(res) {
         that.setData({
-          arrsport:res.result.data
+          arrsport: res.result.data
         })
       }
     })
@@ -269,7 +254,7 @@ Opensetting() {
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-   
+
   },
 
   /**
@@ -278,16 +263,16 @@ Opensetting() {
   onShow: function () {
     let that = this;
     wx.getStorage({
-      key:"key",
-      success(res){
+      key: "key",
+      success(res) {
         console.log(res);
         that.setData({
-          nickname:res.data.nickName,
-          touxiang:res.data.avatarUrl,
+          nickname: res.data.nickName,
+          touxiang: res.data.avatarUrl,
         })
       }
     })
-   
+
   },
 
   /**
@@ -309,17 +294,17 @@ Opensetting() {
    */
   onPullDownRefresh: function () {
     let that = this;
-   
+
     wx.cloud.callFunction({
-      name:"getsport",
-      data:{},
-      success(res){
+      name: "getsport",
+      data: {},
+      success(res) {
         that.setData({
-          arrsport:res.result.data
+          arrsport: res.result.data
         })
       }
     });
-    
+
     setTimeout(() => {
       wx.stopPullDownRefresh({
         success(res) {
@@ -327,7 +312,7 @@ Opensetting() {
         }
       })
     }, 2000)
-    
+
   },
 
   /**

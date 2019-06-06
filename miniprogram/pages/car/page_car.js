@@ -9,7 +9,7 @@ Page({
     maxDate: new Date(2029, 11, 1).getTime(),
     currentDate: new Date().getTime(),
     showTime: false,
-
+    showlocation:false,
     scope: true,
     //返回时间转换结果
     max: false,
@@ -24,8 +24,6 @@ Page({
     touxiang: '',
     Timestamp: "",
 
-    opencell: true, //输入栏默认开启
-    opentap: false, //button默认关闭状态
     loading: false, //加载图标
     end: false, //到底文字
     list: 10, //初始取回条数
@@ -40,6 +38,12 @@ Page({
     });
   },
 
+//关闭位置授权弹窗
+onCloseload() {
+  this.setData({
+    showlocation: false,
+  });
+},
 
   //  转换已选取的时间戳，
   onInput(event) {
@@ -184,32 +188,18 @@ Page({
             },
             fail() {
               console.log('1');
-              wx.showModal({
-                content: '需要你手动允许位置授权',
-                cancelText: "取消",
-                confirmText: "确定",
-                confirmColor: " #669999",
-                success(res) {
-                  if (res.confirm) {
-                    that.setData({
-                      opentap: true,
-                      opencell: false,
-                    })
-                    console.log('用户点击确定')
-                  } else if (res.cancel) {
-                    console.log('用户点击取消')
-                  }
-                }
+              that.setData({
+                showlocation: true
               })
             }
           })
         } else {
-          //起点地址选择
+          //地址选择
           wx.chooseLocation({
             type: 'wgs84',
             success(res) {
               that.setData({
-                qidian: res.name,
+                didian: res.name,
               })
             }
           })
@@ -217,6 +207,8 @@ Page({
       }
     })
   },
+
+
 
   getUserLocationover() {
     let that = this
@@ -231,32 +223,18 @@ Page({
             },
             fail() {
               console.log('1');
-              wx.showModal({
-                content: '需要你手动允许位置授权',
-                cancelText: "取消",
-                confirmText: "确定",
-                confirmColor: " #669999",
-                success(res) {
-                  if (res.confirm) {
-                    that.setData({
-                      opentap: true,
-                      opencell: false,
-                    })
-                    console.log('用户点击确定')
-                  } else if (res.cancel) {
-                    console.log('用户点击取消')
-                  }
-                }
+              that.setData({
+                showlocation: true
               })
             }
           })
         } else {
-          //终点地址选择
+          //地址选择
           wx.chooseLocation({
             type: 'wgs84',
             success(res) {
               that.setData({
-                zhongdian: res.name
+                didian: res.name,
               })
             }
           })
@@ -267,7 +245,6 @@ Page({
 
   //引导跳转设置页面
   Opensetting() {
-    let that = this;
     wx.openSetting({
       success(res) {
         console.log(res.authSetting)
@@ -275,15 +252,8 @@ Page({
           "scope.userInfo": true,
           "scope.userLocation": true
         }
-        that.setData({
-          opentap: false,
-          opencell: true,
-        })
       },
       fail(err) {
-        that.setData({
-          opentap: true,
-          opencell: false,})
         console.log(err);
       }
     })

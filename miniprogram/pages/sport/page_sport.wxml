@@ -1,8 +1,7 @@
 <!-- pages/car/page_car.wxml -->
 <view class="head_input">
   <van-cell title="时间" icon="clock-o" is-link bind:click="onTap" value="{{time}}" />
-  <van-cell wx:if="{{opencell}}" title="地点" icon="location-o" is-link bind:click="getUserLocation" value="{{didian}}" center="{{true}}" />
-  <button wx:if="{{opentap}}" type="primary" bindtap="Opensetting">点我允许位置授权</button>
+  <van-cell title="地点" icon="location-o" is-link bind:click="getUserLocation" value="{{didian}}" center="{{true}}" />
   <van-cell-group>
     <!-- 输入框 -->
     <van-field maxlength="30" value="{{ id_sport }}" left-icon="flag-o" center clearable label="运动项目" placeholder="球场走一波？" border="{{ false }}" bind:input="Input_sport" use-button-slot></van-field>
@@ -17,6 +16,17 @@
       <van-button slot="button" size="small" type="primary" bind:click="Push">发布</van-button>
     </van-field>
   </van-cell-group>
+  <!-- 位置授权弹窗 -->
+  <van-popup show="{{ showlocation }}"  overlay="{{ true }}" bind:click-overlay="onCloseload">
+    <view class="openload">
+      <view class="loadtext">需要你允许位置授权</view>
+      <view class="butload">
+        <van-button   type="info"  bind:click="onCloseload">偏不</van-button>
+        <view style="width:16vw;height:5vw;"></view>
+        <van-button   type="primary"  bind:click="Opensetting">好的</van-button>
+      </view>
+    </view>
+  </van-popup>
   <!-- 弹出框 -->
   <van-popup show="{{ showTime }}" position="bottom" overlay="{{ true }}" bind:click-overlay="onClose">
     <!-- 时间选择器 -->
@@ -25,10 +35,10 @@
 </view>
 <view style="height:10vw;background-color:rgb(251,251,251);"></view>
 <!-- 输出面板 -->
- <view class='content' wx:for="{{arrsport}}" wx:key="121">
-   <view class="userinfo">
+<view class='content' wx:for="{{arrsport}}" wx:key="121">
+  <view class="userinfo">
     <block>
-      <image class="userinfo-avatar" src="{{item.touxiang}}" ></image>
+      <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
       <text class="userinfo-nickname">{{item.nickname}}</text>
     </block>
   </view>
@@ -48,5 +58,5 @@
   </van-panel>
 </view>
 <view style="text-align:center; position: relative; bottom: 1px;width:100vw;height:7vh;font-size:3vw;">
-        已经到底了哦~
-    </view>
+  已经到底了哦~
+</view>

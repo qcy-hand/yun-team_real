@@ -2,8 +2,7 @@
 <view class="all">
   <view class="head_input">
     <van-cell title="时间" icon="clock-o" is-link bind:click="onTap" value="{{time}}" />
-    <van-cell wx:if="{{opencell}}" title="起点" icon="location-o" is-link bind:click="getUserLocationstart" value="{{qidian}}" center="{{true}}"/>
-    <button wx:if="{{opentap}}" type="primary" bindtap="Opensetting">点我允许位置授权</button>
+    <van-cell title="起点" icon="location-o" is-link bind:click="getUserLocationstart" value="{{qidian}}" center="{{true}}"/>
     <van-cell title="终点" icon="location-o" is-link bind:click="getUserLocationover" value="{{zhongdian}}" center="{{true}}" />
     <van-cell-group>
       <!-- 输入框 -->
@@ -15,6 +14,17 @@
         <van-button slot="button" size="small" type="primary" bind:click="Push">发布</van-button>
       </van-field>
     </van-cell-group>
+     <!-- 位置授权弹窗 -->
+  <van-popup show="{{ showlocation }}"  overlay="{{ true }}" bind:click-overlay="onCloseload">
+    <view class="openload">
+      <view class="loadtext">需要你允许位置授权</view>
+      <view class="butload">
+        <van-button   type="info"  bind:click="onCloseload">偏不</van-button>
+        <view style="width:16vw;height:5vw;"></view>
+        <van-button slot="button"  type="primary"  bind:click="Opensetting">好的</van-button>
+      </view>
+    </view>
+  </van-popup>
     <!-- 弹出框 -->
     <van-popup show="{{ showTime }}" position="bottom" overlay="{{ true }}" bind:click-overlay="onClose">
       <!-- 时间选择器 -->

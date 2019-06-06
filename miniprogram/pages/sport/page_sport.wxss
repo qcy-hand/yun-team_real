@@ -1,5 +1,25 @@
 /* pages/car/page_car.wxss */
 
+.openload{
+    width:70vw;
+    height: 25vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+    
+}
+.loadtext{
+    text-align: center;
+    font-size: 3.5vw;
+}
+
+.butload{
+    display: flex;
+    justify-content: space-between;
+}
+
 .userinfo {
     display: flex;
     justify-content: flex-start;
