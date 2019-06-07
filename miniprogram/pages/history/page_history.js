@@ -129,10 +129,6 @@ Page({
         }
       },
       fail() {
-        wx.showModal({
-          title: '提示',
-          content: '系统错误，请稍后重试',
-        })
       }
     })
   },
@@ -164,10 +160,6 @@ Page({
         }
       },
       fail() {
-        wx.showModal({
-          title: '提示',
-          content: '系统错误，请稍后重试',
-        })
       }
     })
   },
@@ -199,10 +191,6 @@ Page({
         }
       },
       fail() {
-        wx.showModal({
-          title: '提示',
-          content: '系统错误，请稍后重试',
-        })
       }
     })
   },
@@ -234,10 +222,6 @@ Page({
         }
       },
       fail() {
-        wx.showModal({
-          title: '提示',
-          content: '系统错误，请稍后重试',
-        })
       }
     })
   },
