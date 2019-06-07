@@ -7,42 +7,37 @@ Page({
    * 页面的初始数据
    */
   data: {
-    array: ['拼车', '运动', '学习', '自定义'],
-    objectArray: [{
-        id: 0,
-        name: '拼车'
-      },
-      {
-        id: 1,
-        name: '运动'
-      },
-      {
-        id: 2,
-        name: '学习'
-      },
-      {
-        id: 3,
-        name: '自定义'
-      }
-    ],
-    Choose: 0,
+    article:[],
   },
 
   //自带选择器传值
   bindPickerChange: function (e) {
-    console.log('picker发送选择改变，携带值为', e.detail.value)
-    this.setData({
-      Choose: e.detail.value
-    })
+    if (e.detail.value === '0') {
+      this.setData({
+        Choose: e.detail.value,
+        car: 1,
+        sport: 0,
+        study: 0,
+        customize: 0
+      })
+    }
   },
 
   //搜索内容传值
   onSearch(res) {
-    this.setData({
-      Sercontent: res.event.detail
+    let that = this 
+    console.log(res.detail)
+    wx.cloud.callFunction({
+      name: 'search',
+      data: { search : res.detail},
+      success(res) {
+        console.log(res)
+        that.setData({
+          article: res.result.data
+        })
+      }
     })
   },
-
 
   /**
    * 生命周期函数--监听页面加载

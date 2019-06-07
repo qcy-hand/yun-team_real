@@ -6,34 +6,23 @@
     </view>
 </view>
 <view class="searchtab">
-    <picker bindchange="bindPickerChange" value="{{Choose}}" range="{{array}}">
-        <view class="picker">选择：{{array[Choose]}}</view>
-    </picker>
-    <van-search value="{{ vasearch }}" placeholder="请输入搜索关键词" use-action-slot bind:search="onSearch" shape="round" ></van-search>
+    <van-search value="{{ vasearch }}" placeholder="请输入搜索关键词" use-action-slot bind:change="onSearch" shape="round"></van-search>
 </view>
 <view style="height:2vw;"></view>
-
-<!-- //输出面板 -->
- <!-- <view class='content' wx:for="{{}}" wx:key="225" > -->
-                    <!-- <view class="userinfo">
-                        <block>
-                            <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-                            <text class="userinfo-nickname">{{item.nickname}}</text>
-                        </block>
-                    </view> -->
-                    <van-panel desc="发布时间:{{item.Nowtime}}">
-                        <view class="push">
-                            <view class="item">时间:{{item.time}}</view>
-                            <view class="item">起点:{{item.qidian}}</view>
-                            <view class="item">终点:{{item.zhongdian}}</view>
-                            <view class="item">联系方式:{{ item.id_mess }}</view>
-                            <view class="item">备注:{{ item.beizhu }}</view>
-                        </view>
-                        <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-                    </van-panel>
-                <!-- </view> -->
-                <view class="tishi1" wx:if="{{arroldcar.length==0}}">
-                    你还没有发布任何组队拼车信息呐~
+<view wx:for="{{article}}" wx:key='123'>
+    <van-panel desc="发布时间:{{item.touxiang}}">
+        <view class="push">
+            <view class="item">时间:{{item.Nowtime}}</view>
+            <view class="item">起点:{{item.qidian}}</view>
+            <view class="item">终点:{{item.zhongdian}}</view>
+            <view class="item">联系方式:{{ item.id_mess }}</view>
+            <view class="item">备注:{{ item.beizhu }}</view>
+        </view>
+        <view style="height:5vw;background-color:rgb(251,251,251);"></view>
+    </van-panel>
+</view>
+<view class="tishi1" wx:if="{{arroldcar.length==0}}">
+    你还没有发布任何组队拼车信息呐~
                     快去发布吧!
-                </view>
-                <view class="tishi" wx:if="{{arroldcar.length}}">已经到底了哦~</view>
+</view>
+<view class="tishi" wx:if="{{arroldcar.length}}">已经到底了哦~</view>
