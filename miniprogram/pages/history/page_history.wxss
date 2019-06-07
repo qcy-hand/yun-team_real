@@ -58,6 +58,13 @@
     background-color: rgb(251, 251, 251);
 }
 
+.loading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(251,251,251);
+}
+
 .newsdown {
     padding-top: 2vw;
     padding-bottom:2vw;
@@ -65,5 +72,7 @@
     position: relative;
     width: 100vw;
     font-size: 3vw;
+    color:#ccc;
 }
+
 

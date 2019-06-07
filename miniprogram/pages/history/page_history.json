@@ -6,7 +6,10 @@
       "van-panel": "/vant-weapp/dist/panel/index",
       "van-swipe-cell": "/vant-weapp/dist/swipe-cell/index",
 
-      "van-dialog": "/vant-weapp/dist/dialog/index"
+      "van-dialog": "/vant-weapp/dist/dialog/index",
+      
+      "van-loading": "/vant-weapp/dist/loading/index"
+      
 
   }
 }

@@ -38,6 +38,12 @@ Page({
         } else if (res.cancel) {
           console.log('用户点击取消')
         }
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '系统错误，请稍后重试',
+        })
       }
     })
   },
@@ -83,6 +89,12 @@ Page({
       },
       success(res) {
         console.log(res);
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '系统错误，请稍后重试',
+        })
       }
     })
   },
@@ -154,7 +166,20 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    setTimeout(() => {
+      wx.stopPullDownRefresh({
+        success(res) {
+          console.log(1)
+        },
+        fail() {
+          wx.showModal({
+            title: '提示',
+            content: '系统错误，请稍后重试',
+          })
+        }
+      })
+    }, 500)
+    
   },
 
   /**

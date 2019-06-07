@@ -1,5 +1,5 @@
 // pages/car/page_car.js
-
+import Notify from '../../vant-weapp/dist/notify/notify';
 Page({
   data: {
     // 时间选择
@@ -9,6 +9,7 @@ Page({
     maxDate: new Date(2029, 11, 1).getTime(),
     currentDate: new Date().getTime(),
     showTime: false,
+    showlocation: false,
     //返回时间转换结果
     activeNames: ['1'],
     time: '',
@@ -17,9 +18,14 @@ Page({
     id_sport: '',
     id_mess: '',
     beizhu: '',
-    nickname:"",
+    nickname: "",
     touxiang: '',
-    Timestamp:"",
+    Timestamp: "",
+    arrsport:[],
+
+    loading: false, //加载图标
+    end: false, //到底文字，无更多条数时激活
+    list: 10, //初始取回条数
   },
 
 
@@ -28,6 +34,13 @@ Page({
   onClose() {
     this.setData({
       showTime: false,
+    });
+  },
+
+  //关闭位置授权弹窗
+  onCloseload() {
+    this.setData({
+      showlocation: false,
     });
   },
 
@@ -51,14 +64,22 @@ Page({
     });
   },
 
-  Push(){
+  Push() {
     let that = this;
+    if (that.data.time === "" || that.data.didian === "" || that.data.id_sport === "" || that.data.id_mess === "") {
+      Notify({
+        text: '备注以外的选项不可为空',
+        duration: 1000,
+        selector: '#custom-selector',
+        backgroundColor: '#1989fa'
+      });
+    } else {
     wx.showModal({
       content: '填完啦？',
-      cancelText:"再瞅瞅",
-      confirmText:"对头嘞",
-      confirmColor:" #669999",
-      
+      cancelText: "再瞅瞅",
+      confirmText: "对头嘞",
+      confirmColor: " #669999",
+
       success(res) {
         if (res.confirm) {
           console.log('用户点击确定')
@@ -71,14 +92,21 @@ Page({
         } else if (res.cancel) {
           console.log('用户点击取消')
         }
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '系统错误，请稍后重试',
+        })
       }
     })
-
+  }
   },
 
   //获取当前时间
   Ntime() {
-    let that = this ;
+    let that = this;
+
     function getNowDate() {
       var date = new Date(),
         month = date.getMonth() + 1,
@@ -112,31 +140,43 @@ Page({
       Timestamp: gettimestamp()
     });
 
-    
+
     wx.cloud.callFunction({
       name: "sendsport",
-      data:{
-        type:"sport",
+      data: {
+        type: "sport",
         time: that.data.time,
         didian: that.data.didian,
         Nowtime: that.data.Nowtime,
         id_sport: that.data.id_sport,
         id_mess: that.data.id_mess,
         beizhu: that.data.beizhu,
-        nickname:that.data.nickname,
-        touxiang:that.data.touxiang,
-        Timestamp:that.data.Timestamp,
+        nickname: that.data.nickname,
+        touxiang: that.data.touxiang,
+        Timestamp: that.data.Timestamp,
       },
-      success(res){
+      success(res) {
         console.log(res);
         wx.cloud.callFunction({
-          name:"getsport",
-          data:{},
-          success(res){
+          name: "getsport",
+          data: { list: that.data.list},
+          success(res) {
             that.setData({
-              arrsport:res.result.data
+              arrsport: res.result.data
+            })
+          },
+          fail() {
+            wx.showModal({
+              title: '提示',
+              content: '系统错误，请稍后重试',
             })
           }
+        })
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '系统错误，请稍后重试',
         })
       }
 
@@ -149,15 +189,66 @@ Page({
     })
   },
 
-  //起点地址选择
-  chooseLocationStart() {
+  getUserLocation() {
     let that = this
-    wx.chooseLocation({
-      type: 'wgs84',
+    wx.getSetting({
       success(res) {
-        that.setData({
-          didian: res.name,
+        console.log(res.authSetting['scope.userLocation'])
+        if (!res.authSetting['scope.userLocation']) {
+          wx.authorize({
+            scope: 'scope.userLocation',
+            success() {
+              console.log(2)
+            },
+            fail() {
+              console.log('1');
+              that.setData({
+                showlocation: true
+              })
+            }
+          })
+        } else {
+          //地址选择
+          wx.chooseLocation({
+            type: 'wgs84',
+            success(res) {
+              that.setData({
+                didian: res.name,
+              })
+            },
+            fail() {
+              wx.showModal({
+                title: '提示',
+                content: '系统错误，请稍后重试',
+              })
+            }
+          })
+        }
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '系统错误，请稍后重试',
+        })
+      }
+    })
+  },
 
+  //引导跳转设置页面
+  Opensetting() {
+
+    wx.openSetting({
+      success(res) {
+        console.log(res.authSetting)
+        res.authSetting = {
+          "scope.userInfo": true,
+          "scope.userLocation": true
+        }
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '系统错误，请稍后重试',
         })
       }
     })
@@ -189,17 +280,56 @@ Page({
       beizhu: event.detail,
     })
   },
+
+
+  //上拉加载取回数据
+ getlist() {
+  let that = this
+  wx.cloud.callFunction({
+    name: "getsport",
+    data: {
+      list: that.data.list //向后端传list
+    },
+    success(res) {
+      console.log("取到条数了");
+      //成功后条数判断
+      let listjudge = that.data.list - 10;
+      if (res.result.data.length > listjudge) {
+        console.log(3)
+        that.setData({
+          arrsport: res.result.data
+        })
+      }
+      if (res.result.data.length <= listjudge) {
+        console.log(2)
+        that.setData({
+          arrsport: res.result.data,
+          end: true,
+          loading: false
+        })
+      }
+    },
+    fail() {
+      wx.showModal({
+        title: '提示',
+        content: '系统错误，请稍后重试',
+      })
+    }
+  })
+},
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     let that = this;
+    this.getlist();
     wx.cloud.callFunction({
-      name:"getsport",
-      data:{},
-      success(res){
+      name: "getsport",
+      data: { list: that.data.list},
+      success(res) {
         that.setData({
-          arrsport:res.result.data
+          arrsport: res.result.data
         })
       }
     })
@@ -209,7 +339,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-   
+
   },
 
   /**
@@ -218,16 +348,16 @@ Page({
   onShow: function () {
     let that = this;
     wx.getStorage({
-      key:"key",
-      success(res){
+      key: "key",
+      success(res) {
         console.log(res);
         that.setData({
-          nickname:res.data.nickName,
-          touxiang:res.data.avatarUrl,
+          nickname: res.data.nickName,
+          touxiang: res.data.avatarUrl,
         })
       }
     })
-   
+
   },
 
   /**
@@ -249,32 +379,58 @@ Page({
    */
   onPullDownRefresh: function () {
     let that = this;
-   
+
     wx.cloud.callFunction({
-      name:"getsport",
-      data:{},
-      success(res){
+      name: "getsport",
+      data: {
+        list: that.data.list //向后端传list
+      },
+      success(res) {
         that.setData({
-          arrsport:res.result.data
+          arrsport: res.result.data
+        })
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '刷新错误，请稍后重试',
         })
       }
     });
-    
+
     setTimeout(() => {
       wx.stopPullDownRefresh({
         success(res) {
           console.log(1)
+        },
+        fail() {
+          wx.showModal({
+            title: '提示',
+            content: '系统错误，请稍后重试',
+          })
         }
       })
-    }, 2000)
-    
+    }, 1000)
+
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    console.log(this.data.list)
+    console.log("触底了");
+    let that = this;
+    if (!that.data.end) {
+      console.log(1)
+      that.setData({
+        loading: true,
+        list: that.data.list + 10
+      })
+      setTimeout(() => {
+        that.getlist();
+      }, 500);
+    }
   },
 
   /**

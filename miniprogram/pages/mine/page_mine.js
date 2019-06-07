@@ -47,97 +47,20 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    let that = this;
-    wx.cloud.callFunction({
-      name: "getcar",
-      data: {},
-      success(res) {
-        that.setData({
-          arrcar: res.result.data
-        })
-      }
-    });
-
-    wx.cloud.callFunction({
-      name: "getsport",
-      data: {},
-      success(res) {
-        that.setData({
-          arrsport: res.result.data
-        })
-      }
-    });
-
-    wx.cloud.callFunction({
-      name: "getstudy",
-      data: {},
-      success(res) {
-        that.setData({
-          arrstudy: res.result.data
-        })
-      }
-    });
-
-    wx.cloud.callFunction({
-      name: 'getcustomize',
-      data: {},
-      success(res) {
-        that.setData({
-          arrcustomize: res.result.data
-        })
-      }
-    })
     
-    wx.cloud.callFunction({
-      name: "getoldcar",
-      data: {},
-      success(res) {
-        that.setData({
-          arroldcar: res.result.data
-        })
-      }
-    })
-
-    wx.cloud.callFunction({
-      name: "getoldsport",
-      data: {},
-      success(res) {
-
-        that.setData({
-          arroldsport: res.result.data
-        })
-      }
-    })
-
-    wx.cloud.callFunction({
-      name: "getoldstudy",
-      data: {},
-      success(res) {
-        that.setData({
-          arroldstudy: res.result.data
-        })
-      }
-    })
-
-    wx.cloud.callFunction({
-      name: "getoldcustom",
-      data: {},
-      success(res) {
-        console.log(res);
-        that.setData({
-          arroldcustomize: res.result.data
-        })
-      }
-    })
-
-
     setTimeout(() => {
       wx.stopPullDownRefresh({
         success(res) {
           console.log(1)
+        },
+        fail() {
+          wx.showModal({
+            title: '提示',
+            content: '系统错误，请稍后重试',
+          })
         }
       })
-    }, 2000)
+    }, 500)
   },
 
   /**

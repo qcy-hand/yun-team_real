@@ -1,5 +1,5 @@
 // pages/car/page_car.js
-
+import Notify from '../../vant-weapp/dist/notify/notify';
 Page({
   data: {
     // 时间选择
@@ -10,18 +10,22 @@ Page({
     currentDate: new Date().getTime(),
     showTime: false,
     //返回时间转换结果
+    activeNames: ['1'],
+
     time: '',
     Nowtime: '',
-    activeNames: ['1'],
     didian_customize: '',
     id_customize: '',
     id_mess: '',
     beizhu: '',
-    arrcustomize: [],
     nickname:"",
     touxiang:"",
     Timestamp:"",
-    
+    arrcustomize: [],
+
+    loading: false, //加载图标
+    end: false, //到底文字，无更多条数时激活
+    list: 10, //初始取回条数
   },
 
 
@@ -55,6 +59,14 @@ Page({
 
   Push(){
     let that = this;
+    if (that.data.time === "" || that.data.didian_customize === "" || that.data.id_customize === "" || that.data.id_mess === "") {
+      Notify({
+        text: '备注以外的选项不可为空',
+        duration: 1000,
+        selector: '#custom-selector',
+        backgroundColor: '#1989fa'
+      });
+    } else {
     wx.showModal({
       content: '填完啦？',
       cancelText:"再瞅瞅",
@@ -73,8 +85,15 @@ Page({
         } else if (res.cancel) {
           console.log('用户点击取消');
         }
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '系统错误，请稍后重试',
+        })
       }
     })
+  }
   },
 
   //获取当前时间
@@ -132,12 +151,18 @@ Page({
       success(res) {
         wx.cloud.callFunction({
           name: 'getcustomize',
-          data: {},
+          data: { list: that.data.list},
           success(res) {
             that.setData({
               arrcustomize: res.result.data
             })
           }
+        })
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '系统错误，请稍后重试',
         })
       }
     })
@@ -184,14 +209,52 @@ Page({
       beizhu: event.detail,
     })
   },
+
+ //上拉加载取回数据
+ getlist() {
+  let that = this
+  wx.cloud.callFunction({
+    name: "getcustomize",
+    data: {
+      list: that.data.list //向后端传list
+    },
+    success(res) {
+      console.log("取到条数了");
+      //成功后条数判断
+      let listjudge = that.data.list - 10;
+      if (res.result.data.length > listjudge) {
+        console.log(3)
+        that.setData({
+          arrcustomize: res.result.data
+        })
+      }
+      if (res.result.data.length <= listjudge) {
+        console.log(2)
+        that.setData({
+          arrcustomize: res.result.data,
+          end: true,
+          loading: false
+        })
+      }
+    },
+    fail() {
+      wx.showModal({
+        title: '提示',
+        content: '系统错误，请稍后重试',
+      })
+    }
+  })
+},
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options){
     let that = this;
+    this.getlist();
     wx.cloud.callFunction({
       name: 'getcustomize',
-      data: {},
+      data: { list: that.data.list},
       success(res) {
         that.setData({
           arrcustomize: res.result.data
@@ -245,10 +308,16 @@ Page({
     let that = this;
     wx.cloud.callFunction({
       name: 'getcustomize',
-      data: {},
+      data: { list: that.data.list},
       success(res) {
         that.setData({
           arrcustomize: res.result.data
+        })
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '刷新错误，请稍后重试',
         })
       }
     })
@@ -257,6 +326,12 @@ Page({
       wx.stopPullDownRefresh({
         success(res) {
           console.log(1)
+        },
+        fail() {
+          wx.showModal({
+            title: '提示',
+            content: '刷新错误，请稍后重试',
+          })
         }
       })
     }, 2000)
@@ -266,7 +341,19 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    console.log(this.data.list)
+    console.log("触底了");
+    let that = this;
+    if (!that.data.end) {
+      console.log(1)
+      that.setData({
+        loading: true,
+        list: that.data.list + 10
+      })
+      setTimeout(() => {
+        that.getlist();
+      }, 500);
+    }
   },
 
   /**
