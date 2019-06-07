@@ -1,5 +1,6 @@
 <!-- pages/car/page_car.wxml -->
 <view class="head_input">
+  <van-notify id="custom-selector" />
   <van-cell title="时间" icon="clock-o" is-link bind:click="onTap" value="{{time}}" />
   <van-cell-group>
     <!-- 输入框 -->
@@ -7,7 +8,7 @@
   </van-cell-group>
   <van-cell-group>
     <!-- 输入框 -->
-    <van-field maxlength="30" value="{{ id_customize }}"left-icon="qr" center clearable label="自定义项目" placeholder="干点啥好嘞..." border="{{ false }}" bind:input="Input_customize" use-button-slot></van-field>
+    <van-field maxlength="30" value="{{ id_customize }}" left-icon="qr" center clearable label="自定义项目" placeholder="干点啥好嘞..." border="{{ false }}" bind:input="Input_customize" use-button-slot></van-field>
   </van-cell-group>
   <van-cell-group>
     <!-- 输入框 -->
@@ -27,32 +28,30 @@
 </view>
 <view style="height:10vw;background-color:rgb(251,251,251);"></view>
 <!-- 输出面板 -->
-
-  <!-- <view class="content"> -->
-  <view class='content' wx:for="{{arrcustomize}}" wx:key="123">
-     <view class="userinfo">
+<!-- <view class="content"> -->
+<view class='content' wx:for="{{arrcustomize}}" wx:key="123">
+  <view class="userinfo">
     <block>
-      <image class="userinfo-avatar" src="{{item.touxiang}}" ></image>
+      <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
       <text class="userinfo-nickname">{{item.nickname}}</text>
     </block>
   </view>
-    <van-panel desc="发布时间：{{item.Nowtime}}">
-      <view class="push">
-        <view class="item">时间：{{item.time}}</view>
-        <view class="item">地点：{{item.didian_customize}}</view>
-        <view class="item">项目：{{item.id_customize}}</view>
-      </view>
-      <van-collapse value="{{ activeNames }}" bind:change="onChange">
+  <van-panel desc="发布时间：{{item.Nowtime}}">
+    <view class="push">
+      <view class="item">时间：{{item.time}}</view>
+      <view class="item">地点：{{item.didian_customize}}</view>
+      <view class="item">项目：{{item.id_customize}}</view>
+    </view>
+    <van-collapse value="{{ activeNames }}" bind:change="onChange">
       <van-collapse-item value="了解下" icon="add-o" name="{{index}}">
         <view>联系方式：{{ item.id_mess }}</view>
         <view>备注：{{item.beizhu}}</view>
       </van-collapse-item>
-      </van-collapse>
-      <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-    </van-panel>
-  </view>
-
-<!-- </view> -->
-<view style="text-align:center; position: relative; bottom: 1px;width:100vw;height:7vh;font-size:3vw;">
-  已经到底了哦~
+    </van-collapse>
+    <view style="height:5vw;background-color:rgb(251,251,251);"></view>
+  </van-panel>
 </view>
+<view class="loading" wx:if="{{loading}}">
+  <van-loading type="spinner" color="#333366" size="5vw" />
+</view>
+<view wx:if="{{end}}" class="newsdown">已经到底了哦~</view>

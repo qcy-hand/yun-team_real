@@ -1,5 +1,6 @@
 <!-- pages/car/page_car.wxml -->
 <view class="head_input">
+<van-notify id="custom-selector" />
   <van-cell title="时间" icon="clock-o" is-link bind:click="onTap" value="{{time}}" />
   <van-cell title="地点" icon="location-o" is-link bind:click="getUserLocation" value="{{didian}}" center="{{true}}" />
   <van-cell-group>
@@ -57,6 +58,7 @@
     <view style="height:5vw;background-color:rgb(251,251,251);"></view>
   </van-panel>
 </view>
-<view style="text-align:center; position: relative; bottom: 1px;width:100vw;height:7vh;font-size:3vw;">
-  已经到底了哦~
+<view class="loading" wx:if="{{loading}}">
+  <van-loading type="spinner" color="#333366" size="5vw" />
 </view>
+<view wx:if="{{end}}" class="newsdown">已经到底了哦~</view>

@@ -8,7 +8,6 @@
     align-items: center;
     flex-direction: column;
     justify-content: space-around;
-    
 }
 .loadtext{
     text-align: center;
@@ -54,3 +53,21 @@
     width: 93vw;
     padding:1vw 0 1vw 1vw;
 }
+
+.loading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(251,251,251);
+}
+
+.newsdown {
+    padding-top: 2vw;
+    padding-bottom:2vw;
+    text-align: center;
+    position: relative;
+    width: 100vw;
+    font-size: 3vw;
+    color:#ccc;
+}
+

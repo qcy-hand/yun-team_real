@@ -1,5 +1,7 @@
 // pages/car/page_car.js
 
+import Notify from '../../vant-weapp/dist/notify/notify';
+
 Page({
   data: {
     // 时间选择
@@ -9,8 +11,9 @@ Page({
     maxDate: new Date(2029, 11, 1).getTime(),
     currentDate: new Date().getTime(),
     showTime: false,
-    showlocation:false,
+    showlocation: false,
     scope: true,
+
     //返回时间转换结果
     max: false,
     activeNames: ['1'],
@@ -23,9 +26,10 @@ Page({
     nickname: "",
     touxiang: '',
     Timestamp: "",
+    arrcar: [],
 
     loading: false, //加载图标
-    end: false, //到底文字
+    end: false, //到底文字，无更多条数时激活
     list: 10, //初始取回条数
   },
 
@@ -38,12 +42,12 @@ Page({
     });
   },
 
-//关闭位置授权弹窗
-onCloseload() {
-  this.setData({
-    showlocation: false,
-  });
-},
+  //关闭位置授权弹窗
+  onCloseload() {
+    this.setData({
+      showlocation: false,
+    });
+  },
 
   //  转换已选取的时间戳，
   onInput(event) {
@@ -68,28 +72,36 @@ onCloseload() {
   Push() {
     //回调函数中不能直接使用this，需要在外面定义var that = this 然后 that.自定义的方法
     let that = this;
-    wx.showModal({
-      content: '填好啦？',
-      cancelText: "再瞅瞅",
-      confirmText: "对头嘞",
-      confirmColor: " #669999",
-
-      success(res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-          that.Ntime();
-          wx.showToast({
-            title: '成功',
-            icon: 'success',
-            duration: 2000,
-          });
-        } else if (res.cancel) {
-          console.log('用户点击取消')
+    if (that.data.time === "" || that.data.qidian === "" || that.data.zhongdian === "" || that.data.id_mess === "") {
+      Notify({
+        text: '备注以外的选项不可为空',
+        duration: 1000,
+        selector: '#custom-selector',
+        backgroundColor: '#1989fa'
+      });
+    } else {
+      wx.showModal({
+        content: '填好啦？',
+        cancelText: "再瞅瞅",
+        confirmText: "对头嘞",
+        confirmColor: " #669999",
+        success(res) {
+          if (res.confirm) {
+            console.log('用户点击确定')
+            that.Ntime();
+            wx.showToast({
+              title: '成功',
+              icon: 'success',
+              duration: 2000,
+            });
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
         }
-      }
-    })
-  },
+      })
+    }
 
+  },
 
   Ntime() {
     let that = this
@@ -148,25 +160,28 @@ onCloseload() {
         //成功后接住数据并封装
         wx.cloud.callFunction({
           name: "getcar",
-          data: {},
+          data: { list: that.data.list},
           success(res) {
             that.setData({
               arrcar: res.result.data
             })
+          },
+          fail() {
+            wx.showModal({
+              title: '提示',
+              content: '系统错误，请稍后重试',
+            })
           }
+        })
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '系统错误，请稍后重试',
         })
       }
     })
   },
-
-  //上滑加载完成后判比信息条数
-  // loadingup(res){
-  //   console.log(res);
-  //   let list1 = that.data.list - 10;
-  //   if(res.result.data.length){}
-
-
-  // },
 
   //按钮点击显示时间选择器
   onTap() {
@@ -199,11 +214,17 @@ onCloseload() {
             type: 'wgs84',
             success(res) {
               that.setData({
-                didian: res.name,
+                qidian: res.name,
               })
             }
           })
         }
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '系统错误，请稍后重试',
+        })
       }
     })
   },
@@ -234,11 +255,17 @@ onCloseload() {
             type: 'wgs84',
             success(res) {
               that.setData({
-                didian: res.name,
+                zhongdian: res.name,
               })
             }
           })
         }
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '系统错误，请稍后重试',
+        })
       }
     })
   },
@@ -253,8 +280,11 @@ onCloseload() {
           "scope.userLocation": true
         }
       },
-      fail(err) {
-        console.log(err);
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '系统错误，请稍后重试',
+        })
       }
     })
   },
@@ -279,14 +309,54 @@ onCloseload() {
       beizhu: event.detail,
     })
   },
+
+ //上拉加载取回数据
+ getlist() {
+  let that = this
+  wx.cloud.callFunction({
+    name: "getcar",
+    data: {
+      list: that.data.list //向后端传list
+    },
+    success(res) {
+      console.log("取到条数了");
+      //成功后条数判断
+      let listjudge = that.data.list - 10;
+      if (res.result.data.length > listjudge) {
+        console.log(3)
+        that.setData({
+          arrcar: res.result.data
+        })
+      }
+      if (res.result.data.length <= listjudge) {
+        console.log(2)
+        that.setData({
+          arrcar: res.result.data,
+          end: true,
+          loading: false
+        })
+      }
+    },
+    fail() {
+      wx.showModal({
+        title: '提示',
+        content: '系统错误，请稍后重试',
+      })
+    }
+  })
+},
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     let that = this;
+    this.getlist();
     wx.cloud.callFunction({
       name: "getcar",
-      data: {},
+      data: {
+        list: that.data.list //向后端传list
+      },
       success(res) {
         console.log(res);
         that.setData({
@@ -315,7 +385,6 @@ onCloseload() {
       }
     })
   },
-
   /**
    * 生命周期函数--监听页面隐藏
    */
@@ -337,10 +406,18 @@ onCloseload() {
     let that = this;
     wx.cloud.callFunction({
       name: "getcar",
-      data: {},
+      data: {
+        list: that.data.list //向后端传list
+      },
       success(res) {
         that.setData({
           arrcar: res.result.data
+        })
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '刷新错误，请稍后重试',
         })
       }
     });
@@ -349,21 +426,37 @@ onCloseload() {
       wx.stopPullDownRefresh({
         success(res) {
           console.log(1)
+        },
+        fail() {
+          wx.showModal({
+            title: '提示',
+            content: '刷新错误，请稍后重试',
+          })
         }
       })
     }, 2000)
 
   },
 
+
+
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
-    // let that = this;
-    // if(!that.data.end){
-
-    // }
-
+  onReachBottom: function (res) {
+    console.log(this.data.list)
+    console.log("触底了");
+    let that = this;
+    if (!that.data.end) {
+      console.log(1)
+      that.setData({
+        loading: true,
+        list: that.data.list + 10
+      })
+      setTimeout(() => {
+        that.getlist();
+      }, 500);
+    }
   },
 
   /**

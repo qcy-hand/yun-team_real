@@ -1,9 +1,10 @@
 <!-- pages/card/page_card.wxml -->
-<van-tabs color="rgba(153,153,153,0.5);" animated sticky >
+<van-tabs color="rgba(153,153,153,0.5);" animated sticky  bind:change='changetab'>
     <!-- 我的拼车历史界面 -->
     <van-tab title="拼车" title-style="color: #24343b;">
+        <view class="hiscar">
         <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-        <view class='content' wx:for="{{arroldcar}}" wx:key="225">
+        <view class='content' wx:for="{{arroldcar}}" wx:key="index">
             <van-dialog id="van-dialog" />
             <van-swipe-cell id="swipe-cell" right-width="{{ 90 }}" async-close bind:close="onClose" data-id='{{item._id}}' data-index='{{index}}'>
                 <view class="userinfo">
@@ -28,8 +29,13 @@
             <image src="https://neauhand.hhp.im/img/kong.png" class="pickong"></image>
             <view>快去发布新内容吧～～</view>
         </view>
-        <view class="newsdown" wx:if="{{arroldcar.length}}">已经到底了哦~</view>
+        <view class="loading" wx:if="{{loadingcar}}">
+            <van-loading type="spinner" color="#333366" size="5vw" />
+        </view>
+        <view wx:if="{{endcar}}" class="newsdown">已经到底了哦~</view>
+        </view>
     </van-tab>
+
     <!-- 我的运动历史界面 -->
     <van-tab title="运动" title-style="color: #24343b;">
         <view style="height:5vw;background-color:rgb(251,251,251);"></view>
@@ -58,8 +64,12 @@
             <image src="https://neauhand.hhp.im/img/kong.png" class="pickong"></image>
             <view>快去发布新内容吧～～</view>
         </view>
-        <view class="newsdown" wx:if="{{arroldsport.length}}">已经到底了哦~</view>
+        <view class="loading" wx:if="{{loadingsport}}">
+            <van-loading type="spinner" color="#333366" size="5vw" />
+        </view>
+        <view wx:if="{{endsport}}" class="newsdown">已经到底了哦~</view>
     </van-tab>
+
     <!-- 我的学习历史界面 -->
     <van-tab title="学习" title-style="color: #24343b;">
         <view style="height:5vw;background-color:rgb(251,251,251);"></view>
@@ -88,8 +98,12 @@
             <image src="https://neauhand.hhp.im/img/kong.png" class="pickong"></image>
             <view>快去发布新内容吧～～</view>
         </view>
-        <view class="newsdown" wx:if="{{arroldstudy.length}}">已经到底了哦~</view>
+        <view class="loading" wx:if="{{loadingstudy}}">
+            <van-loading type="spinner" color="#333366" size="5vw" />
+        </view>
+        <view wx:if="{{endstudy}}" class="newsdown">已经到底了哦~</view>
     </van-tab>
+
     <!-- 我的自定义历史界面 -->
     <van-tab title="自定义" title-style="color: #24343b;">
         <view style="height:5vw;background-color:rgb(251,251,251);"></view>
@@ -118,6 +132,9 @@
             <image src="https://neauhand.hhp.im/img/kong.png" class="pickong"></image>
             <view>快去发布新内容吧～～</view>
         </view>
-        <view class="newsdown" wx:if="{{arroldcustomize.length}}">已经到底了哦~</view>
+       <view class="loading" wx:if="{{loadingcus}}">
+  <van-loading type="spinner" color="#333366" size="5vw" />
+</view>
+<view wx:if="{{endcus}}" class="newsdown">已经到底了哦~</view>
     </van-tab>
 </van-tabs>
