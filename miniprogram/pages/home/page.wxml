@@ -1,5 +1,4 @@
-<!-- <scroll-view scroll-y style="height: {{scroll_height}}rpx;"> -->
-    <view class="beijing">
+ <view class="beijing">
         <view class="name ">
             <view class="tx">
                 <open-data type="userAvatarUrl"></open-data>
@@ -61,4 +60,3 @@
             </view>
         </view>
     </view>
-<!-- </scroll-view> -->
