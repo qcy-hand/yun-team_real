@@ -8,7 +8,7 @@ Page({
     scope: true,
   },
 
-  getUserInfo() {
+  login() {
     let that = this
     wx.getSetting({
       success(res) {
@@ -17,34 +17,78 @@ Page({
             scope: true
           })
         } else {
-          wx.getUserInfo({
-            success(res) {
-              wx.setStorage({
-                key: 'key',
-                data: {
-                  nickName: res.userInfo.nickName,
-                  avatarUrl: res.userInfo.avatarUrl
-                },
-                success(res) {
-                  console.log(res)
-                },
-                fail() {
-                  wx.showModal({
-                    title: '提示',
-                    content: '系统错误，请稍后重试',
-                  })
-                }
-              })
-            },
-            fail() {
-              wx.showModal({
-                title: '提示',
-                content: '系统错误，请稍后重试',
-              })
-            }
-          })
-          that.tohome()
+          that.checkStorage()
         }
+      }
+    })
+  },
+
+  checkStorage() {
+    let that = this
+    wx.getStorage({
+      key: 'key',
+      success(res) {
+        that.tohome()
+      },
+      fail(res) {
+        wx.getUserInfo({
+          success(res) {
+            wx.setStorage({
+              key: 'key',
+              data: {
+                nickName: res.userInfo.nickName,
+                avatarUrl: res.userInfo.avatarUrl
+              },
+              success(res) {
+                that.tohome()
+              },
+              fail() { }
+            })
+          },
+          fail() { }
+        })
+      }
+    })
+  },
+
+  getUserInfo() {
+    let that = this
+    wx.getUserInfo({
+      success(res) {
+        wx.setStorage({
+          key: 'key',
+          data: {
+            nickName: res.userInfo.nickName,
+            avatarUrl: res.userInfo.avatarUrl
+          },
+          success(res) {
+            console.log(res)
+            that.setUserInfo()
+          },
+          fail() {
+          }
+        })
+      },
+      fail() {
+      }
+    })
+  },
+
+  setUserInfo() {
+    let that = this
+    wx.getStorage({
+      key: 'key',
+      success(res) {
+        wx.cloud.callFunction({
+          name: 'setUserInfo',
+          data: {
+            nickName: res.data.nickName,
+            avatarUrl: res.data.avatarUrl
+          },
+          success(res) {
+            that.tohome()
+          }
+        })
       }
     })
   },
@@ -54,14 +98,11 @@ Page({
       url: '/pages/home/page'
     })
   },
-  onClose() {
-
-  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getUserInfo()
+    this.login()
   },
 
   /**

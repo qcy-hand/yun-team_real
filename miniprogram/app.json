@@ -10,7 +10,11 @@
     "pages/mine/page_mine",
     "pages/attention/page_attention",
     "pages/feedback/page_feedback",
-    "pages/search/page_search"
+    "pages/search/page_search",
+    "pages/admin/admin",
+    "pages/admin-delete/admin-delete",
+    "pages/admin-notice/admin-notice",
+    "pages/admin-cau/admin-cau"
   ],
   "window": {
     "backgroundColor": "#c5d7d8",
@@ -18,13 +22,13 @@
     "navigationBarBackgroundColor": "#f3f6f6",
     "navigationBarTitleText": "组队卜",
     "navigationBarTextStyle": "black",
-    "onReachBottomDistance":1,
+    "onReachBottomDistance": 1,
     "enablePullDownRefresh": true
   },
   "tabBar": {
-    "borderStyle":"white",
+    "borderStyle": "white",
     "selectedColor": "#5483a0",
-    "backgroundColor":"#f3f6f6",
+    "backgroundColor": "#f3f6f6",
     "list": [
       {
         "pagePath": "pages/home/page",
@@ -46,8 +50,6 @@
       }
     ]
   },
-  
-
   "sitemapLocation": "sitemap.json",
   "permission": {
     "scope.userLocation": {

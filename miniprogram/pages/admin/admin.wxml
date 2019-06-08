@@ -1,0 +1,8 @@
+<!-- miniprogram/pages/admin/admin.wxml -->
+<view style="height:5vw;background-color:rgb(251,251,251);"></view>
+<van-cell title="管理数据" is-link url="/pages/admin-delete/admin-delete" link-type="navigateTo" />
+<view style="height:5vw;background-color:rgb(251,251,251);"></view>
+<van-cell title="发布通告" is-link url="/pages/admin-notice/admin-notice" link-type="navigateTo" />
+<view style="height:5vw;background-color:rgb(251,251,251);"></view>
+<van-cell title="清除数据与授权管理" is-link url="/pages/admin-cau/admin-cau" link-type="navigateTo" />
+<view style="height:5vw;background-color:rgb(251,251,251);"></view>

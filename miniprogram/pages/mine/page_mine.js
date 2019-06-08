@@ -8,6 +8,27 @@ Page({
 
   },
 
+  toadmin(){
+    wx.cloud.callFunction({
+      name: 'checkadmin',
+      data:{},
+      success(res){
+        if(res.result.data.length === 0){
+          wx.showModal({
+            title: '提示',
+            content: '您无权限进入哦～',
+            showCancel: false
+          })
+        }
+        if(res.result.data.length !== 0){
+          wx.navigateTo({
+            url:'/pages/admin/admin'
+          })
+        }
+      }
+    })
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
