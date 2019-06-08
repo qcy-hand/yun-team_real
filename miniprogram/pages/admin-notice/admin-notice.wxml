@@ -1,0 +1,22 @@
+<!--miniprogram/pages/admin-notice/admin-notice.wxml-->
+<view wx:if="{{showNotice}}">
+<van-notice-bar
+  mode="closeable"
+  text="{{text}}"
+/>
+</view>
+
+<van-cell-group>
+  <van-field
+    value="{{ value }}"
+    placeholder="请输入要发布的内容～"
+    border="{{ false }}"
+    bind:change="onChangeContent"
+  />
+</van-cell-group>
+<van-button type="primary" bind:tap="sendContent">发布</van-button>
+<van-switch-cell
+  title="标题"
+  checked="{{ showNotice }}"
+  bind:change="onChange"
+/>

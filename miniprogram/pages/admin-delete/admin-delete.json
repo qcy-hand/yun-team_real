@@ -1,0 +1,13 @@
+{
+  "usingComponents": {
+    "van-swipe-cell": "/vant-weapp/dist/swipe-cell/index",
+    "van-search": "/vant-weapp/dist/search/index",
+    "van-icon": "/vant-weapp/dist/icon/index",
+    "van-panel": "/vant-weapp/dist/panel/index",
+    "van-cell": "/vant-weapp/dist/cell/index",
+    "van-cell-group": "/vant-weapp/dist/cell-group/index",
+    "van-dialog": "/vant-weapp/dist/dialog/index",
+    "van-collapse": "/vant-weapp/dist/collapse/index",
+    "van-collapse-item": "/vant-weapp/dist/collapse-item/index"
+  }
+}

@@ -1,0 +1,38 @@
+<!-- miniprogram/pages/admin-cau/admin-cau.wxml -->
+<van-cell-group>
+  <van-field
+    value="{{ authorize }}"
+    center
+    clearable
+    title-width='35px'
+    label="昵称"
+    placeholder="请输入需要授权的用户名"
+    border="{{ false }}"
+    use-button-slot
+    bind:input="changevalue"
+  >
+    <van-button slot="button" size="small" type="primary" bind:tap="authorize">授权</van-button>
+  </van-field>
+</van-cell-group>
+<van-cell-group>
+  <van-field
+    value="{{ unauthorize }}"
+    center
+    clearable
+    title-width='35px'
+    label="昵称"
+    placeholder="请输入要取消授权的用户名"
+    border="{{ false }}"
+    use-button-slot
+    bind:input="changevalue1"
+  >
+    <van-button slot="button" size="small" type="danger" bind:tap="unauthorize">取消授权</van-button>
+  </van-field>
+</van-cell-group>
+
+<van-radio-group value="{{ radio }}" bind:change="onChange">
+  <van-radio name="1">七天</van-radio>
+  <van-radio name="2">十五天</van-radio>
+  <van-radio name="3">三十天</van-radio>
+</van-radio-group>
+<van-button plain type="primary" bind:tap='clear'>一键清除</van-button>
