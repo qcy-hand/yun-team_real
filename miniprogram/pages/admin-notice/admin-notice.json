@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "van-button": "/vant-weapp/dist/button/index",
+    "van-notice-bar": "/vant-weapp/dist/notice-bar/index",
+    "van-field": "/vant-weapp/dist/field/index",
+    "van-switch-cell": "/vant-weapp/dist/switch-cell/index"
+  }
+}
