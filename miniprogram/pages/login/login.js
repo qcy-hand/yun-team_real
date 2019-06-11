@@ -95,7 +95,7 @@ Page({
 
   tohome() {
     wx.reLaunch({
-      url: '/pages/home/page'
+      url: '/pages/history/page_history'
     })
   },
   /**

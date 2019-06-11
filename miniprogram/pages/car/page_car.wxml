@@ -3,7 +3,7 @@
   <van-notify id="custom-selector" />
   <view class="head_input">
     <van-cell title="时间" icon="clock-o" is-link bind:click="onTap" value="{{time}}" />
-    <van-cell title="起点" icon="location-o" is-link bind:click="getUserLocationstart" value="{{qidian}}" center="{{true}}"/>
+    <van-cell title="起点" icon="location-o" is-link bind:click="getUserLocationstart" value="{{qidian}}" center="{{true}}" />
     <van-cell title="终点" icon="location-o" is-link bind:click="getUserLocationover" value="{{zhongdian}}" center="{{true}}" />
     <van-cell-group>
       <!-- 输入框 -->
@@ -15,17 +15,17 @@
         <van-button slot="button" size="small" type="primary" bind:click="Push">发布</van-button>
       </van-field>
     </van-cell-group>
-     <!-- 位置授权弹窗 -->
-  <van-popup show="{{ showlocation }}"  overlay="{{ true }}" bind:click-overlay="onCloseload">
-    <view class="openload">
-      <view class="loadtext">需要你允许位置授权</view>
-      <view class="butload">
-        <van-button   type="info"  bind:click="onCloseload">偏不</van-button>
-        <view style="width:16vw;height:5vw;"></view>
-        <van-button slot="button"  type="primary"  bind:click="Opensetting">好的</van-button>
+    <!-- 位置授权弹窗 -->
+    <van-popup show="{{ showlocation }}" overlay="{{ true }}" bind:click-overlay="onCloseload">
+      <view class="openload">
+        <view class="loadtext">需要你允许位置授权</view>
+        <view class="butload">
+          <van-button type="info" bind:click="onCloseload">偏不</van-button>
+          <view style="width:16vw;height:5vw;"></view>
+          <van-button slot="button" type="primary" bind:click="Opensetting">好的</van-button>
+        </view>
       </view>
-    </view>
-  </van-popup>
+    </van-popup>
     <!-- 弹出框 -->
     <van-popup show="{{ showTime }}" position="bottom" overlay="{{ true }}" bind:click-overlay="onClose">
       <!-- 时间选择器 -->
@@ -34,32 +34,35 @@
   </view>
   <view style="height:10vw;background-color:rgb(251,251,251);"></view>
   <!-- 输出面板 -->
-  <view class='content' wx:for="{{arrcar}}" wx:key="125">
-    <view class="userinfo">
-      <block>
-        <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-        <text class="userinfo-nickname">{{item.nickname}}</text>
-      </block>
-    </view>
-    <van-panel desc="发布时间：{{item.Nowtime}}">
-      <view class="push">
-        <view class="item">时间：{{item.time}}</view>
-        <view class="item">起点：{{item.qidian}}</view>
-        <view class="item">终点：{{item.zhongdian}}</view>
-      </view>
-      <van-collapse value="{{ activeNames }}" bind:change="onChange">
-        <van-collapse-item value="顺道" icon="logistics" name="{{index}}">
-          <view>联系方式：{{ item.id_mess }}</view>
-          <view>备注：{{ item.beizhu }}</view>
-        </van-collapse-item>
-      </van-collapse>
+  <view class="hiscar">
+    <view class='content' wx:for="{{arroldcar}}" wx:key="index">
+      <van-dialog id="van-dialog" />
+      <van-swipe-cell id="swipe-cell" right-width="{{ 90 }}" async-close bind:close="onDelete" data-id='{{item._id}}' data-index='{{index}}'>
+        <view class="userinfo">
+          <block>
+            <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
+            <text class="userinfo-nickname">{{item.nickname}}</text>
+          </block>
+        </view>
+        <van-panel desc="发布时间:{{item.Nowtime}}">
+          <view class="push">
+            <view class="item">时间:{{item.time}}</view>
+            <view class="item">起点:{{item.qidian}}</view>
+            <view class="item">终点:{{item.zhongdian}}</view>
+            <view class="item">联系方式:{{ item.id_mess }}</view>
+            <view class="item">备注:{{ item.beizhu }}</view>
+          </view>
+        </van-panel>
+      </van-swipe-cell>
       <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-    </van-panel>
-  </view>
-  <view class="loading" wx:if="{{loading}}">
-    <van-loading type="spinner" color="#333366" size="5vw" />
-  </view>
-  <view wx:if="{{end}}" class="newsdown">
-    已经到底了哦~
+    </view>
+    <view class="backnews" wx:if="{{arroldcar.length==0}}">
+      <image src="https://neauhand.hhp.im/img/kong.png" class="pickong"></image>
+      <view>快发布新内容吧～～</view>
+    </view>
+    <view class="loading" wx:if="{{loadingcar}}">
+      <van-loading type="spinner" color="#333366" size="5vw" />
+    </view>
+    <view wx:if="{{endcar}}" class="newsdown">已经到底了哦~</view>
   </view>
 </view>

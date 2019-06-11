@@ -1,74 +1,152 @@
 // pages/car/page_car.js
 
-import Notify from '../../vant-weapp/dist/notify/notify';
+//拼车发布部分
+import Notify from '../../vant-weapp/dist/notify/notify'; //信息填充不完整提示
+
+//拼车动态部分
+import Dialog from '../../vant-weapp/dist/dialog/dialog'; //删除确认弹窗
 
 Page({
   data: {
+    //拼车发布部分
     // 时间选择
     minHour: 10,
     maxHour: 20,
     minDate: new Date().getTime(),
     maxDate: new Date(2029, 11, 1).getTime(),
     currentDate: new Date().getTime(),
-    showTime: false,
-    showlocation: false,
-    scope: true,
 
-    //返回时间转换结果
-    max: false,
-    activeNames: ['1'],
-    time: '',
-    qidian: '',
-    zhongdian: '',
-    Nowtime: '',
-    id_mess: '',
-    beizhu: '',
-    nickname: "",
-    touxiang: '',
-    Timestamp: "",
-    arrcar: [],
+    showTime: false, //时间选择器默认
+    showlocation: false, //位置选择
+    scope: true, //用户信息授权
 
-    loading: false, //加载图标
-    end: false, //到底文字，无更多条数时激活
-    list: 10, //初始取回条数
+    //拼车发布上传内容
+    touxiang: '', //头像
+    nickname: "", //昵称
+    Nowtime: '', //发布时间
+    time: '', //选择的时间 
+    qidian: '', //起点
+    zhongdian: '', //终点
+    id_mess: '', //联系方式
+    beizhu: '', //备注
+    Timestamp: "", //时间戳 用于排序
+
+    //拼车动态部分
+    arroldcar: [], //后端回调的历史数组
+    delid: "", //封装完上传到后端需要删除的id
+    isCarShow: false,
+
+    loadingcar: false, //加载图标
+    endcar: false, //到底文字，无更多条数时激活
+    listcar: 10, //拼车初始取回条数
   },
 
 
+  //拼车发布部分
 
-  // 关闭时间选择器
-  onClose() {
+  //按钮点击显示时间选择器
+  onTap() {
     this.setData({
-      showTime: false,
-    });
+      showTime: true
+    })
   },
 
-  //关闭位置授权弹窗
-  onCloseload() {
+  //选择起点
+  getUserLocationstart() {
+    let that = this
+    wx.getSetting({
+      success(res) {
+        console.log(res.authSetting['scope.userLocation'])
+        if (!res.authSetting['scope.userLocation']) {
+          wx.authorize({
+            scope: 'scope.userLocation',
+            success() {
+              console.log(2)
+            },
+            fail() {
+              console.log('1');
+              that.setData({
+                showlocation: true
+              })
+            }
+          })
+        } else {
+          //地址选择
+          wx.chooseLocation({
+            type: 'wgs84',
+            success(res) {
+              that.setData({
+                qidian: res.name,
+              })
+            }
+          })
+        }
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '系统错误，请稍后重试',
+        })
+      }
+    })
+  },
+
+  //选择终点
+  getUserLocationover() {
+    let that = this
+    wx.getSetting({
+      success(res) {
+        console.log(res.authSetting['scope.userLocation'])
+        if (!res.authSetting['scope.userLocation']) {
+          wx.authorize({
+            scope: 'scope.userLocation',
+            success() {
+              console.log(2)
+            },
+            fail() {
+              console.log('1');
+              that.setData({
+                showlocation: true
+              })
+            }
+          })
+        } else {
+          //地址选择
+          wx.chooseLocation({
+            type: 'wgs84',
+            success(res) {
+              that.setData({
+                zhongdian: res.name,
+              })
+            }
+          })
+        }
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '系统错误，请稍后重试',
+        })
+      }
+    })
+  },
+
+  // 输入联系方式
+  Input_mess(event) {
+    // event.detail 为当前输入的值
     this.setData({
-      showlocation: false,
-    });
+      id_mess: event.detail,
+    })
   },
-
-  //  转换已选取的时间戳，
-  onInput(event) {
-    var a = event.detail
-
-    function getdate(a) {
-      var now = new Date(a),
-        y = now.getFullYear(),
-        m = now.getMonth() + 1,
-        d = now.getDate(),
-        h = now.getHours(),
-        n = now.getMinutes()
-      return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + (h < 10 ? "0" + h : h) + ":" + (n < 10 ? "0" + n : n);
-    }
+  //输入备注
+  Input_beizhu(event) {
+    // event.detail 为当前输入的值
     this.setData({
-      showTime: false,
-      time: getdate(a)
-    });
+      beizhu: event.detail,
+    })
   },
 
-  //确定按钮事件
+  //确定按钮事件，提交已填的内容
   Push() {
     //回调函数中不能直接使用this，需要在外面定义var that = this 然后 that.自定义的方法
     let that = this;
@@ -88,7 +166,9 @@ Page({
         success(res) {
           if (res.confirm) {
             console.log('用户点击确定')
-            that.Ntime();
+
+            that.Ntime(); //调用传值函数
+
             wx.showToast({
               title: '成功',
               icon: 'success',
@@ -100,7 +180,6 @@ Page({
         }
       })
     }
-
   },
 
   Ntime() {
@@ -145,33 +224,29 @@ Page({
       name: 'sendcar',
       data: {
         type: 'car',
+        touxiang: that.data.touxiang,
+        nickname: that.data.nickname,
+        Nowtime: that.data.Nowtime,
         time: that.data.time,
         qidian: that.data.qidian,
         zhongdian: that.data.zhongdian,
         id_mess: that.data.id_mess,
         beizhu: that.data.beizhu,
-        Nowtime: that.data.Nowtime,
-        nickname: that.data.nickname,
-        touxiang: that.data.touxiang,
         Timestamp: that.data.Timestamp,
       },
       success(res) {
         console.log(res);
         //成功后接住数据并封装
         wx.cloud.callFunction({
-          name: "getcar",
-          data: { list: that.data.list},
+          name: "getoldcar",
+          data: {
+            listcar: that.data.listcar
+          },
           success(res) {
             that.setData({
-              arrcar: res.result.data
+              arroldcar: res.result.data,
             })
           },
-          fail() {
-            wx.showModal({
-              title: '提示',
-              content: '系统错误，请稍后重试',
-            })
-          }
         })
       },
       fail() {
@@ -183,91 +258,11 @@ Page({
     })
   },
 
-  //按钮点击显示时间选择器
-  onTap() {
+  //关闭位置授权弹窗
+  onCloseload() {
     this.setData({
-      showTime: true
-    })
-  },
-
-  getUserLocationstart() {
-    let that = this
-    wx.getSetting({
-      success(res) {
-        console.log(res.authSetting['scope.userLocation'])
-        if (!res.authSetting['scope.userLocation']) {
-          wx.authorize({
-            scope: 'scope.userLocation',
-            success() {
-              console.log(2)
-            },
-            fail() {
-              console.log('1');
-              that.setData({
-                showlocation: true
-              })
-            }
-          })
-        } else {
-          //地址选择
-          wx.chooseLocation({
-            type: 'wgs84',
-            success(res) {
-              that.setData({
-                qidian: res.name,
-              })
-            }
-          })
-        }
-      },
-      fail() {
-        wx.showModal({
-          title: '提示',
-          content: '系统错误，请稍后重试',
-        })
-      }
-    })
-  },
-
-
-
-  getUserLocationover() {
-    let that = this
-    wx.getSetting({
-      success(res) {
-        console.log(res.authSetting['scope.userLocation'])
-        if (!res.authSetting['scope.userLocation']) {
-          wx.authorize({
-            scope: 'scope.userLocation',
-            success() {
-              console.log(2)
-            },
-            fail() {
-              console.log('1');
-              that.setData({
-                showlocation: true
-              })
-            }
-          })
-        } else {
-          //地址选择
-          wx.chooseLocation({
-            type: 'wgs84',
-            success(res) {
-              that.setData({
-                zhongdian: res.name,
-              })
-            }
-          })
-        }
-      },
-      fail() {
-        wx.showModal({
-          title: '提示',
-          content: '系统错误，请稍后重试',
-        })
-      }
-    })
+      showlocation: false,
+    });
   },
 
   //引导跳转设置页面
@@ -289,91 +284,147 @@ Page({
     })
   },
 
-  // 折叠面板
-  onChange(event) {
+  //  转换已选取的时间戳，(时间选择器)
+  onInput(event) {
+    var a = event.detail
+
+    function getdate(a) {
+      var now = new Date(a),
+        y = now.getFullYear(),
+        m = now.getMonth() + 1,
+        d = now.getDate(),
+        h = now.getHours(),
+        n = now.getMinutes()
+      return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + (h < 10 ? "0" + h : h) + ":" + (n < 10 ? "0" + n : n);
+    }
     this.setData({
-      activeNames: event.detail
+      showTime: false,
+      time: getdate(a)
     });
   },
 
-  // 
-  Input_mess(event) {
-    // event.detail 为当前输入的值
+  // 关闭时间选择器
+  onClose() {
     this.setData({
-      id_mess: event.detail,
-    })
+      showTime: false,
+    });
   },
-  Input_beizhu(event) {
-    // event.detail 为当前输入的值
-    this.setData({
-      beizhu: event.detail,
+
+  //拼车动态部分
+  //拼车删除历史事件
+  onDelete(res) {
+    console.log(res);
+    let index = res.currentTarget.dataset.index
+    let arroldcar = this.data.arroldcar
+    let that = this
+    console.log(index);
+    const {
+      position,
+      instance
+    } = res.detail;
+    switch (position) {
+      case 'left':
+      case 'cell':
+        instance.close();
+        break;
+      case 'right':
+        Dialog.confirm({
+          message: '确定删除？',
+          closeOnClickOverlay: true,
+        }).then(() => {
+          console.log('用户点击确定')
+          wx.cloud.callFunction({
+            name: "delete",
+            data: {
+              delid: res.currentTarget.dataset.id
+            },
+            success(res) {
+              arroldcar.splice(index, 1)
+              that.setData({
+                arroldcar
+              })
+              wx.showToast({
+                title: '完成',
+                icon: 'success',
+                duration: 1500,
+              });
+              instance.close();
+            },
+            fail() {
+              wx.showModal({
+                title: '提示',
+                content: '系统错误，请稍后重试',
+              })
+            }
+          })
+
+        }).catch(() => {
+          console.log('用户点击取消');
+          instance.close();
+        });;
+        break;
+    }
+  },
+
+  //上拉加载取回拼车数据
+  getlistcar() {
+    let that = this
+    wx.cloud.callFunction({
+      name: "getoldcar",
+      data: {
+        listcar: that.data.listcar //向后端传listcar
+      },
+      success(res) {
+        console.log("取到条数了");
+        //成功后条数判断
+        let listjudgecar = that.data.listcar - 10;
+        if (res.result.data.length > listjudgecar) {
+          console.log(3)
+          that.setData({
+            arroldcar: res.result.data
+          })
+        }
+        if (res.result.data.length === 0) {
+          console.log(2)
+          that.setData({
+            arroldcar: res.result.data,
+            endcar: false,
+            loadingcar: false
+          })
+        }
+        if (res.result.data.length <= listjudgecar && res.result.data.length !== 0) {
+          console.log(2)
+          that.setData({
+            arroldcar: res.result.data,
+            endcar: true,
+            loadingcar: false
+          })
+        }
+      },
     })
   },
 
- //上拉加载取回数据
- getlist() {
-  let that = this
-  wx.cloud.callFunction({
-    name: "getcar",
-    data: {
-      list: that.data.list //向后端传list
-    },
-    success(res) {
-      console.log("取到条数了");
-      //成功后条数判断
-      let listjudge = that.data.list - 10;
-      if (res.result.data.length > listjudge) {
-        console.log(3)
-        that.setData({
-          arrcar: res.result.data
-        })
-      }
-      if (res.result.data.length <= listjudge) {
-        console.log(2)
-        that.setData({
-          arrcar: res.result.data,
-          end: true,
-          loading: false
-        })
-      }
-    },
-    fail() {
-      wx.showModal({
-        title: '提示',
-        content: '系统错误，请稍后重试',
-      })
-    }
-  })
-},
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     let that = this;
-    this.getlist();
-    wx.cloud.callFunction({
-      name: "getcar",
-      data: {
-        list: that.data.list //向后端传list
-      },
-      success(res) {
-        console.log(res);
-        that.setData({
-          arrcar: res.result.data
-        })
-      }
-    })
+    //拼车动态部分
+    that.getlistcar();
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
+  onReady: function () {
 
+  },
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function () { //待定
     let that = this;
+    //缓存用户昵称头像
     wx.getStorage({
       key: 'key',
       success(res) {
@@ -385,33 +436,32 @@ Page({
       }
     })
   },
+
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
-
-  },
+  onHide: function () {},
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
-
-  },
+  onUnload: function () {},
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
     let that = this;
+    //拼车动态部分
     wx.cloud.callFunction({
-      name: "getcar",
+      name: "getoldcar",
       data: {
-        list: that.data.list //向后端传list
+        listcar: that.data.listcar
       },
       success(res) {
+        console.log(res.result.data.length);
         that.setData({
-          arrcar: res.result.data
+          arroldcar: res.result.data
         })
       },
       fail() {
@@ -420,41 +470,34 @@ Page({
           content: '刷新错误，请稍后重试',
         })
       }
-    });
+    })
 
     setTimeout(() => {
       wx.stopPullDownRefresh({
         success(res) {
           console.log(1)
         },
-        fail() {
-          wx.showModal({
-            title: '提示',
-            content: '刷新错误，请稍后重试',
-          })
-        }
       })
-    }, 2000)
-
+    }, 1000)
   },
-
-
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function (res) {
-    console.log(this.data.list)
-    console.log("触底了");
     let that = this;
-    if (!that.data.end) {
+
+    //拼车动态部分
+    if (!that.data.endcar) {
+      console.log(this.data.listcar)
+      console.log("触底了");
       console.log(1)
       that.setData({
-        loading: true,
-        list: that.data.list + 10
+        loadingcar: true,
+        listcar: that.data.listcar + 10
       })
       setTimeout(() => {
-        that.getlist();
+        that.getlistcar();
       }, 500);
     }
   },

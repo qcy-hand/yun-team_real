@@ -9,7 +9,7 @@ const db = cloud.database()
 // 云函数入口函数
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
-  const listsport = event.listsport//后端返回list
+  const listsport = event.listsport//后端返回listsport
   return await db.collection('datas').where({
     type:"sport",
     openid:wxContext.OPENID,

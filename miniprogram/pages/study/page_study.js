@@ -1,34 +1,194 @@
 // pages/car/page_car.js
-import Notify from '../../vant-weapp/dist/notify/notify';
+//学习发布部分
+import Notify from '../../vant-weapp/dist/notify/notify';//信息填充不完整提示
+
+//学习动态部分
+import Dialog from '../../vant-weapp/dist/dialog/dialog'; //删除确认弹窗
+
 Page({
   data: {
+    //学习发布部分
     // 时间选择
     minHour: 10,
     maxHour: 20,
     minDate: new Date().getTime(),
     maxDate: new Date(2029, 11, 1).getTime(),
     currentDate: new Date().getTime(),
-    showTime: false,
-    //返回时间转换结果
-    time: '',
-    Nowtime: '',
-    activeNames: ['1'],
-    didian_study: '',
-    id_study: '',
-    id_mess: '',
-    beizhu: '',
-    nickname:"",
-    touxiang:"",
-    Timestamp:"",
-    arrstudy:[],
 
-    loading: false, //加载图标
-    end: false, //到底文字，无更多条数时激活
-    list: 10, //初始取回条数
+    showTime: false,//时间选择器默认
+    scope: true, //用户信息授权
+
+    //学习发布上传内容
+    touxiang:"",//头像
+    nickname:"",//昵称
+    Nowtime: '',//发布时间
+    time: '',//选择活动时间
+    didian_study: '',//学习地点
+    id_study: '',//学习项目
+    id_mess: '',//联系方式
+    beizhu: '',//备注
+    Timestamp:"",//时间戳
+
+    //学习动态部分
+    arroldstudy: [],//后端回调学习历史数组
+    delid: "", //封装完上传到后端需要删除的id
+    isCarShow: false,
+
+    loadingstudy: false, //加载图标
+    endstudy: false, //到底文字，无更多条数时激活
+    liststudy: 10, //学习初始取回条数
   },
 
+//学习发布部分
+//按钮点击显示时间选择器
+onTap() {
+  this.setData({
+    showTime: true
+  })
+},
 
+// 学习地点
+Location_study(event) {
+  // event.detail 为当前输入的值
+  this.setData({
+    didian_study: event.detail,
+  })
+},
 
+//学习项目
+Input_study(event) {
+  // event.detail 为当前输入的值
+  this.setData({
+    id_study: event.detail,
+  })
+},
+//联系方式
+Input_mess(event) {
+  // event.detail 为当前输入的值
+  this.setData({
+    id_mess: event.detail,
+  })
+},
+//备注
+Input_beizhu(event) {
+  // event.detail 为当前输入的值
+  this.setData({
+    beizhu: event.detail,
+  })
+},
+
+Push(){
+  let that = this;
+  if (that.data.time === "" || that.data. didian_study === "" || that.data.id_study === "" || that.data.id_mess === "") {
+    Notify({
+      text: '备注以外的选项不可为空',
+      duration: 1000,
+      selector: '#custom-selector',
+      backgroundColor: '#1989fa'
+    });
+  } else {
+  wx.showModal({
+    content: '填完啦？',
+    cancelText:"再瞅瞅",
+    confirmText:"对头嘞",
+    confirmColor:" #669999",
+    
+    success(res) {
+      if (res.confirm) {
+        console.log('用户点击确定')
+        that.Ntime();
+        wx.showToast({
+          title: '成功',
+          icon: 'success',
+          duration: 2000,
+        });
+      } else if (res.cancel) {
+        console.log('用户点击取消')
+      }
+    },
+    fail() {
+      wx.showModal({
+        title: '提示',
+        content: '系统错误，请稍后重试',
+      })
+    }
+  })
+  }
+},
+
+//时间相关
+Ntime() {
+  let that = this;
+  console.log('yidianji');
+//获取当前时间
+  function getNowDate() {
+    var date = new Date(),
+      month = date.getMonth() + 1,
+      strDate = date.getDate(),
+      hourDate = date.getHours(),
+      minuteDate = date.getMinutes()
+    if (month >= 1 && month <= 9) {
+      month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+      strDate = "0" + strDate;
+    }
+    if (hourDate >= 0 && hourDate <= 9) {
+      hourDate = "0" + hourDate;
+    }
+    if (minuteDate >= 0 && minuteDate <= 9) {
+      minuteDate = "0" + minuteDate;
+    }
+    return month + "-" + strDate +
+      " " + hourDate + ":" + minuteDate;
+  };
+  this.setData({
+    Nowtime: getNowDate()
+  });
+
+  //传时间戳
+  function gettimestamp() {
+    var timestamp = new Date().getTime();
+    return timestamp;
+  };
+  this.setData({
+    Timestamp: gettimestamp()
+  });
+
+  //向数据库传数据
+  wx.cloud.callFunction({
+    name: 'sendstudy',
+    data: {
+      type: 'study',
+      touxiang:that.data.touxiang,
+      nickname:that.data.nickname,
+      Nowtime: that.data.Nowtime,
+      time: that.data.time,
+      didian_study: that.data.didian_study,
+      id_study: that.data.id_study,
+      id_mess: that.data.id_mess,
+      beizhu: that.data.beizhu,
+      Timestamp:that.data.Timestamp,
+    },
+    success(res) {
+      wx.cloud.callFunction({
+        name: "getoldstudy",
+        data: { liststudy: that.data.liststudy},
+        success(res) {
+          that.setData({
+            arroldstudy:res.result.data
+          })
+        },
+      })
+    },
+    fail() {
+      wx.showModal({
+        title: '提示',
+        content: '系统错误，请稍后重试',
+      })
+    }
+  })
+},
 
   // 关闭时间选择器
   onClose() {
@@ -36,7 +196,6 @@ Page({
       showTime: false,
     });
   },
-
 
   //  转换已选取的时间戳，
   onInput(event) {
@@ -57,107 +216,45 @@ Page({
     });
   },
 
-  Push(){
-    let that = this;
-    if (that.data.time === "" || that.data. didian_study === "" || that.data.id_study === "" || that.data.id_mess === "") {
-      Notify({
-        text: '备注以外的选项不可为空',
-        duration: 1000,
-        selector: '#custom-selector',
-        backgroundColor: '#1989fa'
-      });
-    } else {
-    wx.showModal({
-      content: '填完啦？',
-      cancelText:"再瞅瞅",
-      confirmText:"对头嘞",
-      confirmColor:" #669999",
-      
-      success(res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-          that.Ntime();
-          wx.showToast({
-            title: '成功',
-            icon: 'success',
-            duration: 2000,
-          });
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      },
-      fail() {
-        wx.showModal({
-          title: '提示',
-          content: '系统错误，请稍后重试',
-        })
-      }
-    })
-    }
-  },
-
-
-  //获取当前时间
-  Ntime() {
-    let that = this;
-    console.log('yidianji');
-
-    function getNowDate() {
-      var date = new Date(),
-        month = date.getMonth() + 1,
-        strDate = date.getDate(),
-        hourDate = date.getHours(),
-        minuteDate = date.getMinutes()
-      if (month >= 1 && month <= 9) {
-        month = "0" + month;
-      }
-      if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-      }
-      if (hourDate >= 0 && hourDate <= 9) {
-        hourDate = "0" + hourDate;
-      }
-      if (minuteDate >= 0 && minuteDate <= 9) {
-        minuteDate = "0" + minuteDate;
-      }
-      return month + "-" + strDate +
-        " " + hourDate + ":" + minuteDate;
-    };
-    this.setData({
-      Nowtime: getNowDate()
-    });
-
-    function gettimestamp() {
-      var timestamp = new Date().getTime();
-      return timestamp;
-    };
-    this.setData({
-      Timestamp: gettimestamp()
-    });
-
-    
-    wx.cloud.callFunction({
-      name: 'sendstudy',
-      data: {
-        type: 'study',
-        time: that.data.time,
-        Nowtime: that.data.Nowtime,
-        didian_study: that.data.didian_study,
-        id_study: that.data.id_study,
-        id_mess: that.data.id_mess,
-        beizhu: that.data.beizhu,
-        nickname:that.data.nickname,
-        touxiang:that.data.touxiang,
-        Timestamp:that.data.Timestamp,
-      },
-      success(res) {
+//学习动态部分
+//学习删除历史部分
+onDelete(res) {
+  console.log(res);
+  let index = res.currentTarget.dataset.index
+  let arroldstudy = this.data.arroldstudy
+  let that = this
+  console.log(index);
+  const {
+    position,
+    instance
+  } = res.detail;
+  switch (position) {
+    case 'left':
+    case 'cell':
+      instance.close();
+      break;
+    case 'right':
+      Dialog.confirm({
+        message: '确定删除？',
+        closeOnClickOverlay: true,
+      }).then(() => {
+        console.log('用户点击确定')
         wx.cloud.callFunction({
-          name: "getstudy",
-          data: { list: that.data.list},
+          name: "delete",
+          data: {
+            delid: res.currentTarget.dataset.id
+          },
           success(res) {
+            arroldstudy.splice(index, 1)
             that.setData({
-              arrstudy: res.result.data
+              arroldstudy,
             })
+            wx.showToast({
+              title: '完成',
+              icon: 'success',
+              duration: 1500,
+            });
+            instance.close();
           },
           fail() {
             wx.showModal({
@@ -166,111 +263,59 @@ Page({
             })
           }
         })
-      },
-      fail() {
-        wx.showModal({
-          title: '提示',
-          content: '系统错误，请稍后重试',
-        })
-      }
-    })
-  },
 
+      }).catch(() => {
+        console.log('用户点击取消');
+        instance.close();
+      });;
+      break;
+  }
+},
 
-  //按钮点击显示时间选择器
-  onTap() {
-    this.setData({
-      showTime: true
-    })
-  },
-
-  // 折叠面板
-  onChange(event) {
-    this.setData({
-      activeNames: event.detail
-    });
-  },
-
-  // 
-  Location_study(event) {
-    // event.detail 为当前输入的值
-    this.setData({
-      didian_study: event.detail,
-    })
-  },
-  Input_study(event) {
-    // event.detail 为当前输入的值
-    this.setData({
-      id_study: event.detail,
-    })
-  },
-  Input_mess(event) {
-    // event.detail 为当前输入的值
-    this.setData({
-      id_mess: event.detail,
-    })
-  },
-  Input_beizhu(event) {
-    // event.detail 为当前输入的值
-    this.setData({
-      beizhu: event.detail,
-    })
-  },
-
- //上拉加载取回数据
- getlist() {
+getliststudy() {
   let that = this
   wx.cloud.callFunction({
-    name: "getstudy",
+    name: "getoldstudy",
     data: {
-      list: that.data.list //向后端传list
+      liststudy: that.data.liststudy //向后端传liststudy
     },
     success(res) {
       console.log("取到条数了");
       //成功后条数判断
-      let listjudge = that.data.list - 10;
-      if (res.result.data.length > listjudge) {
+      let listjudgestudy = that.data.liststudy - 10;
+      if (res.result.data.length > listjudgestudy) {
         console.log(3)
         that.setData({
-          arrstudy: res.result.data
+          arroldstudy: res.result.data
         })
       }
-      if (res.result.data.length <= listjudge) {
+      if (res.result.data.length === 0) {
+        console.log("数据库空");
+        that.setData({
+          arroldstudy: res.result.data,
+          endstudy: false,
+          loadingstudy: false
+        })
+      }
+      if (res.result.data.length <= listjudgestudy && res.result.data.length !== 0) {
         console.log(2)
         that.setData({
-          arrstudy: res.result.data,
-          end: true,
-          loading: false
+          arroldstudy: res.result.data,
+          endstudy: true,
+          loadingstudy: false
         })
       }
     },
-    fail() {
-      wx.showModal({
-        title: '提示',
-        content: '系统错误，请稍后重试',
-      })
-    }
   })
 },
-
-
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     let that = this;
-    this.getlist();
-    wx.cloud.callFunction({
-      name: "getstudy",
-      data: {
-        list: that.data.list //向后端传list
-      },
-      success(res) {
-        that.setData({
-          arrstudy: res.result.data
-        })
-      }
-    })
+
+    //学习动态部分
+    that.getliststudy();
   },
 
   /**
@@ -285,6 +330,7 @@ Page({
    */
   onShow: function () {
     let that = this;
+    //缓存用户昵称头像
     wx.getStorage({
       key:"key",
       success(res){
@@ -316,15 +362,16 @@ Page({
    */
   onPullDownRefresh: function () {
     let that = this;
-    
+   
+    //学习动态部分
     wx.cloud.callFunction({
-      name: "getstudy",
+      name: "getoldstudy",
       data: {
-        list: that.data.list //向后端传list
+        liststudy: that.data.liststudy
       },
       success(res) {
         that.setData({
-          arrstudy: res.result.data
+          arroldstudy: res.result.data
         })
       },
       fail() {
@@ -333,39 +380,33 @@ Page({
           content: '刷新错误，请稍后重试',
         })
       }
-    });
+    })
    
     setTimeout(() => {
       wx.stopPullDownRefresh({
         success(res) {
           console.log(1)
         },
-        fail() {
-          wx.showModal({
-            title: '提示',
-            content: '系统错误，请稍后重试',
-          })
-        }
       })
-    }, 2000)
-    
+    }, 1000)
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log(this.data.list)
-    console.log("触底了");
     let that = this;
-    if (!that.data.end) {
+   
+    //学习动态部分
+    if (!that.data.endstudy) {
+      console.log(this.data.liststudy)
       console.log(1)
       that.setData({
-        loading: true,
-        list: that.data.list + 10
+        loadingstudy: true,
+        liststudy: that.data.liststudy + 10
       })
       setTimeout(() => {
-        that.getlist();
+        that.getliststudy();
       }, 500);
     }
   },

@@ -57,6 +57,22 @@
     padding:1vw 0 1vw 1vw;
 }
 
+.backnews {
+    height: 30vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 3.5vw;
+    /* background-color: rgb(251, 251, 251); */
+}
+
+.pickong {
+    width: 192rpx;
+    height: 192rpx;
+}
 
 .loading{
     display: flex;

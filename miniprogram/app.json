@@ -41,7 +41,7 @@
         "pagePath": "pages/history/page_history",
         "iconPath": "./img/ls2.png",
         "selectedIconPath": "./img/ls2-b.png",
-        "text": "历史"
+        "text": "动态"
       },
       {
         "pagePath": "pages/mine/page_mine",

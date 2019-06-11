@@ -31,7 +31,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 4,
 			"list": [
 				{
 					"id": -1,
@@ -43,6 +43,27 @@
 					"id": -1,
 					"name": "search",
 					"pathName": "pages/search/page_search",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pudhcar",
+					"pathName": "pages/car/page_car",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pushsport",
+					"pathName": "pages/sport/page_sport",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pushsport",
+					"pathName": "pages/study/page_study",
 					"scene": null
 				}
 			]

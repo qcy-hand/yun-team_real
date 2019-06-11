@@ -10,7 +10,11 @@
     "van-collapse": "/vant-weapp/dist/collapse/index",
     "van-collapse-item": "/vant-weapp/dist/collapse-item/index",
     "van-notify": "/vant-weapp/dist/notify/index",
-    "van-loading": "/vant-weapp/dist/loading/index"
+    "van-loading": "/vant-weapp/dist/loading/index",
+
+    
+    "van-dialog": "/vant-weapp/dist/dialog/index",
+    "van-swipe-cell": "/vant-weapp/dist/swipe-cell/index"
     
   }
   

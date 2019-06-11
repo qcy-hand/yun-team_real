@@ -29,31 +29,36 @@
   </view>
   <view style="height:10vw;background-color:rgb(251,251,251);"></view>
   <!-- 输出面板 -->
-  <!-- <view class="content"> -->
-  <view class='content' wx:for="{{arrcustomize}}" wx:key="123">
-    <view class="userinfo">
-      <block>
-        <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-        <text class="userinfo-nickname">{{item.nickname}}</text>
-      </block>
-    </view>
-    <van-panel desc="发布时间：{{item.Nowtime}}">
-      <view class="push">
-        <view class="item">时间：{{item.time}}</view>
-        <view class="item">地点：{{item.didian_customize}}</view>
-        <view class="item">项目：{{item.id_customize}}</view>
-      </view>
-      <van-collapse value="{{ activeNames }}" bind:change="onChange">
-        <van-collapse-item value="了解下" icon="add-o" name="{{index}}">
-          <view>联系方式：{{ item.id_mess }}</view>
-          <view>备注：{{item.beizhu}}</view>
-        </van-collapse-item>
-      </van-collapse>
+  <view class="hiscus">
+    <view style="height:5vw;background-color:rgb(251,251,251);"></view>
+    <view class='content' wx:for="{{arroldcustomize}}" wx:key="223">
+      <van-dialog id="van-dialog" />
+      <van-swipe-cell id="swipe-cell" right-width="{{ 90 }}" async-close bind:close="onDelete" data-id='{{item._id}}' data-index='{{index}}'>
+        <view class="userinfo">
+          <block>
+            <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
+            <text class="userinfo-nickname">{{item.nickname}}</text>
+          </block>
+        </view>
+        <van-panel desc="发布时间:{{item.Nowtime}}">
+          <view class="push">
+            <view class="item">时间:{{item.time}}</view>
+            <view class="item">地点:{{item.didian_customize}}</view>
+            <view class="item">项目:{{item.id_customize}}</view>
+            <view class="item">联系方式:{{ item.id_mess }}</view>
+            <view class="item">备注:{{item.beizhu}}</view>
+          </view>
+        </van-panel>
+      </van-swipe-cell>
       <view style="height:5vw;background-color:rgb(251,251,251);"></view>
-    </van-panel>
+    </view>
+    <view class="backnews" wx:if="{{arroldcustomize.length==0}}">
+      <image src="https://neauhand.hhp.im/img/kong.png" class="pickong"></image>
+      <view>快去发布新内容吧～～</view>
+    </view>
+    <view class="loading" wx:if="{{loadingcus}}">
+      <van-loading type="spinner" color="#333366" size="5vw" />
+    </view>
+    <view wx:if="{{endcus}}" class="newsdown">已经到底了哦~</view>
   </view>
-  <view class="loading" wx:if="{{loading}}">
-    <van-loading type="spinner" color="#333366" size="5vw" />
-  </view>
-  <view wx:if="{{end}}" class="newsdown">已经到底了哦~</view>
 </view>

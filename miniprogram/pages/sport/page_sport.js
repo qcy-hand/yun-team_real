@@ -1,69 +1,117 @@
 // pages/car/page_car.js
-import Notify from '../../vant-weapp/dist/notify/notify';
+
+//运动发布部分
+import Notify from '../../vant-weapp/dist/notify/notify'; //信息填充不完整提示
+
+//运动动态部分
+import Dialog from '../../vant-weapp/dist/dialog/dialog'; //删除确认弹窗
+
 Page({
   data: {
+    //运动发布部分
     // 时间选择
     minHour: 10,
     maxHour: 20,
     minDate: new Date().getTime(),
     maxDate: new Date(2029, 11, 1).getTime(),
     currentDate: new Date().getTime(),
-    showTime: false,
-    showlocation: false,
-    //返回时间转换结果
-    activeNames: ['1'],
-    time: '',
-    didian: '',
-    Nowtime: '',
-    id_sport: '',
-    id_mess: '',
-    beizhu: '',
-    nickname: "",
-    touxiang: '',
-    Timestamp: "",
-    arrsport:[],
 
-    loading: false, //加载图标
-    end: false, //到底文字，无更多条数时激活
-    list: 10, //初始取回条数
+    showTime: false, //时间选择器默认
+    showlocation: false, //位置选择
+    scope: true, //用户信息授权
+
+    //运动发布上传内容
+    touxiang: '', //头像
+    nickname: "", //昵称
+    Nowtime: '', //发布时间
+    time: '', //选择活动时间
+    didian: '', //地点
+    id_sport: '', //运动项目
+    id_mess: '', //联系方式
+    beizhu: '', //备注
+    Timestamp: "", //时间戳
+
+    //运动动态部分
+    arroldsport: [], //后端回调的历史数组
+    delid: "", //封装完上传到后端需要删除的id
+    isCarShow: false,
+
+    loadingsport: false, //加载图标
+    endsport: false, //到底文字，无更多条数时激活
+    listsport: 10, //运动初始取回条数
   },
 
-
-
-  // 关闭时间选择器
-  onClose() {
+  //运动发布部分
+  //按钮点击显示时间选择器
+  onTap() {
     this.setData({
-      showTime: false,
-    });
+      showTime: true
+    })
   },
 
-  //关闭位置授权弹窗
-  onCloseload() {
+  //地点位置授权判断及选择
+  getUserLocation() {
+    let that = this
+    wx.getSetting({
+      success(res) {
+        console.log(res.authSetting['scope.userLocation'])
+        if (!res.authSetting['scope.userLocation']) { //用authsetting进行授权判断
+          wx.authorize({
+            scope: 'scope.userLocation',
+            success() {
+              console.log(2)
+            },
+            fail() {
+              console.log('1');
+              that.setData({
+                showlocation: true
+              })
+            }
+          })
+        } else {
+          //地址选择
+          wx.chooseLocation({
+            type: 'wgs84',
+            success(res) {
+              that.setData({
+                didian: res.name,
+              })
+            },
+          })
+        }
+      },
+      fail() {
+        wx.showModal({
+          title: '提示',
+          content: '系统错误，请稍后重试',
+        })
+      }
+    })
+  },
+
+  // 项目输入框
+  Input_sport(event) {
+    // event.detail 为当前输入的值
     this.setData({
-      showlocation: false,
-    });
+      id_sport: event.detail,
+    })
   },
-
-
-  //  转换已选取的时间戳，
-  onInput(event) {
-    var a = event.detail
-
-    function getdate(a) {
-      var now = new Date(a),
-        y = now.getFullYear(),
-        m = now.getMonth() + 1,
-        d = now.getDate(),
-        h = now.getHours(),
-        n = now.getMinutes()
-      return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + (h < 10 ? "0" + h : h) + ":" + (n < 10 ? "0" + n : n);
-    }
+  //联系方式输入框
+  Input_mess(event) {
+    // event.detail 为当前输入的值
     this.setData({
-      showTime: false,
-      time: getdate(a)
-    });
+      id_mess: event.detail,
+    })
+  },
+  //备注
+  Input_beizhu(event) {
+    // event.detail 为当前输入的值
+    this.setData({
+      beizhu: event.detail,
+    })
   },
 
+  //确定按钮事件，提交已填的内容
   Push() {
     let that = this;
     if (that.data.time === "" || that.data.didian === "" || that.data.id_sport === "" || that.data.id_mess === "") {
@@ -74,39 +122,39 @@ Page({
         backgroundColor: '#1989fa'
       });
     } else {
-    wx.showModal({
-      content: '填完啦？',
-      cancelText: "再瞅瞅",
-      confirmText: "对头嘞",
-      confirmColor: " #669999",
+      wx.showModal({
+        content: '填完啦？',
+        cancelText: "再瞅瞅",
+        confirmText: "对头嘞",
+        confirmColor: " #669999",
 
-      success(res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-          that.Ntime();
-          wx.showToast({
-            title: '成功',
-            icon: 'success',
-            duration: 2000,
-          });
-        } else if (res.cancel) {
-          console.log('用户点击取消')
+        success(res) {
+          if (res.confirm) {
+            console.log('用户点击确定')
+            that.Ntime();
+            wx.showToast({
+              title: '成功',
+              icon: 'success',
+              duration: 2000,
+            });
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        },
+        fail() {
+          wx.showModal({
+            title: '提示',
+            content: '系统错误，请稍后重试',
+          })
         }
-      },
-      fail() {
-        wx.showModal({
-          title: '提示',
-          content: '系统错误，请稍后重试',
-        })
-      }
-    })
-  }
+      })
+    }
   },
 
-  //获取当前时间
+
   Ntime() {
     let that = this;
-
+    //获取当前时间
     function getNowDate() {
       var date = new Date(),
         month = date.getMonth() + 1,
@@ -137,40 +185,36 @@ Page({
       return timestamp;
     };
     this.setData({
-      Timestamp: gettimestamp()
+      Timestamp: gettimestamp() //传时间戳
     });
 
-
+    //向数据库传数据
     wx.cloud.callFunction({
       name: "sendsport",
       data: {
         type: "sport",
+        touxiang: that.data.touxiang,
+        nickname: that.data.nickname,
+        Nowtime: that.data.Nowtime,
         time: that.data.time,
         didian: that.data.didian,
-        Nowtime: that.data.Nowtime,
         id_sport: that.data.id_sport,
         id_mess: that.data.id_mess,
         beizhu: that.data.beizhu,
-        nickname: that.data.nickname,
-        touxiang: that.data.touxiang,
         Timestamp: that.data.Timestamp,
       },
       success(res) {
         console.log(res);
         wx.cloud.callFunction({
-          name: "getsport",
-          data: { list: that.data.list},
+          name: "getoldsport",
+          data: {
+            listsport: that.data.listsport
+          },
           success(res) {
             that.setData({
-              arrsport: res.result.data
+              arroldsport: res.result.data
             })
           },
-          fail() {
-            wx.showModal({
-              title: '提示',
-              content: '系统错误，请稍后重试',
-            })
-          }
         })
       },
       fail() {
@@ -182,56 +226,12 @@ Page({
 
     })
   },
-  //按钮点击显示时间选择器
-  onTap() {
+
+  //关闭位置授权弹窗
+  onCloseload() {
     this.setData({
-      showTime: true
-    })
-  },
-
-  getUserLocation() {
-    let that = this
-    wx.getSetting({
-      success(res) {
-        console.log(res.authSetting['scope.userLocation'])
-        if (!res.authSetting['scope.userLocation']) {
-          wx.authorize({
-            scope: 'scope.userLocation',
-            success() {
-              console.log(2)
-            },
-            fail() {
-              console.log('1');
-              that.setData({
-                showlocation: true
-              })
-            }
-          })
-        } else {
-          //地址选择
-          wx.chooseLocation({
-            type: 'wgs84',
-            success(res) {
-              that.setData({
-                didian: res.name,
-              })
-            },
-            fail() {
-              wx.showModal({
-                title: '提示',
-                content: '系统错误，请稍后重试',
-              })
-            }
-          })
-        }
-      },
-      fail() {
-        wx.showModal({
-          title: '提示',
-          content: '系统错误，请稍后重试',
-        })
-      }
-    })
+      showlocation: false,
+    });
   },
 
   //引导跳转设置页面
@@ -254,85 +254,133 @@ Page({
     })
   },
 
-  // 折叠面板
-  onChange(event) {
+  // 关闭时间选择器
+  onClose() {
     this.setData({
-      activeNames: event.detail
+      showTime: false,
     });
   },
 
-  // 
-  Input_sport(event) {
-    // event.detail 为当前输入的值
-    this.setData({
-      id_sport: event.detail,
-    })
-  },
-  Input_mess(event) {
-    // event.detail 为当前输入的值
-    this.setData({
-      id_mess: event.detail,
-    })
-  },
-  Input_beizhu(event) {
-    // event.detail 为当前输入的值
-    this.setData({
-      beizhu: event.detail,
-    })
-  },
+  //  转换已选取的时间戳，
+  onInput(event) {
+    var a = event.detail
 
-
-  //上拉加载取回数据
- getlist() {
-  let that = this
-  wx.cloud.callFunction({
-    name: "getsport",
-    data: {
-      list: that.data.list //向后端传list
-    },
-    success(res) {
-      console.log("取到条数了");
-      //成功后条数判断
-      let listjudge = that.data.list - 10;
-      if (res.result.data.length > listjudge) {
-        console.log(3)
-        that.setData({
-          arrsport: res.result.data
-        })
-      }
-      if (res.result.data.length <= listjudge) {
-        console.log(2)
-        that.setData({
-          arrsport: res.result.data,
-          end: true,
-          loading: false
-        })
-      }
-    },
-    fail() {
-      wx.showModal({
-        title: '提示',
-        content: '系统错误，请稍后重试',
-      })
+    function getdate(a) {
+      var now = new Date(a),
+        y = now.getFullYear(),
+        m = now.getMonth() + 1,
+        d = now.getDate(),
+        h = now.getHours(),
+        n = now.getMinutes()
+      return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + (h < 10 ? "0" + h : h) + ":" + (n < 10 ? "0" + n : n);
     }
-  })
-},
+    this.setData({
+      showTime: false,
+      time: getdate(a)
+    });
+  },
+
+  //运动动态部分
+  //运动删除历史事件
+  onDelete(res) {
+    console.log(res);
+    let index = res.currentTarget.dataset.index
+    let arroldsport = this.data.arroldsport
+    let that = this
+    console.log(index);
+    const {
+      position,
+      instance
+    } = res.detail;
+    switch (position) {
+      case 'left':
+      case 'cell':
+        instance.close();
+        break;
+      case 'right':
+        Dialog.confirm({
+          message: '确定删除？',
+          closeOnClickOverlay: true,
+        }).then(() => {
+          console.log('用户点击确定')
+          wx.cloud.callFunction({
+            name: "delete",
+            data: {
+              delid: res.currentTarget.dataset.id
+            },
+            success(res) {
+              arroldsport.splice(index, 1)
+              that.setData({
+                arroldsport,
+              })
+              wx.showToast({
+                title: '完成',
+                icon: 'success',
+                duration: 2000,
+              });
+              instance.close();
+            },
+            fail() {
+              wx.showModal({
+                title: '提示',
+                content: '系统错误，请稍后重试',
+              })
+            }
+          })
+
+        }).catch(() => {
+          console.log('用户点击取消');
+          instance.close();
+        });;
+        break;
+    }
+  },
+
+  //上拉加载取回运动数据
+  getlistsport() {
+    let that = this
+    wx.cloud.callFunction({
+      name: "getoldsport",
+      data: {
+        listsport: that.data.listsport //向后端传listsport
+      },
+      success(res) {
+        console.log("取到条数了");
+        //成功后条数判断
+        let listjudgesport = that.data.listsport - 10;
+        if (res.result.data.length > listjudgesport) {
+          console.log(3)
+          that.setData({
+            arroldsport: res.result.data
+          })
+        }
+        if (res.result.data.length === 0) {
+          console.log("数据库空");
+          that.setData({
+            arroldsport: res.result.data,
+            endsport: false,
+            loadingsport: false
+          })
+        }
+        if (res.result.data.length <= listjudgesport && res.result.data.length !== 0) {
+          console.log(2)
+          that.setData({
+            arroldsport: res.result.data,
+            endsport: true,
+            loadingsport: false
+          })
+        }
+      },
+    })
+  },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     let that = this;
-    this.getlist();
-    wx.cloud.callFunction({
-      name: "getsport",
-      data: { list: that.data.list},
-      success(res) {
-        that.setData({
-          arrsport: res.result.data
-        })
-      }
-    })
+    //运动动态部分
+    that.getlistsport();
   },
 
   /**
@@ -347,6 +395,7 @@ Page({
    */
   onShow: function () {
     let that = this;
+    //缓存用户昵称头像
     wx.getStorage({
       key: "key",
       success(res) {
@@ -379,15 +428,16 @@ Page({
    */
   onPullDownRefresh: function () {
     let that = this;
-
+    //运动动态部分
     wx.cloud.callFunction({
-      name: "getsport",
+      name: "getoldsport",
       data: {
-        list: that.data.list //向后端传list
+        listsport: that.data.listsport
       },
       success(res) {
+
         that.setData({
-          arrsport: res.result.data
+          arroldsport: res.result.data
         })
       },
       fail() {
@@ -396,7 +446,7 @@ Page({
           content: '刷新错误，请稍后重试',
         })
       }
-    });
+    })
 
     setTimeout(() => {
       wx.stopPullDownRefresh({
@@ -418,17 +468,18 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log(this.data.list)
-    console.log("触底了");
     let that = this;
-    if (!that.data.end) {
-      console.log(1)
+
+    //运动动态部分
+    if (!that.data.endsport) {
+      console.log(this.data.listsport)
+      console.log(2)
       that.setData({
-        loading: true,
-        list: that.data.list + 10
+        loadingsport: true,
+        listsport: that.data.listsport + 10
       })
       setTimeout(() => {
-        that.getlist();
+        that.getlistsport();
       }, 500);
     }
   },
