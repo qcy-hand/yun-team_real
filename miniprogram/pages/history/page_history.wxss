@@ -2,6 +2,14 @@
 
 /* page_history页面 */
 
+.searchtab{
+    height:15vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    /* background-color: rgb(251, 251, 251); */
+}
 
 .userinfo {
     display: flex;

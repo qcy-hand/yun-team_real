@@ -35,8 +35,10 @@ Page({
 
     loadingstudy: false, //加载图标
     endstudy: false, //到底文字，无更多条数时激活
-    currentPage: 0 // 取数据时的倍数
+    currentPage: 0, // 取数据时的倍数
     // liststudy: 10, //学习初始取回条数
+
+    getKind:0
   },
 
 //学习发布部分
@@ -174,7 +176,8 @@ Ntime() {
       wx.cloud.callFunction({
         name: "getoldstudy",
         data: {
-          currentPage: that.data.currentPage
+          currentPage: that.data.currentPage,
+          getKind:0
         },
         success(res) {
           that.setData({
@@ -279,7 +282,8 @@ getliststudy() {
   wx.cloud.callFunction({
     name: "getoldstudy",
     data: {
-      currentPage: that.data.currentPage //向后端传currentPage
+      currentPage: that.data.currentPage, //向后端传currentPage
+      getKind:0
     },
     success(res) {
       console.log("取到条数了");
@@ -292,7 +296,7 @@ getliststudy() {
         wx.hideLoading()
       })
 
-      if (length < 10) {
+      if (length < 10 && res.result.data.length !== 0) {
         that.setData({
           endstudy: true,
           loadingstudy: false
@@ -343,7 +347,6 @@ getliststudy() {
     wx.showLoading({
       title:"加载中...",
       mask:true,
-
     })
     //学习动态部分
     that.getliststudy();

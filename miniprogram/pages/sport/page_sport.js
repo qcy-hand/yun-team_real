@@ -37,7 +37,9 @@ Page({
 
     loadingsport: false, //加载图标
     endsport: false, //到底文字，无更多条数时激活
-    currentPage: 0 // 取数据时的倍数
+    currentPage: 0, // 取数据时的倍数
+
+    getKind:0
   },
 
   //运动发布部分
@@ -207,7 +209,8 @@ Page({
         wx.cloud.callFunction({
           name: "getoldsport",
           data: {
-            currentPage: that.data.currentPage
+            currentPage: that.data.currentPage,
+            getKind:0
           },
           success(res) {
             that.setData({
@@ -341,7 +344,8 @@ Page({
     wx.cloud.callFunction({
       name: "getoldsport",
       data: {
-        currentPage: that.data.currentPage //向后端传currentPage
+        currentPage: that.data.currentPage, //向后端传currentPage
+        getKind:0
       },
       success(res) {
         console.log("取到条数了");
@@ -353,7 +357,7 @@ Page({
           wx.hideLoading()
         })
 
-        if (length < 10) {
+        if (length < 10 && res.result.data.length !== 0) {
           that.setData({
             endsport: true,
             loadingsport: false

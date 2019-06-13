@@ -12,12 +12,25 @@ exports.main = async (event, context) => {
     OPENID
   } = cloud.getWXContext()
   const {
-    currentPage
+    currentPage,
+    getKind
   } = event      //=== const currentPage = event.currentPage   //后端返回currentPage
   console.log(OPENID, currentPage);
+  if(getKind === 0){
+    return await db.collection('datas').where({
+      type:"sport",
+      openid:OPENID,
+    }).orderBy('Timestamp', 'desc')
+    .limit(10)
+      .skip(10 * currentPage) //skip跳过
+    .get({
+      success(res){
+        console.log(res);
+      }
+    })
+  }
   return await db.collection('datas').where({
     type:"sport",
-    openid:OPENID,
   }).orderBy('Timestamp', 'desc')
   .limit(10)
     .skip(10 * currentPage) //skip跳过

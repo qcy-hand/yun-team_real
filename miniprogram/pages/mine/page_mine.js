@@ -34,12 +34,6 @@ Page({
    */
   onLoad: function (options) {
     let that = this;
- //加载logo
- wx.showToast({
-  title: "加载中...",
-  icon: "loading",
-  mask:true,
-});
 //缓用户昵称头像
 wx.getStorage({
   key: "key",
@@ -87,19 +81,7 @@ wx.getStorage({
    */
   onPullDownRefresh: function () {
     
-    setTimeout(() => {
-      wx.stopPullDownRefresh({
-        success(res) {
-          console.log(1)
-        },
-        fail() {
-          wx.showModal({
-            title: '提示',
-            content: '系统错误，请稍后重试',
-          })
-        }
-      })
-    }, 500)
+    
   },
 
   /**

@@ -7,9 +7,7 @@
     </view>
   </view>
   <view class="searchtab">
-    <van-search value="{{ vasearch }}" focus placeholder="请输入搜索关键词" use-action-slot bind:search="onSearch" shape="round">
-      <!-- <view slot="action" bind:tap="onSearch" data-search='{{vasearch}}'>搜索</view> -->
-    </van-search>
+    <van-search value="{{ vasearch }}" focus placeholder="请输入搜索关键词" bind:change="onSearch" shape="round"></van-search>
   </view>
   <view style="height:2vw;"></view>
   <view class='content' wx:for="{{article}}" wx:key="125">

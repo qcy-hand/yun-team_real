@@ -1,144 +1,150 @@
 <!-- pages/card/page_card.wxml -->
-<van-tabs animated sticky swipeable bind:change='changetab' color="#ffaf00">
-    <!-- 拼车界面 -->
-    <van-tab title="拼车" title-style="color: #24343b;">
-        <view style="height:4vw;background-color:rgb(251,251,251);"></view>
-        <!-- 输出面板 -->
-        <view class='content'>
-            <view wx:for="{{arroldcar}}" wx:key="125">
-                <van-panel>
-                    <view class="userinfo" slot="header">
-                        <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-                        <view class="headinfo">
-                            <text class="userinfo-nickname">{{item.nickname}}</text>
-                            <view class="nowtime">发布时间：{{item.Nowtime}}</view>
+<view class="all">
+    <view class="searchtab">
+        <van-search value="{{ vasearch }}" bind:focus="turnTo" placeholder="请输入搜索关键词" shape="round">
+        </van-search>
+    </view>
+    <van-tabs sticky swipeable bind:change='changetab' color="#ffaf00">
+        <!-- 拼车界面 -->
+        <van-tab title="拼车" title-style="color: #24343b;">
+            <view style="height:4vw;background-color:rgb(251,251,251);"></view>
+            <!-- 输出面板 -->
+            <view class='content'>
+                <view wx:for="{{arroldcar}}" wx:key="125">
+                    <van-panel>
+                        <view class="userinfo" slot="header">
+                            <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
+                            <view class="headinfo">
+                                <text class="userinfo-nickname">{{item.nickname}}</text>
+                                <view class="nowtime">发布时间：{{item.Nowtime}}</view>
+                            </view>
                         </view>
-                    </view>
-                    <view class="push">
-                        <view class="item">时间：{{item.time}}</view>
-                        <view class="item">起点：{{item.qidian}}</view>
-                        <view class="item">终点：{{item.zhongdian}}</view>
-                    </view>
-                    <van-collapse value="{{ activeNames }}" bind:change="onChange" border="{{border}}">
-                        <view style="padding:1vw 0vw 2vw 12vw;">
-                            <van-collapse-item value="顺道" icon="logistics" name="{{index}}" border="{{border}}">
-                                <view>联系方式：{{ item.id_mess }}</view>
-                                <view>备注：{{ item.beizhu }}</view>
-                            </van-collapse-item>
+                        <view class="push">
+                            <view class="item">时间：{{item.time}}</view>
+                            <view class="item">起点：{{item.qidian}}</view>
+                            <view class="item">终点：{{item.zhongdian}}</view>
                         </view>
-                    </van-collapse>
-                    <view style="height:3vw;background-color:rgb(251,251,251);"></view>
-                </van-panel>
+                        <van-collapse value="{{ activeNames }}" bind:change="onChange" border="{{border}}">
+                            <view style="padding:1vw 0vw 2vw 12vw;">
+                                <van-collapse-item value="顺道" icon="logistics" name="{{index}}" border="{{border}}">
+                                    <view>联系方式：{{ item.id_mess }}</view>
+                                    <view>备注：{{ item.beizhu }}</view>
+                                </van-collapse-item>
+                            </view>
+                        </van-collapse>
+                        <view style="height:3vw;background-color:rgb(251,251,251);"></view>
+                    </van-panel>
+                </view>
+                <view class="loading" wx:if="{{loadingcar}}">
+                    <van-loading type="spinner" color="#333366" size="5vw" />
+                </view>
+                <view wx:if="{{endcar}}" class="newsdown">已经到底了哦~</view>
             </view>
-            <view class="loading" wx:if="{{loadingcar}}">
-                <van-loading type="spinner" color="#333366" size="5vw" />
-            </view>
-            <view wx:if="{{endcar}}" class="newsdown">已经到底了哦~</view>
-        </view>
-    </van-tab>
-    <!-- 运动界面 -->
-    <van-tab title="运动" title-style="color: #24343b;">
-        <view style="height:4vw;background-color:rgb(251,251,251);"></view>
-        <view class="hissport">
-            <view class='content' wx:for="{{arroldsport}}" wx:key="121">
-                <van-panel>
-                    <view class="userinfo" slot="header">
-                        <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-                        <view class="headinfo">
-                            <text class="userinfo-nickname">{{item.nickname}}</text>
-                            <view class="nowtime">发布时间：{{item.Nowtime}}</view>
+        </van-tab>
+        <!-- 运动界面 -->
+        <van-tab title="运动" title-style="color: #24343b;">
+            <view style="height:4vw;background-color:rgb(251,251,251);"></view>
+            <view class="hissport">
+                <view class='content' wx:for="{{arroldsport}}" wx:key="121">
+                    <van-panel>
+                        <view class="userinfo" slot="header">
+                            <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
+                            <view class="headinfo">
+                                <text class="userinfo-nickname">{{item.nickname}}</text>
+                                <view class="nowtime">发布时间：{{item.Nowtime}}</view>
+                            </view>
                         </view>
-                    </view>
-                    <view class="push">
-                        <view class="item">时间：{{item.time}}</view>
-                        <view class="item">地点：{{item.didian}}</view>
-                        <view class="item">运动项目：{{item.id_sport}}</view>
-                    </view>
-                    <van-collapse border="{{border}}" value="{{ activeNames }}" bind:change="onChange">
-                        <view style="padding:1vw 0vw 2vw 12vw;">
-                            <van-collapse-item border="{{border}}" value="结伴" icon="friends-o" name="{{index}}">
-                                <view>联系方式：{{item.id_mess}}</view>
-                                <view>备注：{{item.beizhu}}</view>
-                            </van-collapse-item>
+                        <view class="push">
+                            <view class="item">时间：{{item.time}}</view>
+                            <view class="item">地点：{{item.didian}}</view>
+                            <view class="item">运动项目：{{item.id_sport}}</view>
                         </view>
-                    </van-collapse>
-                    <view style="height:3vw;background-color:rgb(251,251,251);"></view>
-                </van-panel>
+                        <van-collapse border="{{border}}" value="{{ activeNames }}" bind:change="onChange">
+                            <view style="padding:1vw 0vw 2vw 12vw;">
+                                <van-collapse-item border="{{border}}" value="结伴" icon="friends-o" name="{{index}}">
+                                    <view>联系方式：{{item.id_mess}}</view>
+                                    <view>备注：{{item.beizhu}}</view>
+                                </van-collapse-item>
+                            </view>
+                        </van-collapse>
+                        <view style="height:3vw;background-color:rgb(251,251,251);"></view>
+                    </van-panel>
+                </view>
+                <view class="loading" wx:if="{{loadingsport}}">
+                    <van-loading type="spinner" color="#333366" size="5vw" />
+                </view>
+                <view wx:if="{{endsport}}" class="newsdown">已经到底了哦~</view>
             </view>
-            <view class="loading" wx:if="{{loadingsport}}">
-                <van-loading type="spinner" color="#333366" size="5vw" />
-            </view>
-            <view wx:if="{{endsport}}" class="newsdown">已经到底了哦~</view>
-        </view>
-    </van-tab>
-    <!-- 学习界面 -->
-    <van-tab title="学习" title-style="color: #24343b;">
-        <view style="height:4vw;background-color:rgb(251,251,251);"></view>
-        <view class="hisstudy">
-            <view class='content' wx:for="{{arroldstudy}}" wx:key="122">
-                <van-panel>
-                    <view class="userinfo" slot="header">
-                        <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-                        <view class="headinfo">
-                            <text class="userinfo-nickname">{{item.nickname}}</text>
-                            <view class="nowtime">发布时间：{{item.Nowtime}}</view>
+        </van-tab>
+        <!-- 学习界面 -->
+        <van-tab title="学习" title-style="color: #24343b;">
+            <view style="height:4vw;background-color:rgb(251,251,251);"></view>
+            <view class="hisstudy">
+                <view class='content' wx:for="{{arroldstudy}}" wx:key="122">
+                    <van-panel>
+                        <view class="userinfo" slot="header">
+                            <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
+                            <view class="headinfo">
+                                <text class="userinfo-nickname">{{item.nickname}}</text>
+                                <view class="nowtime">发布时间：{{item.Nowtime}}</view>
+                            </view>
                         </view>
-                    </view>
-                    <view class="push">
-                        <view class="item">时间：{{item.time}}</view>
-                        <view class="item">地点：{{item.didian_study}}</view>
-                        <view class="item">学习项目：{{item.id_study}}</view>
-                    </view>
-                    <van-collapse border="{{border}}" value="{{ activeNames }}" bind:change="onChange">
-                        <view style="padding:1vw 0vw 2vw 12vw;">
-                            <van-collapse-item border="{{border}}" value="一起进步" icon="records" name="{{index}}">
-                                <view>联系方式：{{ item.id_mess }}</view>
-                                <view>备注：{{ item.beizhu }}</view>
-                            </van-collapse-item>
+                        <view class="push">
+                            <view class="item">时间：{{item.time}}</view>
+                            <view class="item">地点：{{item.didian_study}}</view>
+                            <view class="item">学习项目：{{item.id_study}}</view>
                         </view>
-                    </van-collapse>
-                    <view style="height:3vw;background-color:rgb(251,251,251);"></view>
-                </van-panel>
+                        <van-collapse border="{{border}}" value="{{ activeNames }}" bind:change="onChange">
+                            <view style="padding:1vw 0vw 2vw 12vw;">
+                                <van-collapse-item border="{{border}}" value="一起进步" icon="records" name="{{index}}">
+                                    <view>联系方式：{{ item.id_mess }}</view>
+                                    <view>备注：{{ item.beizhu }}</view>
+                                </van-collapse-item>
+                            </view>
+                        </van-collapse>
+                        <view style="height:3vw;background-color:rgb(251,251,251);"></view>
+                    </van-panel>
+                </view>
+                <view class="loading" wx:if="{{loadingstudy}}">
+                    <van-loading type="spinner" color="#333366" size="5vw" />
+                </view>
+                <view wx:if="{{endstudy}}" class="newsdown">已经到底了哦~</view>
             </view>
-            <view class="loading" wx:if="{{loadingstudy}}">
-                <van-loading type="spinner" color="#333366" size="5vw" />
-            </view>
-            <view wx:if="{{endstudy}}" class="newsdown">已经到底了哦~</view>
-        </view>
-    </van-tab>
-    <!-- 自定义界面 -->
-    <van-tab title="自定义" title-style="color: #24343b;">
-        <view style="height:4vw;background-color:rgb(251,251,251);"></view>
-        <view class="hiscus">
-            <view wx:for="{{arroldcustomize}}" wx:key="123">
-                <van-panel>
-                    <view class="userinfo" slot="header">
-                        <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-                        <view class="headinfo">
-                            <text class="userinfo-nickname">{{item.nickname}}</text>
-                            <view class="nowtime">发布时间：{{item.Nowtime}}</view>
+        </van-tab>
+        <!-- 自定义界面 -->
+        <van-tab title="自定义" title-style="color: #24343b;">
+            <view style="height:4vw;background-color:rgb(251,251,251);"></view>
+            <view class="hiscus">
+                <view wx:for="{{arroldcustomize}}" wx:key="123">
+                    <van-panel>
+                        <view class="userinfo" slot="header">
+                            <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
+                            <view class="headinfo">
+                                <text class="userinfo-nickname">{{item.nickname}}</text>
+                                <view class="nowtime">发布时间：{{item.Nowtime}}</view>
+                            </view>
                         </view>
-                    </view>
-                    <view class="push">
-                        <view class="item">时间：{{item.time}}</view>
-                        <view class="item">地点：{{item.didian_customize}}</view>
-                        <view class="item">项目：{{item.id_customize}}</view>
-                    </view>
-                    <van-collapse border="{{border}}" value="{{ activeNames }}" bind:change="onChange">
-                        <view style="padding:1vw 0vw 2vw 12vw;">
-                            <van-collapse-item border="{{border}}" value="了解下" icon="add-o" name="{{index}}">
-                                <view>联系方式：{{ item.id_mess }}</view>
-                                <view>备注：{{item.beizhu}}</view>
-                            </van-collapse-item>
+                        <view class="push">
+                            <view class="item">时间：{{item.time}}</view>
+                            <view class="item">地点：{{item.didian_customize}}</view>
+                            <view class="item">项目：{{item.id_customize}}</view>
                         </view>
-                    </van-collapse>
-                    <view style="height:3vw;background-color:rgb(251,251,251);"></view>
-                </van-panel>
+                        <van-collapse border="{{border}}" value="{{ activeNames }}" bind:change="onChange">
+                            <view style="padding:1vw 0vw 2vw 12vw;">
+                                <van-collapse-item border="{{border}}" value="了解下" icon="add-o" name="{{index}}">
+                                    <view>联系方式：{{ item.id_mess }}</view>
+                                    <view>备注：{{item.beizhu}}</view>
+                                </van-collapse-item>
+                            </view>
+                        </van-collapse>
+                        <view style="height:3vw;background-color:rgb(251,251,251);"></view>
+                    </van-panel>
+                </view>
+                <view class="loading" wx:if="{{loadingcus}}">
+                    <van-loading type="spinner" color="#333366" size="5vw" />
+                </view>
+                <view wx:if="{{endcus}}" class="newsdown">已经到底了哦~</view>
             </view>
-            <view class="loading" wx:if="{{loadingcus}}">
-                <van-loading type="spinner" color="#333366" size="5vw" />
-            </view>
-            <view wx:if="{{endcus}}" class="newsdown">已经到底了哦~</view>
-        </view>
-    </van-tab>
-</van-tabs>
+        </van-tab>
+    </van-tabs>
+</view>

@@ -31,11 +31,11 @@ Page({
       url: '../customize/page_customize'
     });
   },
-  tz_search: function () {
-    wx.navigateTo({
-      url: '../search/page_search'
-    });
-  },
+  // tz_search: function () {
+  //   wx.navigateTo({
+  //     url: '../search/page_search'
+  //   });
+  // },
 
   /**
    * 生命周期函数--监听页面加载

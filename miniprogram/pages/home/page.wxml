@@ -50,7 +50,7 @@
                 <li style="color:#336666;font-size:13px;">Custom items</li>
             </view>
         </view>
-        <view class="search hezi" bindtap="tz_search">
+        <!-- <view class="search hezi" bindtap="tz_search">
             <view>
                 <image src="https://neauhand.hhp.im/img/search1.png" alt="" class="search_img"></image>
             </view>
@@ -58,5 +58,5 @@
                 <li style="font-size:17px; color:#333366; padding:0 0 2vw 0;">搜索</li>
                 <li style="color:#336666;font-size:13px;">Searching</li>
             </view>
-        </view>
+        </view> -->
     </view>

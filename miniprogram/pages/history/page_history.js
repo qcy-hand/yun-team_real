@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+
     tabnum: 0, //tab索引
 
     activeNames: ['1'], //折叠面板
@@ -45,15 +46,61 @@ Page({
     // listcus: 10, //自定义初始取回条数
     currentPage: 0, // 取数据时的倍数
 
+    getKind: Number, //后端决定渲染个人或者所有人的参数
+
+  },
+
+  turnTo(){
+    wx.navigateTo({
+      url: '../search/page_search'
+    });
   },
 
   //切换标签
   changetab(res) {
     console.log(typeof (res.detail.index))
     this.setData({
-      tabnum: res.detail.index
+      tabnum: res.detail.index,
+      currentPage:0
     })
+    // if (this.data.tabnum === 0) {
+    //   wx.cloud.callFunction({
+    //     name: "getoldcar",
+    //     data: {
+    //       currentPage: that.data.currentPage
+    //     },
+    //     success(res) {
+    //       that.setData({
+    //         arroldcar: res.result.data,
+    //       })
+    //     },
+    //   })
+    // }
+    if (this.data.tabnum === 1) {
+      wx.showLoading({
+        title: "加载中...",
+        mask: true,
+      });
+      this.getlistsport()
+    }
+
+    if (this.data.tabnum === 2) {
+      wx.showLoading({
+        title: "加载中...",
+        mask: true,
+      });
+      this.getliststudy()
+    }
+
+    if (this.data.tabnum === 3) {
+      wx.showLoading({
+        title: "加载中...",
+        mask: true,
+      });
+      this.getlistcus()
+    }
   },
+
 
   // 折叠面板
   onChange(event) {
@@ -69,19 +116,22 @@ Page({
       name: "getoldcar",
       data: {
         // listcar: that.data.listcar //向后端传listcar
-        currentPage: that.data.currentPage
+        currentPage: that.data.currentPage,
+        getKind: 1
       },
       success(res) {
         console.log("取到条数了");
+        console.log(that.data.currentPage);
         let arroldcar = that.data.arroldcar.concat(res.result.data); //连接两个数组
         let length = res.result.data.length;
         that.setData({
           arroldcar: arroldcar,
         }, () => {
-          wx.hideLoading()
+          wx.hideLoading();
+          wx.stopPullDownRefresh();
         })
 
-        if (length < 10) {
+        if (length < 10 && res.result.data.length !== 0) {
           that.setData({
             loadingcar: false,
             endcar: true,
@@ -113,13 +163,15 @@ Page({
         //     loadingcar: false
         //   })
         // }
-      },fail() {
+      },
+      fail() {
         wx.hideLoading();
-            wx.showModal({
-              title: '提示',
-              content: '加载错误，请稍后重试',
-            })
-          }
+        wx.stopPullDownRefresh();
+        wx.showModal({
+          title: '提示',
+          content: '加载错误，请下拉刷新试试',
+        })
+      }
     })
   },
 
@@ -129,42 +181,36 @@ Page({
     wx.cloud.callFunction({
       name: "getoldsport",
       data: {
-        currentPage: that.data.currentPage //向后端传currentPage
+        currentPage: that.data.currentPage, //向后端传currentPage
+        getKind: 1
       },
       success(res) {
         console.log("取到条数了");
-let arroldsport = this.data.arroldsport.concat(res.result.data);
-let length = res.result.data.length;
+        let arroldsport = that.data.arroldsport.concat(res.result.data);
+        let length = res.result.data.length;
 
-that.setData({
-  arroldsport:arroldsport,
-})
+        that.setData({
+          arroldsport: arroldsport,
+        }, () => {
+          wx.hideLoading();
+          wx.stopPullDownRefresh();
+        })
 
-        //成功后条数判断
-        // let listjudgesport = that.data.listsport - 10;
-        // if (res.result.data.length > listjudgesport) {
-        //   console.log(3)
-        //   that.setData({
-        //     arroldsport: res.result.data
-        //   })
-        // }
-        // if (res.result.data.length === 0) {
-        //   console.log("数据库空");
-        //   that.setData({
-        //     arroldsport: res.result.data,
-        //     endsport: false,
-        //     loadingsport: false
-        //   })
-        // }
-        // if (res.result.data.length <= listjudgesport && res.result.data.length !== 0) {
-        //   console.log(2)
-        //   that.setData({
-        //     arroldsport: res.result.data,
-        //     endsport: true,
-        //     loadingsport: false
-        //   })
-        // }
+        if (length < 10 && res.result.data.length !== 0) {
+          that.setData({
+            loadingsport: false,
+            endsport: true
+          })
+        }
       },
+      fail() {
+        wx.hideLoading();
+        wx.stopPullDownRefresh();
+        wx.showModal({
+          title: '提示',
+          content: '加载错误，请下拉刷新试试',
+        })
+      }
     })
   },
 
@@ -174,35 +220,37 @@ that.setData({
     wx.cloud.callFunction({
       name: "getoldstudy",
       data: {
-        liststudy: that.data.liststudy //向后端传liststudy
+        // liststudy: that.data.liststudy //向后端传liststudy
+        currentPage: that.data.currentPage,
+        getKind: 1
       },
       success(res) {
         console.log("取到条数了");
-        //成功后条数判断
-        let listjudgestudy = that.data.liststudy - 10;
-        if (res.result.data.length > listjudgestudy) {
-          console.log(3)
+        let arroldstudy = that.data.arroldstudy.concat(res.result.data);
+        let length = res.result.data.length;
+
+        that.setData({
+          arroldstudy: arroldstudy,
+        }, () => {
+          wx.hideLoading();
+          wx.stopPullDownRefresh();
+        })
+
+        if (length < 10 && res.result.data.length !== 0) {
           that.setData({
-            arroldstudy: res.result.data
-          })
-        }
-        if (res.result.data.length === 0) {
-          console.log("数据库空");
-          that.setData({
-            arroldstudy: res.result.data,
-            endstudy: false,
-            loadingstudy: false
-          })
-        }
-        if (res.result.data.length <= listjudgestudy && res.result.data.length !== 0) {
-          console.log(2)
-          that.setData({
-            arroldstudy: res.result.data,
-            endstudy: true,
-            loadingstudy: false
+            loadingstudy: false,
+            endstudy: true
           })
         }
       },
+      fail() {
+        wx.hideLoading();
+        wx.stopPullDownRefresh();
+        wx.showModal({
+          title: '提示',
+          content: '加载错误，请下拉刷新试试',
+        })
+      }
     })
   },
 
@@ -212,35 +260,35 @@ that.setData({
     wx.cloud.callFunction({
       name: "getoldcustom",
       data: {
-        listcus: that.data.listcus //向后端传listcus
+        currentPage: that.data.currentPage, //向后端传currentPage
+        getKind: 1
       },
       success(res) {
         console.log("取到条数了");
-        //成功后条数判断
-        let listjudgecus = that.data.listcus - 10;
-        if (res.result.data.length > listjudgecus) {
-          console.log(3)
+        let arroldcustomize = that.data.arroldcustomize.concat(res.result.data) //连接两个数组
+        let length = res.result.data.length
+        that.setData({
+          arroldcustomize: arroldcustomize
+        }, () => {
+          wx.hideLoading();
+          wx.stopPullDownRefresh();
+        })
+
+        if (length < 10 && res.result.data.length !== 0) {
           that.setData({
-            arroldcustomize: res.result.data
-          })
-        }
-        if (res.result.data.length === 0) {
-          console.log(2)
-          that.setData({
-            arroldcustomize: res.result.data,
-            endcus: false,
-            loadingcus: false
-          })
-        }
-        if (res.result.data.length <= listjudgecus && res.result.data.length !== 0) {
-          console.log(2)
-          that.setData({
-            arroldcustomize: res.result.data,
             endcus: true,
             loadingcus: false
           })
         }
       },
+      fail() {
+        wx.hideLoading();
+        wx.stopPullDownRefresh();
+        wx.showModal({
+          title: '提示',
+          content: '加载错误，请下拉刷新试试',
+        })
+      }
     })
   },
 
@@ -304,6 +352,12 @@ that.setData({
     let that = this;
     //页面加载过程中调用函数进行授权判断
     that.hislogin();
+    //加载logo
+    wx.showLoading({
+      title: "加载中...",
+      mask: true,
+    });
+    that.getlistcar();
 
     // //经过500毫秒后加载图标
     // setTimeout(() => {
@@ -341,61 +395,22 @@ that.setData({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    let that = this;
-    //每次页面加载过程中调取数据并封装
-
-    if(this.data.tabnum === 0){
-      wx.cloud.callFunction({
-        name: "getoldcar",
-        data: {
-          currentPage: that.data.currentPage
-        },
-        success(res) {
-          that.setData({
-            arroldcar: res.result.data,
-          })
-        },
-      })
-    }
-    
-if(this.data.tabnum === 1){
-  
-}
-    // wx.cloud.callFunction({
-    //   name: "getoldsport",
-    //   data: {
-    //     // listsport: that.data.listsport
-    //   },
-    //   success(res) {
-    //     that.setData({
-    //       arroldsport: res.result.data
-    //     })
-    //   },
-    // })
-
-    // wx.cloud.callFunction({
-    //   name: "getoldstudy",
-    //   data: {
-    //     // liststudy: that.data.liststudy
-    //   },
-    //   success(res) {
-    //     that.setData({
-    //       arroldstudy: res.result.data
-    //     })
-    //   }
-    // })
-
-    // wx.cloud.callFunction({
-    //   name: 'getoldcustom',
-    //   data: {
-    //     // listcus: that.data.listcus
-    //   },
-    //   success(res) {
-    //     that.setData({
-    //       arroldcustomize: res.result.data
-    //     })
-    //   }
-    // })
+    // let that = this;
+    // //每次页面加载过程中调取数据并封装
+    // console.log(this.data.currentPage);
+    // if (this.data.tabnum === 0) {
+    //   wx.cloud.callFunction({
+    //     name: "getoldcar",
+    //     data: {
+    //       currentPage: that.data.currentPage
+    //     },
+    //     success(res) {
+    //       that.setData({
+    //         arroldcar: res.result.data,
+    //       })
+    //     },
+    //   })
+    // }
   },
 
   /**
@@ -416,62 +431,40 @@ if(this.data.tabnum === 1){
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    let that = this;
-    wx.cloud.callFunction({
-      name: "getoldcar",
-      data: {
-        // listcar: that.data.listcar
-      },
-      success(res) {
-        that.setData({
-          arroldcar: res.result.data
-        })
-      },
-    })
+    // let that = this;
+    if(this.data.tabnum === 0){
+this.getlistcar()
+    }
 
-    wx.cloud.callFunction({
-      name: "getoldsport",
-      data: {
-        // listsport: that.data.listsport
-      },
-      success(res) {
-        that.setData({
-          arroldsport: res.result.data
-        })
-      },
-    })
+    if(this.data.tabnum === 1){
+      this.getlistsport()
+    }
+    if (this.data.tabnum === 2) {
+      
+          this.getliststudy();
+    }
+    if (this.data.tabnum === 3) {
+          this.getlistcus();
+    }
+    // wx.cloud.callFunction({
+    //   name: "getoldcar",
+    //   data: {
+    //     // listcar: that.data.listcar
+    //   },
+    //   success(res) {
+    //     that.setData({
+    //       arroldcar: res.result.data
+    //     })
+    //   },
+    // })
 
-    wx.cloud.callFunction({
-      name: "getoldstudy",
-      data: {
-        // liststudy: that.data.liststudy
-      },
-      success(res) {
-        that.setData({
-          arroldstudy: res.result.data
-        })
-      },
-    })
-
-    wx.cloud.callFunction({
-      name: "getoldcustom",
-      data: {
-        // listcus: that.data.listcus
-      },
-      success(res) {
-        that.setData({
-          arroldcustomize: res.result.data
-        })
-      },
-    })
-
-    setTimeout(() => {
-      wx.stopPullDownRefresh({
-        success(res) {
-          console.log(1)
-        },
-      })
-    }, 1000)
+    // setTimeout(() => {
+    //   wx.stopPullDownRefresh({
+    //     success(res) {
+    //       console.log(1)
+    //     },
+    //   })
+    // }, 1000)
   },
 
   /**
@@ -483,6 +476,7 @@ if(this.data.tabnum === 1){
 
     console.log("触底了");
     if (this.data.tabnum === 0) {
+      console.log(that.data.currentPage);
       if (!that.data.endcar) {
         that.setData({
           loadingcar: true,
@@ -495,41 +489,32 @@ if(this.data.tabnum === 1){
 
     if (this.data.tabnum === 1) {
       if (!that.data.endsport) {
-        console.log(this.data.listsport)
-        console.log(2)
-        that.setData({
+        this.setData({
           loadingsport: true,
-          listsport: that.data.listsport + 10
+          currentPage: ++currentPage
+        }, () => {
+          this.getlistsport()
         })
-        setTimeout(() => {
-          that.getlistsport();
-        }, 500);
       }
     }
     if (this.data.tabnum === 2) {
       if (!that.data.endstudy) {
-        console.log(this.data.liststudy)
-        console.log(1)
         that.setData({
           loadingstudy: true,
-          liststudy: that.data.liststudy + 10
+          currentPage: ++currentPage
+        }, () => {
+          this.getliststudy();
         })
-        setTimeout(() => {
-          that.getliststudy();
-        }, 500);
       }
     }
     if (this.data.tabnum === 3) {
       if (!that.data.endcus) {
-        console.log(this.data.listcus)
-        console.log(1)
-        that.setData({
+        this.setData({
           loadingcus: true,
-          listcus: that.data.listcus + 10
+          currentPage: ++currentPage
+        }, () => {
+          this.getlistcus();
         })
-        setTimeout(() => {
-          that.getlistcus();
-        }, 500);
       }
     }
   },
