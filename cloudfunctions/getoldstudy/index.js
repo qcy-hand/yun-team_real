@@ -8,13 +8,15 @@ const db = cloud.database()
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  const wxContext = cloud.getWXContext()
-  const liststudy = event.liststudy//后端返回list
+  const {OPENID} = cloud.getWXContext()
+  const {currentPage} = event //=== const currentPage = event.currentPage   //后端返回currentPage
+  console.log(OPENID, currentPage);
   return await db.collection('datas').where({
     type:"study",
-    openid:wxContext.OPENID,
+    openid:OPENID,
   }).orderBy('Timestamp', 'desc')
-  .limit(liststudy) //限制返回数量为 list 条(后端取回list从而赋给前端)
+  .limit(10)
+  .skip(10 * currentPage) //skip跳过
   .get({
     success(res){
       console.log(res);

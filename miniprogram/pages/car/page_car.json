@@ -14,7 +14,10 @@
 
 
     "van-dialog": "/vant-weapp/dist/dialog/index",
-    "van-swipe-cell": "/vant-weapp/dist/swipe-cell/index"
+    "van-swipe-cell": "/vant-weapp/dist/swipe-cell/index",
+
+    "van-icon": "/vant-weapp/dist/icon/index"
+
    
   }
 

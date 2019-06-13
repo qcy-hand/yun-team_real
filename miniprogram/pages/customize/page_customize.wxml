@@ -27,20 +27,28 @@
       <van-datetime-picker type="datetime" value="{{ currentDate }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" bind:confirm="onInput" bind:cancel="onClose" />
     </van-popup>
   </view>
-  <view style="height:10vw;background-color:rgb(251,251,251);"></view>
+  <view style="height:5vw;"></view>
+  <view class="haspush">
+    <van-icon custom-style="display:flex;align-items:center;" name="certificate" size="20px" />
+    <view>已</view>
+    <view>发</view>
+    <view>布</view>
+  </view>
+  <view style="height:5vw;"></view>
   <!-- 输出面板 -->
   <view class="hiscus">
-    <view style="height:5vw;background-color:rgb(251,251,251);"></view>
+    <view style="height:2vw;background-color:rgb(251,251,251);"></view>
     <view class='content' wx:for="{{arroldcustomize}}" wx:key="223">
       <van-dialog id="van-dialog" />
       <van-swipe-cell id="swipe-cell" right-width="{{ 90 }}" async-close bind:close="onDelete" data-id='{{item._id}}' data-index='{{index}}'>
-        <view class="userinfo">
-          <block>
+        <van-panel>
+          <view class="userinfo" slot="header">
             <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-            <text class="userinfo-nickname">{{item.nickname}}</text>
-          </block>
-        </view>
-        <van-panel desc="发布时间:{{item.Nowtime}}">
+            <view class="headinfo">
+              <text class="userinfo-nickname">{{item.nickname}}</text>
+              <view class="nowtime">发布时间：{{item.Nowtime}}</view>
+            </view>
+          </view>
           <view class="push">
             <view class="item">时间:{{item.time}}</view>
             <view class="item">地点:{{item.didian_customize}}</view>

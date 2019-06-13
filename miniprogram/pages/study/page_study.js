@@ -16,7 +16,6 @@ Page({
     currentDate: new Date().getTime(),
 
     showTime: false,//时间选择器默认
-    scope: true, //用户信息授权
 
     //学习发布上传内容
     touxiang:"",//头像
@@ -36,7 +35,8 @@ Page({
 
     loadingstudy: false, //加载图标
     endstudy: false, //到底文字，无更多条数时激活
-    liststudy: 10, //学习初始取回条数
+    currentPage: 0 // 取数据时的倍数
+    // liststudy: 10, //学习初始取回条数
   },
 
 //学习发布部分
@@ -173,7 +173,9 @@ Ntime() {
     success(res) {
       wx.cloud.callFunction({
         name: "getoldstudy",
-        data: { liststudy: that.data.liststudy},
+        data: {
+          currentPage: that.data.currentPage
+        },
         success(res) {
           that.setData({
             arroldstudy:res.result.data
@@ -277,35 +279,59 @@ getliststudy() {
   wx.cloud.callFunction({
     name: "getoldstudy",
     data: {
-      liststudy: that.data.liststudy //向后端传liststudy
+      currentPage: that.data.currentPage //向后端传currentPage
     },
     success(res) {
       console.log("取到条数了");
-      //成功后条数判断
-      let listjudgestudy = that.data.liststudy - 10;
-      if (res.result.data.length > listjudgestudy) {
-        console.log(3)
+      console.log(res);
+      let arroldstudy = that.data.arroldstudy.concat(res.result.data)//连接两个数组
+      let length = res.result.data.length
+      that.setData({
+        arroldstudy: arroldstudy
+      }, () => {
+        wx.hideLoading()
+      })
+
+      if (length < 10) {
         that.setData({
-          arroldstudy: res.result.data
-        })
-      }
-      if (res.result.data.length === 0) {
-        console.log("数据库空");
-        that.setData({
-          arroldstudy: res.result.data,
-          endstudy: false,
-          loadingstudy: false
-        })
-      }
-      if (res.result.data.length <= listjudgestudy && res.result.data.length !== 0) {
-        console.log(2)
-        that.setData({
-          arroldstudy: res.result.data,
           endstudy: true,
           loadingstudy: false
         })
       }
-    },
+
+
+
+      //成功后条数判断
+      // let listjudgestudy = that.data.liststudy - 10;
+      // if (res.result.data.length > listjudgestudy) {
+      //   console.log(3)
+      //   that.setData({
+      //     arroldstudy: res.result.data
+      //   })
+      // }
+      // if (res.result.data.length === 0) {
+      //   console.log("数据库空");
+      //   that.setData({
+      //     arroldstudy: res.result.data,
+      //     endstudy: false,
+      //     loadingstudy: false
+      //   })
+      // }
+      // if (res.result.data.length <= listjudgestudy && res.result.data.length !== 0) {
+      //   console.log(2)
+      //   that.setData({
+      //     arroldstudy: res.result.data,
+      //     endstudy: true,
+      //     loadingstudy: false
+      //   })
+      // }
+    },fail() {
+      wx.hideLoading();
+          wx.showModal({
+            title: '提示',
+            content: '加载错误，请稍后重试',
+          })
+        }
   })
 },
   /**
@@ -313,9 +339,26 @@ getliststudy() {
    */
   onLoad: function (options) {
     let that = this;
+//加载logo
+    wx.showLoading({
+      title:"加载中...",
+      mask:true,
 
+    })
     //学习动态部分
     that.getliststudy();
+    
+    //缓用户昵称头像
+    wx.getStorage({
+      key: "key",
+      success(res) {
+        console.log(res);
+        that.setData({
+          nickname: res.data.nickName,
+          touxiang: res.data.avatarUrl,
+        })
+      }
+    })
   },
 
   /**
@@ -329,18 +372,7 @@ getliststudy() {
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    let that = this;
-    //缓存用户昵称头像
-    wx.getStorage({
-      key:"key",
-      success(res){
-        console.log(res);
-        that.setData({
-          nickname:res.data.nickName,
-          touxiang:res.data.avatarUrl,
-        })
-      }
-    })
+
   },
 
   /**
@@ -361,34 +393,34 @@ getliststudy() {
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    let that = this;
+    // let that = this;
    
-    //学习动态部分
-    wx.cloud.callFunction({
-      name: "getoldstudy",
-      data: {
-        liststudy: that.data.liststudy
-      },
-      success(res) {
-        that.setData({
-          arroldstudy: res.result.data
-        })
-      },
-      fail() {
-        wx.showModal({
-          title: '提示',
-          content: '刷新错误，请稍后重试',
-        })
-      }
-    })
+    // //学习动态部分
+    // wx.cloud.callFunction({
+    //   name: "getoldstudy",
+    //   data: {
+    //     liststudy: that.data.liststudy
+    //   },
+    //   success(res) {
+    //     that.setData({
+    //       arroldstudy: res.result.data
+    //     })
+    //   },
+    //   fail() {
+    //     wx.showModal({
+    //       title: '提示',
+    //       content: '刷新错误，请稍后重试',
+    //     })
+    //   }
+    // })
    
-    setTimeout(() => {
-      wx.stopPullDownRefresh({
-        success(res) {
-          console.log(1)
-        },
-      })
-    }, 1000)
+    // setTimeout(() => {
+    //   wx.stopPullDownRefresh({
+    //     success(res) {
+    //       console.log(1)
+    //     },
+    //   })
+    // }, 1000)
   },
 
   /**
@@ -396,18 +428,16 @@ getliststudy() {
    */
   onReachBottom: function () {
     let that = this;
-   
+   let currentPage = this.data.currentPage
     //学习动态部分
     if (!that.data.endstudy) {
-      console.log(this.data.liststudy)
       console.log(1)
       that.setData({
         loadingstudy: true,
-        liststudy: that.data.liststudy + 10
+        currentPage:++currentPage
+      },()=>{
+        this.getliststudy();
       })
-      setTimeout(() => {
-        that.getliststudy();
-      }, 500);
     }
   },
 

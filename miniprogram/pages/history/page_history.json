@@ -9,7 +9,10 @@
       "van-collapse-item": "/vant-weapp/dist/collapse-item/index",
 
       "van-loading": "/vant-weapp/dist/loading/index"
+
+      
       
 
   }
+  
 }

@@ -10,12 +10,13 @@
 .userinfo-avatar {
     width: 10vw;
     height: 10vw;
-    padding: 0 0 0 3vw;
+    margin: 0 0 0 4vw;
+    border-radius: 4px;
     overflow: hidden;
 }
 
 .userinfo-nickname {
-    font-size: 3vw;
+    font-size: 15px;
     height: 10vw;
     line-height: 10vw;
     padding: 0 0 0 3vw;
@@ -27,7 +28,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 3.7vw;
+    font-size: 14px;
 
 }
 
@@ -50,7 +51,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    font-size: 3.5vw;
+    font-size: 16px;
     background-color: rgb(251, 251, 251);
 }
 
@@ -67,7 +68,7 @@
     text-align: center;
     position: relative;
     width: 100vw;
-    font-size: 3vw;
+    font-size: 16px;
     color:#ccc;
 }
 

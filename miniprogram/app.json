@@ -1,16 +1,16 @@
 {
   "pages": [
-    "pages/login/login",
     "pages/home/page",
-    "pages/car/page_car",
     "pages/sport/page_sport",
+    "pages/car/page_car",
+    "pages/login/login",
+    "pages/search/page_search",
+    "pages/history/page_history",
     "pages/study/page_study",
     "pages/customize/page_customize",
-    "pages/history/page_history",
     "pages/mine/page_mine",
     "pages/attention/page_attention",
     "pages/feedback/page_feedback",
-    "pages/search/page_search",
     "pages/aboutus/aboutus",
     "pages/admin/admin",
     "pages/admin-delete/admin-delete",
@@ -23,8 +23,7 @@
     "navigationBarBackgroundColor": "#f3f6f6",
     "navigationBarTitleText": "组队卜",
     "navigationBarTextStyle": "black",
-    "onReachBottomDistance": 1,
-    "enablePullDownRefresh": true
+    "onReachBottomDistance": 1
   },
   "tabBar": {
     "borderStyle": "white",

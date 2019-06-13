@@ -16,7 +16,6 @@ Page({
     currentDate: new Date().getTime(),
 
     showTime: false, //时间选择器默认
-    scope: true, //用户信息授权
 
     //自定义发布上传内容
     touxiang: '', //头像
@@ -36,7 +35,8 @@ Page({
 
     loadingcus: false, //加载图标
     endcus: false, //到底文字，无更多条数时激活
-    listcus: 10, //拼车初始取回条数
+    // listcus: 10, //拼车初始取回条数
+    currentPage: 0 // 取数据时的倍数
   },
 
   //自定义发布部分
@@ -176,7 +176,7 @@ Page({
         wx.cloud.callFunction({
           name: 'getoldcustom',
           data: {
-            listcus: that.data.listcus
+            currentPage: that.data.currentPage
           },
           success(res) {
             that.setData({
@@ -282,35 +282,56 @@ Page({
     wx.cloud.callFunction({
       name: "getoldcustom",
       data: {
-        listcus: that.data.listcus //向后端传listcus
+        currentPage: that.data.currentPage //向后端传currentPage
       },
       success(res) {
         console.log("取到条数了");
-        //成功后条数判断
-        let listjudgecus = that.data.listcus - 10;
-        if (res.result.data.length > listjudgecus) {
-          console.log(3)
+        let arroldcustomize = that.data.arroldcustomize.concat(res.result.data)//连接两个数组
+        let length = res.result.data.length
+        that.setData({
+          arroldcustomize: arroldcustomize
+        }, () => {
+          wx.hideLoading()
+        })
+
+        if (length < 10) {
           that.setData({
-            arroldcustomize: res.result.data
-          })
-        }
-        if (res.result.data.length === 0) {
-          console.log(2)
-          that.setData({
-            arroldcustomize: res.result.data,
-            endcus: false,
-            loadingcus: false
-          })
-        }
-        if (res.result.data.length <= listjudgecus && res.result.data.length !== 0) {
-          console.log(2)
-          that.setData({
-            arroldcustomize: res.result.data,
             endcus: true,
             loadingcus: false
           })
         }
-      },
+
+        //成功后条数判断
+        // let listjudgecus = that.data.listcus - 10;
+        // if (res.result.data.length > listjudgecus) {
+        //   console.log(3)
+        //   that.setData({
+        //     arroldcustomize: res.result.data
+        //   })
+        // }
+        // if (res.result.data.length === 0) {
+        //   console.log(2)
+        //   that.setData({
+        //     arroldcustomize: res.result.data,
+        //     endcus: false,
+        //     loadingcus: false
+        //   })
+        // }
+        // if (res.result.data.length <= listjudgecus && res.result.data.length !== 0) {
+        //   console.log(2)
+        //   that.setData({
+        //     arroldcustomize: res.result.data,
+        //     endcus: true,
+        //     loadingcus: false
+        //   })
+        // }
+      },fail() {
+        wx.hideLoading();
+            wx.showModal({
+              title: '提示',
+              content: '加载错误，请稍后重试',
+            })
+          }
     })
   },
 
@@ -320,7 +341,25 @@ Page({
   onLoad: function (options) {
     let that = this;
     //自定义动态部分
+    //加载logo
+    wx.showLoading({
+      title: "加载中...",
+      mask: true,
+    });
     that.getlistcus();
+    
+    //缓用户昵称头像
+    wx.getStorage({
+      key: "key",
+      success(res) {
+        console.log(res);
+        that.setData({
+          nickname: res.data.nickName,
+          touxiang: res.data.avatarUrl,
+        })
+      }
+    })
+
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -333,18 +372,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    let that = this;
-    //缓存用户昵称头像
-    wx.getStorage({
-      key: "key",
-      success(res) {
-        console.log(res);
-        that.setData({
-          nickname: res.data.nickName,
-          touxiang: res.data.avatarUrl,
-        })
-      }
-    })
+    
 
   },
 
@@ -366,33 +394,33 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    let that = this;
-    //自定义动态部分
-    wx.cloud.callFunction({
-      name: "getoldcustom",
-      data: {
-        listcus: that.data.listcus
-      },
-      success(res) {
-        that.setData({
-          arroldcustomize: res.result.data
-        })
-      },
-      fail() {
-        wx.showModal({
-          title: '提示',
-          content: '刷新错误，请稍后重试',
-        })
-      }
-    })
+    // let that = this;
+    // //自定义动态部分
+    // wx.cloud.callFunction({
+    //   name: "getoldcustom",
+    //   data: {
+    //     listcus: that.data.listcus
+    //   },
+    //   success(res) {
+    //     that.setData({
+    //       arroldcustomize: res.result.data
+    //     })
+    //   },
+    //   fail() {
+    //     wx.showModal({
+    //       title: '提示',
+    //       content: '刷新错误，请稍后重试',
+    //     })
+    //   }
+    // })
 
-    setTimeout(() => {
-      wx.stopPullDownRefresh({
-        success(res) {
-          console.log(1)
-        },
-      })
-    }, 1000)
+    // setTimeout(() => {
+    //   wx.stopPullDownRefresh({
+    //     success(res) {
+    //       console.log(1)
+    //     },
+    //   })
+    // }, 1000)
   },
 
   /**
@@ -400,17 +428,15 @@ Page({
    */
   onReachBottom: function () {
     let that = this;
-
+    let currentPage = this.data.currentPage
     if (!that.data.endcus) {
-      console.log(this.data.listcus)
       console.log(1)
-      that.setData({
+      this.setData({
         loadingcus: true,
-        listcus: that.data.listcus + 10
+        currentPage: ++currentPage
+      }, () => {
+        this.getlistcus();
       })
-      setTimeout(() => {
-        that.getlistcus();
-      }, 500);
     }
   },
 

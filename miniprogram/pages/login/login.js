@@ -8,49 +8,25 @@ Page({
     scope: true,
   },
 
+  //页面加载过程中调用该函数
   login() {
     let that = this
     wx.getSetting({
       success(res) {
         if (!res.authSetting['scope.userInfo']) {
+          console.log("weishouquan");
           that.setData({
-            scope: true
+            scope: true//用户如果没授权，则显示登陆按钮。再由登陆按钮调用获取信息的函数
           })
         } else {
-          that.checkStorage()
+          console.log("yishouquan");
+          that.checkStorage()//已授权，调用check
         }
       }
     })
   },
-
-  checkStorage() {
-    let that = this
-    wx.getStorage({
-      key: 'key',
-      success(res) {
-        that.tohome()
-      },
-      fail(res) {
-        wx.getUserInfo({
-          success(res) {
-            wx.setStorage({
-              key: 'key',
-              data: {
-                nickName: res.userInfo.nickName,
-                avatarUrl: res.userInfo.avatarUrl
-              },
-              success(res) {
-                that.tohome()
-              },
-              fail() { }
-            })
-          },
-          fail() { }
-        })
-      }
-    })
-  },
-
+  
+  //获取信息的函数
   getUserInfo() {
     let that = this
     wx.getUserInfo({
@@ -62,6 +38,7 @@ Page({
             avatarUrl: res.userInfo.avatarUrl
           },
           success(res) {
+            console.log("yihuancun");
             console.log(res)
             that.setUserInfo()
           },
@@ -74,26 +51,60 @@ Page({
     })
   },
 
+
+  checkStorage() {
+    let that = this
+    wx.getStorage({
+      key: 'key',
+      success(res) {
+        console.log("yicheckhuoqu");
+        that.tohistory()
+      },
+      fail(res) {
+        wx.getUserInfo({
+          success(res) {
+            wx.setStorage({
+              key: 'key',
+              data: {
+                nickName: res.userInfo.nickName,
+                avatarUrl: res.userInfo.avatarUrl
+              },
+              success(res) {
+                console.log("cunchuwancheng")
+                that.tohistory()
+              },
+              fail() { }
+            })
+          },
+          fail() { }
+        })
+      }
+    })
+  },
+
+ //从本地缓存中异步获取指定 key 的内容
   setUserInfo() {
     let that = this
     wx.getStorage({
       key: 'key',
       success(res) {
-        wx.cloud.callFunction({
+        console.log(res)
+        wx.cloud.callFunction({//上传到后端
           name: 'setUserInfo',
           data: {
             nickName: res.data.nickName,
             avatarUrl: res.data.avatarUrl
           },
           success(res) {
-            that.tohome()
+            console.log("yishangchuan");
+            that.tohistory()
           }
         })
       }
     })
   },
 
-  tohome() {
+  tohistory() {
     wx.reLaunch({
       url: '/pages/history/page_history'
     })

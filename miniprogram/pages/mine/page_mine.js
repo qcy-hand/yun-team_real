@@ -33,6 +33,24 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let that = this;
+ //加载logo
+ wx.showToast({
+  title: "加载中...",
+  icon: "loading",
+  mask:true,
+});
+//缓用户昵称头像
+wx.getStorage({
+  key: "key",
+  success(res) {
+    console.log(res);
+    that.setData({
+      nickname: res.data.nickName,
+      touxiang: res.data.avatarUrl,
+    })
+  }
+})
 
   },
 

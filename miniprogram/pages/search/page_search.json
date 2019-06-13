@@ -7,7 +7,7 @@
     "van-cell-group": "/vant-weapp/dist/cell-group/index",
     "van-dialog": "/vant-weapp/dist/dialog/index",
     "van-collapse": "/vant-weapp/dist/collapse/index",
-    "van-collapse-item": "/vant-weapp/dist/collapse-item/index"
-
+    "van-collapse-item": "/vant-weapp/dist/collapse-item/index",
+    "van-loading": "/vant-weapp/dist/loading/index"
   }
 }

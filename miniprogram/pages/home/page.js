@@ -41,7 +41,16 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
+    //经过2000毫秒后加载图标
+    // setTimeout(() => {
+    //   //加载logo
+    // wx.showToast({
+    //   title: "加载中...",
+    //   icon: "loading",
+    //   mask:true,
+    // });
+    // }, 2000)
+
   },
 
   /**
@@ -77,19 +86,19 @@ Page({
    */
   onPullDownRefresh: function () {
    
-    setTimeout(() => {
-      wx.stopPullDownRefresh({
-        success(res) {
-          console.log(1)
-        },
-        fail() {
-          wx.showModal({
-            title: '提示',
-            content: '系统错误，请稍后重试',
-          })
-        }
-      })
-    }, 500)
+    // setTimeout(() => {
+    //   wx.stopPullDownRefresh({
+    //     success(res) {
+    //       console.log(1)
+    //     },
+    //     fail() {
+    //       wx.showModal({
+    //         title: '提示',
+    //         content: '系统错误，请稍后重试',
+    //       })
+    //     }
+    //   })
+    // }, 500)
     
   },
 

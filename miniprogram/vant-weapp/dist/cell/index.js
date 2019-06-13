@@ -27,6 +27,7 @@ VantComponent({
             type: Boolean,
             value: true
         }
+
     },
     methods: {
         onClick(event) {

@@ -17,8 +17,8 @@
                 <image src="https://neauhand.hhp.im/img/pc1.png" class="car_img"></image>
             </view>
             <view class="car_li">
-                <li style="font-size:4.5vw; color:#333366; padding:0 0 2vw 0;">组队拼车</li>
-                <li style="color:#336666;font-size:3.5vw; ">Car pooling</li>
+                <li style="font-size:17px; color:#333366; padding:0 0 2vw 0;">组队拼车</li>
+                <li style="color:#336666;font-size:13px; ">Car pooling</li>
             </view>
         </view>
         <view class="sport hezi" bindtap="tz_sport">
@@ -26,10 +26,10 @@
                 <image src="https://neauhand.hhp.im/img/yd2.png" alt="" class="sport_img"></image>
             </view>
             <view class="sport_li">
-                <li style="font-size:4.5vw; color:#333366; padding:0 0 2vw 0;">
+                <li style="font-size:17px; color:#333366; padding:0 0 2vw 0;">
                     组队运动{{userAvatarUrl}}
                 </li>
-                <li style="color:#336666;font-size:3.5vw;">Team sports</li>
+                <li style="color:#336666;font-size:13px;">Team sports</li>
             </view>
         </view>
         <view class="study hezi" bindtap="tz_study">
@@ -37,8 +37,8 @@
                 <image src="https://neauhand.hhp.im/img/xx1.png" alt="" class="study_img"></image>
             </view>
             <view class="study_li">
-                <li style="font-size:4.5vw; color:#333366; padding:0 0 2vw 0;">组队学习</li>
-                <li style="color:#336666;font-size:3.5vw;">Team learning</li>
+                <li style="font-size:17px; color:#333366; padding:0 0 2vw 0;">组队学习</li>
+                <li style="color:#336666;font-size:13px;">Team learning</li>
             </view>
         </view>
         <view class="customize hezi" bindtap="tz_customize">
@@ -46,8 +46,8 @@
                 <image src="https://neauhand.hhp.im/img/zdy1.png" alt="" class="customize_img"></image>
             </view>
             <view class="customize_li">
-                <li style="font-size:4.5vw; color:#333366; padding:0 0 2vw 0;">自定义</li>
-                <li style="color:#336666;font-size:3.5vw;">Custom items</li>
+                <li style="font-size:17px; color:#333366; padding:0 0 2vw 0;">自定义</li>
+                <li style="color:#336666;font-size:13px;">Custom items</li>
             </view>
         </view>
         <view class="search hezi" bindtap="tz_search">
@@ -55,8 +55,8 @@
                 <image src="https://neauhand.hhp.im/img/search1.png" alt="" class="search_img"></image>
             </view>
             <view class="search_li">
-                <li style="font-size:4.5vw; color:#333366; padding:0 0 2vw 0;">搜索</li>
-                <li style="color:#336666;font-size:3.5vw;">Searching</li>
+                <li style="font-size:17px; color:#333366; padding:0 0 2vw 0;">搜索</li>
+                <li style="color:#336666;font-size:13px;">Searching</li>
             </view>
         </view>
     </view>

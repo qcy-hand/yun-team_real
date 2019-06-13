@@ -7,22 +7,35 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    height: 12vw;
+    height: 15vw;
 
 }
 
 .userinfo-avatar {
     width: 10vw;
     height: 10vw;
-    padding: 0 0 0 3vw;
+    margin: 0 0 0 4vw;
+    border-radius: 4px;
     overflow: hidden;
 }
 
+.headinfo{
+    height:10vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .userinfo-nickname {
-    font-size: 3vw;
-    height: 10vw;
-    line-height: 10vw;
-    padding: 0 0 0 3vw;
+    font-size: 13px;
+    padding: 0 0 0 2vw;
+    color: #333366;
+}
+
+.nowtime{
+    font-size: 12px;
+    padding: 0 0 0 2vw;
+    color: #999;
 }
 
 .push {
@@ -30,21 +43,20 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    font-size: 3.7vw;
-
+    /* align-items: center; */
+    font-size: 14px;
+    padding:1vw 0vw 1vw 0vw;
 }
 
 .item {
-    width: 93vw;
-    padding: 1vw 0 1vw 1vw;
+    width: 80vw;
+    padding: 1vw 0 1vw 16vw;
 }
 
 .loading{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color:#fcfcee;
 }
 
 .newsdown {
@@ -53,7 +65,7 @@
     text-align: center;
     position: relative;
     width: 100vw;
-    font-size: 3vw;
+    font-size: 12px;
     color:#ccc;
 }
 

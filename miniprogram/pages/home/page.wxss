@@ -53,7 +53,7 @@ image {
     height: 6vw;
     line-height: 6vw;
     color: #333366;
-    font-size: 3vw;
+    font-size: 13px;
     border-bottom: 1px solid #999999;
     white-space: nowrap;
     overflow: hidden;
@@ -63,8 +63,8 @@ image {
 .Input_trans {
     height: 6vw;
     list-style: none;
-    color: #24343b;
-    font-size: 3vw;
+    color: #336666;
+    font-size: 12px;
     line-height: 6vw;
     white-space: nowrap;
     overflow: hidden;
@@ -73,8 +73,6 @@ image {
 
 .Input li {
     list-style: none;
-    color: #24343b;
-    font-size: 3vw;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

@@ -18,7 +18,6 @@ Page({
 
     showTime: false, //时间选择器默认
     showlocation: false, //位置选择
-    scope: true, //用户信息授权
 
     //运动发布上传内容
     touxiang: '', //头像
@@ -38,7 +37,7 @@ Page({
 
     loadingsport: false, //加载图标
     endsport: false, //到底文字，无更多条数时激活
-    listsport: 10, //运动初始取回条数
+    currentPage: 0 // 取数据时的倍数
   },
 
   //运动发布部分
@@ -208,7 +207,7 @@ Page({
         wx.cloud.callFunction({
           name: "getoldsport",
           data: {
-            listsport: that.data.listsport
+            currentPage: that.data.currentPage
           },
           success(res) {
             that.setData({
@@ -342,35 +341,56 @@ Page({
     wx.cloud.callFunction({
       name: "getoldsport",
       data: {
-        listsport: that.data.listsport //向后端传listsport
+        currentPage: that.data.currentPage //向后端传currentPage
       },
       success(res) {
         console.log("取到条数了");
-        //成功后条数判断
-        let listjudgesport = that.data.listsport - 10;
-        if (res.result.data.length > listjudgesport) {
-          console.log(3)
+        let arroldsport = that.data.arroldsport.concat(res.result.data)//连接两个数组
+        let length = res.result.data.length
+        that.setData({
+          arroldsport: arroldsport
+        }, () => {
+          wx.hideLoading()
+        })
+
+        if (length < 10) {
           that.setData({
-            arroldsport: res.result.data
-          })
-        }
-        if (res.result.data.length === 0) {
-          console.log("数据库空");
-          that.setData({
-            arroldsport: res.result.data,
-            endsport: false,
-            loadingsport: false
-          })
-        }
-        if (res.result.data.length <= listjudgesport && res.result.data.length !== 0) {
-          console.log(2)
-          that.setData({
-            arroldsport: res.result.data,
             endsport: true,
             loadingsport: false
           })
         }
-      },
+
+        //成功后条数判断
+        // let listjudgesport = that.data.listsport - 10;
+        // if (res.result.data.length > listjudgesport) {
+        //   console.log(3)
+        //   that.setData({
+        //     arroldsport: res.result.data
+        //   })
+        // }
+        // if (res.result.data.length === 0) {
+        //   console.log("数据库空");
+        //   that.setData({
+        //     arroldsport: res.result.data,
+        //     endsport: false,
+        //     loadingsport: false
+        //   })
+        // }
+        // if (res.result.data.length <= listjudgesport && res.result.data.length !== 0) {
+        //   console.log(2)
+        //   that.setData({
+        //     arroldsport: res.result.data,
+        //     endsport: true,
+        //     loadingsport: false
+        //   })
+        // }
+      },fail() {
+        wx.hideLoading();
+            wx.showModal({
+              title: '提示',
+              content: '加载错误，请稍后重试',
+            })
+          }
     })
   },
 
@@ -380,7 +400,24 @@ Page({
   onLoad: function (options) {
     let that = this;
     //运动动态部分
+    wx.showLoading({
+      title: "加载中...",
+      mask: true,
+    });
     that.getlistsport();
+   
+    //缓用户昵称头像
+    wx.getStorage({
+      key: "key",
+      success(res) {
+        console.log(res);
+        that.setData({
+          nickname: res.data.nickName,
+          touxiang: res.data.avatarUrl,
+        })
+      }
+    })
+
   },
 
   /**
@@ -394,18 +431,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    let that = this;
-    //缓存用户昵称头像
-    wx.getStorage({
-      key: "key",
-      success(res) {
-        console.log(res);
-        that.setData({
-          nickname: res.data.nickName,
-          touxiang: res.data.avatarUrl,
-        })
-      }
-    })
+    
 
   },
 
@@ -427,40 +453,40 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    let that = this;
-    //运动动态部分
-    wx.cloud.callFunction({
-      name: "getoldsport",
-      data: {
-        listsport: that.data.listsport
-      },
-      success(res) {
+    // let that = this;
+    // //运动动态部分
+    // wx.cloud.callFunction({
+    //   name: "getoldsport",
+    //   data: {
+    //     listsport: that.data.listsport
+    //   },
+    //   success(res) {
 
-        that.setData({
-          arroldsport: res.result.data
-        })
-      },
-      fail() {
-        wx.showModal({
-          title: '提示',
-          content: '刷新错误，请稍后重试',
-        })
-      }
-    })
+    //     that.setData({
+    //       arroldsport: res.result.data
+    //     })
+    //   },
+    //   fail() {
+    //     wx.showModal({
+    //       title: '提示',
+    //       content: '刷新错误，请稍后重试',
+    //     })
+    //   }
+    // })
 
-    setTimeout(() => {
-      wx.stopPullDownRefresh({
-        success(res) {
-          console.log(1)
-        },
-        fail() {
-          wx.showModal({
-            title: '提示',
-            content: '系统错误，请稍后重试',
-          })
-        }
-      })
-    }, 1000)
+    // setTimeout(() => {
+    //   wx.stopPullDownRefresh({
+    //     success(res) {
+    //       console.log(1)
+    //     },
+    //     fail() {
+    //       wx.showModal({
+    //         title: '提示',
+    //         content: '系统错误，请稍后重试',
+    //       })
+    //     }
+    //   })
+    // }, 1000)
 
   },
 
@@ -469,18 +495,17 @@ Page({
    */
   onReachBottom: function () {
     let that = this;
+    let currentPage = this.data.currentPage;
 
     //运动动态部分
     if (!that.data.endsport) {
-      console.log(this.data.listsport)
       console.log(2)
-      that.setData({
+      this.setData({
         loadingsport: true,
-        listsport: that.data.listsport + 10
+        currentPage:++currentPage
+      },()=>{
+        this.getlistsport()
       })
-      setTimeout(() => {
-        that.getlistsport();
-      }, 500);
     }
   },
 

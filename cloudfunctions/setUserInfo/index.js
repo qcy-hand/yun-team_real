@@ -8,7 +8,7 @@ const db = cloud.database()
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   console.log(event)
-  return await db.collection('counters').add({
+  return await db.collection('counters').add({//向数据库添加缓存数据
     data: {
       nickName: event.nickName,
       avatarUrl: event.avatarUrl,

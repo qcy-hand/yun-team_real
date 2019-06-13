@@ -18,7 +18,6 @@ Page({
 
     showTime: false, //时间选择器默认
     showlocation: false, //位置选择
-    scope: true, //用户信息授权
 
     //拼车发布上传内容
     touxiang: '', //头像
@@ -38,7 +37,7 @@ Page({
 
     loadingcar: false, //加载图标
     endcar: false, //到底文字，无更多条数时激活
-    listcar: 10, //拼车初始取回条数
+    currentPage: 0 // 取数据时的倍数
   },
 
 
@@ -240,7 +239,7 @@ Page({
         wx.cloud.callFunction({
           name: "getoldcar",
           data: {
-            listcar: that.data.listcar
+            currentPage: that.data.currentPage
           },
           success(res) {
             that.setData({
@@ -368,39 +367,68 @@ Page({
 
   //上拉加载取回拼车数据
   getlistcar() {
+    console.log("object");
     let that = this
     wx.cloud.callFunction({
       name: "getoldcar",
       data: {
-        listcar: that.data.listcar //向后端传listcar
+        currentPage: that.data.currentPage //向后端传currentPage
       },
       success(res) {
         console.log("取到条数了");
-        //成功后条数判断
-        let listjudgecar = that.data.listcar - 10;
-        if (res.result.data.length > listjudgecar) {
-          console.log(3)
+        console.log(res);
+        let arroldcar = that.data.arroldcar.concat(res.result.data)//连接两个数组
+        let length = res.result.data.length
+        that.setData({
+          arroldcar: arroldcar
+        }, () => {
+          wx.hideLoading()
+        })
+
+        if (length < 10) {
           that.setData({
-            arroldcar: res.result.data
-          })
-        }
-        if (res.result.data.length === 0) {
-          console.log(2)
-          that.setData({
-            arroldcar: res.result.data,
-            endcar: false,
-            loadingcar: false
-          })
-        }
-        if (res.result.data.length <= listjudgecar && res.result.data.length !== 0) {
-          console.log(2)
-          that.setData({
-            arroldcar: res.result.data,
             endcar: true,
             loadingcar: false
           })
         }
-      },
+
+        //成功后条数判断
+        // let listjudgecar = that.data.listcar - 10;
+        // if (res.result.data.length > listjudgecar) {
+        //   console.log(3)
+        //   that.setData({
+        //     arroldcar: res.result.data
+        //   },()=>{
+        //     wx.hideLoading()
+        //   })
+        // }
+        // if (res.result.data.length === 0) {
+        //   console.log(2)
+        //   that.setData({
+        //     arroldcar: res.result.data,
+        //     endcar: false,
+        //     loadingcar: false
+        //   },()=>{
+        //     wx.hideLoading()
+        //   })
+        // }
+        // if (res.result.data.length <= listjudgecar && res.result.data.length !== 0) {
+        //   console.log(2)
+        //   that.setData({
+        //     arroldcar: res.result.data,
+        //     endcar: true,
+        //     loadingcar: false
+        //   },()=>{
+        //     wx.hideLoading()
+        //   })
+        // }
+      },fail() {
+        wx.hideLoading();
+            wx.showModal({
+              title: '提示',
+              content: '加载错误，请稍后重试',
+            })
+          }
     })
   },
 
@@ -411,7 +439,33 @@ Page({
   onLoad: function (options) {
     let that = this;
     //拼车动态部分
+    wx.showLoading({
+      title: "加载中...",
+      mask: true,
+    });
     that.getlistcar();
+
+    //经过2000毫秒后加载图标
+    // setTimeout(() => {
+    //   //加载logo
+    //   wx.showToast({
+    //     title: "加载中...",
+    //     icon: "loading",
+    //     mask: true,
+    //   });
+    // }, 2000)
+
+    //缓用户昵称头像
+    wx.getStorage({
+      key: "key",
+      success(res) {
+        console.log(res);
+        that.setData({
+          nickname: res.data.nickName,
+          touxiang: res.data.avatarUrl,
+        })
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -422,19 +476,8 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () { //待定
-    let that = this;
-    //缓存用户昵称头像
-    wx.getStorage({
-      key: 'key',
-      success(res) {
-        console.log(res)
-        that.setData({
-          nickname: res.data.nickName,
-          touxiang: res.data.avatarUrl,
-        })
-      }
-    })
+  onShow: function () {
+
   },
 
   /**
@@ -451,34 +494,34 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    let that = this;
-    //拼车动态部分
-    wx.cloud.callFunction({
-      name: "getoldcar",
-      data: {
-        listcar: that.data.listcar
-      },
-      success(res) {
-        console.log(res.result.data.length);
-        that.setData({
-          arroldcar: res.result.data
-        })
-      },
-      fail() {
-        wx.showModal({
-          title: '提示',
-          content: '刷新错误，请稍后重试',
-        })
-      }
-    })
+    // let that = this;
+    // //拼车动态部分
+    // wx.cloud.callFunction({
+    //   name: "getoldcar",
+    //   data: {
+      // currentPage: that.data.currentPage
+    //   },
+    //   success(res) {
+    //     console.log(res.result.data.length);
+    //     that.setData({
+    //       arroldcar: res.result.data
+    //     })
+    //   },
+    //   fail() {
+    //     wx.showModal({
+    //       title: '提示',
+    //       content: '刷新错误，请稍后重试',
+    //     })
+    //   }
+    // })
 
-    setTimeout(() => {
-      wx.stopPullDownRefresh({
-        success(res) {
-          console.log(1)
-        },
-      })
-    }, 1000)
+    // setTimeout(() => {
+    //   wx.stopPullDownRefresh({
+    //     success(res) {
+    //       console.log(1)
+    //     },
+    //   })
+    // }, 1000)
   },
 
   /**
@@ -486,19 +529,18 @@ Page({
    */
   onReachBottom: function (res) {
     let that = this;
+    let currentPage = this.data.currentPage
 
     //拼车动态部分
     if (!that.data.endcar) {
-      console.log(this.data.listcar)
       console.log("触底了");
       console.log(1)
-      that.setData({
+      this.setData({
         loadingcar: true,
-        listcar: that.data.listcar + 10
+        currentPage: ++currentPage
+      }, () => {
+        this.getlistcar();
       })
-      setTimeout(() => {
-        that.getlistcar();
-      }, 500);
     }
   },
 
