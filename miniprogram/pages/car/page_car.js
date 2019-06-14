@@ -20,14 +20,15 @@ Page({
     showlocation: false, //位置选择
 
     //拼车发布上传内容
-    touxiang: '', //头像
+    touxiang: "", //头像
     nickname: "", //昵称
-    Nowtime: '', //发布时间
-    time: '', //选择的时间 
-    qidian: '', //起点
-    zhongdian: '', //终点
-    id_mess: '', //联系方式
-    beizhu: '', //备注
+    Nowtime: "", //发布时间
+    // dateTimeStamp:"",
+    time: "", //选择的时间 
+    qidian: "", //起点
+    zhongdian: "", //终点
+    id_mess: "", //联系方式
+    beizhu: "", //备注
     Timestamp: "", //时间戳 用于排序
 
     //拼车动态部分
@@ -39,7 +40,7 @@ Page({
     endcar: false, //到底文字，无更多条数时激活
     currentPage: 0, // 取数据时的倍数
 
-    getKind:Number
+    getKind: Number
   },
 
 
@@ -187,6 +188,33 @@ Page({
     let that = this
     //传当前时间
     function getNowDate() {
+    // function getNowDate(dateTimeStamp) {
+    //   var minute = 1000 * 60;
+    //   var hour = minute * 60;
+    //   var day = hour * 24;
+    //   var now = new Date().getTime();
+
+    //   //计算时间差
+    //   var diffvalue = now - dateTimeStamp;
+    //   if (diffvalue < 0) {
+    //     console.log("服务器创建时间获取失败");
+    //     return Nowtime = "刚刚";
+    //   }
+    //   var dayC = diffvalue / day;
+    //   var hourC = diffvalue / hour;
+    //   var minC = diffvalue / minute;
+    //   if (parseInt(dayC) > 1) {
+    //     Nowtime = "" + parseInt(dayC) + "天前";
+    //   } else if (parseInt(dayC) === 1) {
+    //     Nowtime = "昨天";
+    //   } else if (parseInt(hourC) >= 1) {
+    //     Nowtime = "" + parseInt(hourC) + "小时前";
+    //   } else if (parseInt(minC) >= 1) {
+    //     Nowtime = "" + parseInt(minC) + "分钟前";
+    //   } else
+    //     Nowtime = "刚刚";
+    //     return Nowtime;
+
       var date = new Date(),
         month = date.getMonth() + 1,
         strDate = date.getDate(),
@@ -208,6 +236,7 @@ Page({
         " " + hourDate + ":" + minuteDate;
     };
     this.setData({
+      // Nowtime: getNowDate(dateTimeStamp)
       Nowtime: getNowDate()
     });
 
@@ -234,6 +263,7 @@ Page({
         id_mess: that.data.id_mess,
         beizhu: that.data.beizhu,
         Timestamp: that.data.Timestamp,
+        // dateTimeStamp:that.data.dateTimeStamp,
       },
       success(res) {
         console.log(res);
@@ -242,7 +272,7 @@ Page({
           name: "getoldcar",
           data: {
             currentPage: that.data.currentPage,
-            getKind:0
+            getKind: 0
           },
           success(res) {
             that.setData({
@@ -376,12 +406,12 @@ Page({
       name: "getoldcar",
       data: {
         currentPage: that.data.currentPage, //向后端传currentPage
-        getKind:0
+        getKind: 0
       },
       success(res) {
         console.log("取到条数了");
         console.log(res);
-        let arroldcar = that.data.arroldcar.concat(res.result.data)//连接两个数组
+        let arroldcar = that.data.arroldcar.concat(res.result.data) //连接两个数组
         let length = res.result.data.length
         that.setData({
           arroldcar: arroldcar
@@ -426,13 +456,14 @@ Page({
         //     wx.hideLoading()
         //   })
         // }
-      },fail() {
+      },
+      fail() {
         wx.hideLoading();
-            wx.showModal({
-              title: '提示',
-              content: '加载错误，请稍后重试',
-            })
-          }
+        wx.showModal({
+          title: '提示',
+          content: '加载错误，请稍后重试',
+        })
+      }
     })
   },
 
@@ -503,7 +534,7 @@ Page({
     // wx.cloud.callFunction({
     //   name: "getoldcar",
     //   data: {
-      // currentPage: that.data.currentPage
+    // currentPage: that.data.currentPage
     //   },
     //   success(res) {
     //     console.log(res.result.data.length);

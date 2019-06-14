@@ -1,7 +1,7 @@
 <!--miniprogram/pages/admin-delete/admin-delete.wxml-->
 <view class="searchbox">
     <view class="head">
-        <image src="https://neauhand.hhp.im/img/zudui.png" class="logo"></image>
+        <image src="../../img/zudui.png" class="logo"></image>
         <view style="padding:2vw 0 0 0;">To seek,to find!</view>
     </view>
 </view>
@@ -65,7 +65,7 @@
     </van-swipe-cell>
 </view>
 <view class="backnews" wx:if="{{article.length==0}}">
-    <image src="https://neauhand.hhp.im/img/kong.png" class="pickong"></image>
+    <image src="../../img/kong.png" class="pickong"></image>
     <view>什么都没有哦～～</view>
 </view>
 <view class="loading" wx:if="{{loading}}">

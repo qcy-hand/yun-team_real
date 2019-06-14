@@ -1,7 +1,7 @@
 <!-- miniprogram/pages/login/login.wxml -->
 <view class="signonbox">
         <view class="head">
-            <image src="https://neauhand.hhp.im/img/zudui.png" class="logo"></image>
+            <image src="../../img/zudui.png" class="logo"></image>
             <view style="padding:5vw 0 0 0;">
                 Let's team up !
             </view>
