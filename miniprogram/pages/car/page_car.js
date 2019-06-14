@@ -22,15 +22,13 @@ Page({
     //拼车发布上传内容
     touxiang: "", //头像
     nickname: "", //昵称
-    Nowtime: "", //发布时间
-    // dateTimeStamp:"",
     time: "", //选择的时间 
     qidian: "", //起点
     zhongdian: "", //终点
     id_mess: "", //联系方式
     beizhu: "", //备注
     Timestamp: "", //时间戳 用于排序
-
+    thistime: null, //页面加载时的时间戳
     //拼车动态部分
     arroldcar: [], //后端回调的历史数组
     delid: "", //封装完上传到后端需要删除的id
@@ -161,9 +159,9 @@ Page({
       });
     } else {
       wx.showModal({
-        content: '填好啦？',
+        content: '发布咯？',
         cancelText: "再瞅瞅",
-        confirmText: "对头嘞",
+        confirmText: "要得",
         confirmColor: " #669999",
         success(res) {
           if (res.confirm) {
@@ -184,70 +182,44 @@ Page({
     }
   },
 
+
   Ntime() {
     let that = this
     //传当前时间
-    function getNowDate() {
-    // function getNowDate(dateTimeStamp) {
-    //   var minute = 1000 * 60;
-    //   var hour = minute * 60;
-    //   var day = hour * 24;
-    //   var now = new Date().getTime();
+    // function getNowDate() {
 
-    //   //计算时间差
-    //   var diffvalue = now - dateTimeStamp;
-    //   if (diffvalue < 0) {
-    //     console.log("服务器创建时间获取失败");
-    //     return Nowtime = "刚刚";
+    //   var date = new Date(),
+    //     month = date.getMonth() + 1,
+    //     strDate = date.getDate(),
+    //     hourDate = date.getHours(),
+    //     minuteDate = date.getMinutes()
+    //   if (month >= 1 && month <= 9) {
+    //     month = "0" + month;
     //   }
-    //   var dayC = diffvalue / day;
-    //   var hourC = diffvalue / hour;
-    //   var minC = diffvalue / minute;
-    //   if (parseInt(dayC) > 1) {
-    //     Nowtime = "" + parseInt(dayC) + "天前";
-    //   } else if (parseInt(dayC) === 1) {
-    //     Nowtime = "昨天";
-    //   } else if (parseInt(hourC) >= 1) {
-    //     Nowtime = "" + parseInt(hourC) + "小时前";
-    //   } else if (parseInt(minC) >= 1) {
-    //     Nowtime = "" + parseInt(minC) + "分钟前";
-    //   } else
-    //     Nowtime = "刚刚";
-    //     return Nowtime;
-
-      var date = new Date(),
-        month = date.getMonth() + 1,
-        strDate = date.getDate(),
-        hourDate = date.getHours(),
-        minuteDate = date.getMinutes()
-      if (month >= 1 && month <= 9) {
-        month = "0" + month;
-      }
-      if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-      }
-      if (hourDate >= 0 && hourDate <= 9) {
-        hourDate = "0" + hourDate;
-      }
-      if (minuteDate >= 0 && minuteDate <= 9) {
-        minuteDate = "0" + minuteDate;
-      }
-      return month + "-" + strDate +
-        " " + hourDate + ":" + minuteDate;
-    };
-    this.setData({
-      // Nowtime: getNowDate(dateTimeStamp)
-      Nowtime: getNowDate()
-    });
+    //   if (strDate >= 0 && strDate <= 9) {
+    //     strDate = "0" + strDate;
+    //   }
+    //   if (hourDate >= 0 && hourDate <= 9) {
+    //     hourDate = "0" + hourDate;
+    //   }
+    //   if (minuteDate >= 0 && minuteDate <= 9) {
+    //     minuteDate = "0" + minuteDate;
+    //   }
+    //   return month + "-" + strDate +
+    //     " " + hourDate + ":" + minuteDate;
+    // };
+    // this.setData({
+    //   Nowtime: getNowDate()
+    // });
 
     //传时间戳
-    function gettimestamp() {
-      var timestamp = new Date().getTime();
-      return timestamp;
-    };
-    this.setData({
-      Timestamp: gettimestamp()
-    });
+    // function gettimestamp() {
+    //   var timestamp = new Date().getTime();
+    //   return timestamp;
+    // };
+    // this.setData({
+    //   Timestamp: gettimestamp()
+    // });
 
     //向数据库传数据
     wx.cloud.callFunction({
@@ -256,14 +228,13 @@ Page({
         type: 'car',
         touxiang: that.data.touxiang,
         nickname: that.data.nickname,
-        Nowtime: that.data.Nowtime,
+        // Nowtime: that.data.Nowtime,
         time: that.data.time,
         qidian: that.data.qidian,
         zhongdian: that.data.zhongdian,
         id_mess: that.data.id_mess,
         beizhu: that.data.beizhu,
-        Timestamp: that.data.Timestamp,
-        // dateTimeStamp:that.data.dateTimeStamp,
+        Timestamp: new Date().getTime(),
       },
       success(res) {
         console.log(res);
@@ -275,6 +246,14 @@ Page({
             getKind: 0
           },
           success(res) {
+            let ret = res.result.data
+            ret.forEach(element => {
+              // console.log(element);
+              let interlTime = that.NowDate(element.Timestamp)
+              element.interlTime = interlTime
+              // console.log(interlTime);
+            });
+
             that.setData({
               arroldcar: res.result.data,
             })
@@ -288,6 +267,37 @@ Page({
         })
       }
     })
+  },
+
+  //转换发布时间显示格式
+  NowDate(dateTimeStamp) {
+    var minute = 1000 * 60;
+    var hour = minute * 60;
+    var day = hour * 24;
+    var now = new Date().getTime();
+
+    // 计算时间差
+    var diffvalue = now - dateTimeStamp;
+    let result = ''
+    if (diffvalue < 0) {
+      console.log("服务器创建时间获取失败");
+      return result = "刚刚";
+    }
+    var dayC = diffvalue / day;
+    var hourC = diffvalue / hour;
+    var minC = diffvalue / minute;
+    if (parseInt(dayC) > 1) {
+      result = "" + parseInt(dayC) + "天前";
+    } else if (parseInt(dayC) === 1) {
+      result = "昨天";
+    } else if (parseInt(hourC) >= 1) {
+      result = "" + parseInt(hourC) + "小时前";
+    } else if (parseInt(minC) >= 1) {
+      result = "" + parseInt(minC) + "分钟前";
+    } else {
+      result = "刚刚";
+    }
+    return result;
   },
 
   //关闭位置授权弹窗
@@ -361,7 +371,7 @@ Page({
         break;
       case 'right':
         Dialog.confirm({
-          message: '确定删除？',
+          message: '删除咯？',
           closeOnClickOverlay: true,
         }).then(() => {
           console.log('用户点击确定')
@@ -409,10 +419,17 @@ Page({
         getKind: 0
       },
       success(res) {
-        console.log("取到条数了");
-        console.log(res);
-        let arroldcar = that.data.arroldcar.concat(res.result.data) //连接两个数组
-        let length = res.result.data.length
+        let ret = res.result.data
+        ret.forEach(element => {
+          // console.log(element);
+          let interlTime = that.NowDate(element.Timestamp)
+          element.interlTime = interlTime
+          // console.log(interlTime);
+        });
+
+        let arroldcar = that.data.arroldcar.concat(ret) //连接两个数组
+        let length = ret.length
+
         that.setData({
           arroldcar: arroldcar
         }, () => {
@@ -425,37 +442,6 @@ Page({
             loadingcar: false
           })
         }
-
-        //成功后条数判断
-        // let listjudgecar = that.data.listcar - 10;
-        // if (res.result.data.length > listjudgecar) {
-        //   console.log(3)
-        //   that.setData({
-        //     arroldcar: res.result.data
-        //   },()=>{
-        //     wx.hideLoading()
-        //   })
-        // }
-        // if (res.result.data.length === 0) {
-        //   console.log(2)
-        //   that.setData({
-        //     arroldcar: res.result.data,
-        //     endcar: false,
-        //     loadingcar: false
-        //   },()=>{
-        //     wx.hideLoading()
-        //   })
-        // }
-        // if (res.result.data.length <= listjudgecar && res.result.data.length !== 0) {
-        //   console.log(2)
-        //   that.setData({
-        //     arroldcar: res.result.data,
-        //     endcar: true,
-        //     loadingcar: false
-        //   },()=>{
-        //     wx.hideLoading()
-        //   })
-        // }
       },
       fail() {
         wx.hideLoading();

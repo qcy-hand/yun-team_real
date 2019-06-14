@@ -48,7 +48,7 @@
     justify-content: flex-start;
     align-items: center;
     height: 15vw;
-
+padding-top:3vh; 
 }
 
 .userinfo-avatar {

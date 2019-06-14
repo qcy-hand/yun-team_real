@@ -1,6 +1,7 @@
 <!-- pages/feedback/page_feedback.wxml -->
 <view>
     <view style="height:3vh;"></view>
+     <van-notify id="custom-selector" />
     <!-- textarea绑定了失去焦点时的事件 -->
     <form bindsubmit="fabiao">
         <textarea value="{{concent}}" bindblur="bindTextAreaBlur" focus="{{focus}}" placeholder="请输入您遇到的问题或建议（最多300字）" name="" id="" cols="30" rows="10" maxlength="300" placeholder-style="font-size:14px;padding:2vw 0 0 0;" style="padding:0 0 0 5vw"></textarea>

@@ -7,7 +7,6 @@
     <van-tabs sticky swipeable bind:change='changetab' color="#ffaf00">
         <!-- 拼车界面 -->
         <van-tab title="拼车" title-style="color: #24343b;">
-            <view style="height:4vw;background-color:rgb(251,251,251);"></view>
             <!-- 输出面板 -->
             <view class='content'>
                 <view wx:for="{{arroldcar}}" wx:key="125">
@@ -16,7 +15,7 @@
                             <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
                             <view class="headinfo">
                                 <text class="userinfo-nickname">{{item.nickname}}</text>
-                                <view class="nowtime">发布时间：{{item.Nowtime}}</view>
+                                <view class="nowtime">{{item.interlTime}}</view>
                             </view>
                         </view>
                         <view class="push">
@@ -32,18 +31,18 @@
                                 </van-collapse-item>
                             </view>
                         </van-collapse>
-                        <view style="height:3vw;background-color:rgb(251,251,251);"></view>
                     </van-panel>
                 </view>
+                <view style="height:2vh;"></view>
                 <view class="loading" wx:if="{{loadingcar}}">
                     <van-loading type="spinner" color="#333366" size="5vw" />
                 </view>
                 <view wx:if="{{endcar}}" class="newsdown">已经到底了哦~</view>
+                <view style="height:2vh;"></view>
             </view>
         </van-tab>
         <!-- 运动界面 -->
         <van-tab title="运动" title-style="color: #24343b;">
-            <view style="height:4vw;background-color:rgb(251,251,251);"></view>
             <view class="hissport">
                 <view class='content' wx:for="{{arroldsport}}" wx:key="121">
                     <van-panel>
@@ -51,7 +50,7 @@
                             <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
                             <view class="headinfo">
                                 <text class="userinfo-nickname">{{item.nickname}}</text>
-                                <view class="nowtime">发布时间：{{item.Nowtime}}</view>
+                                <view class="nowtime">{{item.interlTime}}</view>
                             </view>
                         </view>
                         <view class="push">
@@ -67,26 +66,27 @@
                                 </van-collapse-item>
                             </view>
                         </van-collapse>
-                        <view style="height:3vw;background-color:rgb(251,251,251);"></view>
                     </van-panel>
                 </view>
+                <view style="height:2vh;"></view>
                 <view class="loading" wx:if="{{loadingsport}}">
                     <van-loading type="spinner" color="#333366" size="5vw" />
                 </view>
                 <view wx:if="{{endsport}}" class="newsdown">已经到底了哦~</view>
+                <view style="height:2vh;"></view>
             </view>
         </van-tab>
         <!-- 学习界面 -->
         <van-tab title="学习" title-style="color: #24343b;">
-            <view style="height:4vw;background-color:rgb(251,251,251);"></view>
             <view class="hisstudy">
                 <view class='content' wx:for="{{arroldstudy}}" wx:key="122">
+                   
                     <van-panel>
                         <view class="userinfo" slot="header">
                             <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
                             <view class="headinfo">
                                 <text class="userinfo-nickname">{{item.nickname}}</text>
-                                <view class="nowtime">发布时间：{{item.Nowtime}}</view>
+                                <view class="nowtime">{{item.interlTime}}</view>
                             </view>
                         </view>
                         <view class="push">
@@ -102,26 +102,28 @@
                                 </van-collapse-item>
                             </view>
                         </van-collapse>
-                        <view style="height:3vw;background-color:rgb(251,251,251);"></view>
+                    
                     </van-panel>
                 </view>
+                <view style="height:2vh;"></view>
                 <view class="loading" wx:if="{{loadingstudy}}">
                     <van-loading type="spinner" color="#333366" size="5vw" />
                 </view>
                 <view wx:if="{{endstudy}}" class="newsdown">已经到底了哦~</view>
+                <view style="height:2vh;"></view>
             </view>
         </van-tab>
         <!-- 自定义界面 -->
         <van-tab title="自定义" title-style="color: #24343b;">
-            <view style="height:4vw;background-color:rgb(251,251,251);"></view>
             <view class="hiscus">
                 <view wx:for="{{arroldcustomize}}" wx:key="123">
+                    
                     <van-panel>
                         <view class="userinfo" slot="header">
                             <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
                             <view class="headinfo">
                                 <text class="userinfo-nickname">{{item.nickname}}</text>
-                                <view class="nowtime">发布时间：{{item.Nowtime}}</view>
+                                <view class="nowtime">{{item.interlTime}}</view>
                             </view>
                         </view>
                         <view class="push">
@@ -137,13 +139,16 @@
                                 </van-collapse-item>
                             </view>
                         </van-collapse>
-                        <view style="height:3vw;background-color:rgb(251,251,251);"></view>
+                    
                     </van-panel>
+
                 </view>
+                <view style="height:2vh;"></view>
                 <view class="loading" wx:if="{{loadingcus}}">
                     <van-loading type="spinner" color="#333366" size="5vw" />
                 </view>
                 <view wx:if="{{endcus}}" class="newsdown">已经到底了哦~</view>
+                <view style="height:2vh;"></view>
             </view>
         </van-tab>
     </van-tabs>

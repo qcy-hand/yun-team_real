@@ -2,8 +2,8 @@
 
 /* page_history页面 */
 
-.searchtab{
-    height:15vw;
+.searchtab {
+    height: 15vw;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -16,7 +16,7 @@
     justify-content: flex-start;
     align-items: center;
     height: 15vw;
-
+    padding-top: 3vh;
 }
 
 .userinfo-avatar {
@@ -27,8 +27,8 @@
     overflow: hidden;
 }
 
-.headinfo{
-    height:10vw;
+.headinfo {
+    height: 10vw;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -40,7 +40,7 @@
     color: #333366;
 }
 
-.nowtime{
+.nowtime {
     font-size: 12px;
     padding: 0 0 0 2vw;
     color: #999;
@@ -53,7 +53,7 @@
     justify-content: center;
     /* align-items: center; */
     font-size: 14px;
-    padding:1vw 0vw 1vw 0vw;
+    padding: 1vw 0vw 1vw 0vw;
 }
 
 .item {
@@ -61,7 +61,7 @@
     padding: 1vw 0 1vw 16vw;
 }
 
-.loading{
+.loading {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -69,12 +69,10 @@
 
 .newsdown {
     padding-top: 2vw;
-    padding-bottom:2vw;
+    padding-bottom: 2vw;
     text-align: center;
     position: relative;
     width: 100vw;
     font-size: 12px;
-    color:#ccc;
+    color: #ccc;
 }
-
-

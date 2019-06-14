@@ -40,6 +40,37 @@ Page({
     }
   },
 
+   //转换发布时间显示格式
+   NowDate(dateTimeStamp) {
+    var minute = 1000 * 60;
+    var hour = minute * 60;
+    var day = hour * 24;
+    var now = new Date().getTime();
+
+    // 计算时间差
+    var diffvalue = now - dateTimeStamp;
+    let result = ''
+    if (diffvalue < 0) {
+      console.log("服务器创建时间获取失败");
+      return result = "刚刚";
+    }
+    var dayC = diffvalue / day;
+    var hourC = diffvalue / hour;
+    var minC = diffvalue / minute;
+    if (parseInt(dayC) > 1) {
+      result = "" + parseInt(dayC) + "天前";
+    } else if (parseInt(dayC) === 1) {
+      result = "昨天";
+    } else if (parseInt(hourC) >= 1) {
+      result = "" + parseInt(hourC) + "小时前";
+    } else if (parseInt(minC) >= 1) {
+      result = "" + parseInt(minC) + "分钟前";
+    } else {
+      result = "刚刚";
+    }
+    return result;
+  },
+
   //搜索内容传值
   onSearch(res) {
     let that = this
@@ -63,7 +94,14 @@ Page({
         currentPage: that.data.currentPage,
       },
       success(res) {
-        console.log(res);
+        let ret = res.result.data
+        ret.forEach(element => {
+          // console.log(element);
+          let interlTime = that.NowDate(element.Timestamp)
+          element.interlTime = interlTime
+          // console.log(interlTime);
+        });
+      
         let article = that.data.article.concat(res.result.data)
         let length = res.result.data.length
         that.setData({
@@ -113,7 +151,14 @@ Page({
         currentPage: that.data.currentPage,
       },
       success(res) {
-        console.log(res);
+        let ret = res.result.data
+        ret.forEach(element => {
+          // console.log(element);
+          let interlTime = that.NowDate(element.Timestamp)
+          element.interlTime = interlTime
+          // console.log(interlTime);
+        });
+       
         let article = that.data.article.concat(res.result.data)
         let length = res.result.data.length
         that.setData({

@@ -20,7 +20,6 @@ Page({
     //学习发布上传内容
     touxiang:"",//头像
     nickname:"",//昵称
-    Nowtime: '',//发布时间
     time: '',//选择活动时间
     didian_study: '',//学习地点
     id_study: '',//学习项目
@@ -90,9 +89,9 @@ Push(){
     });
   } else {
   wx.showModal({
-    content: '填完啦？',
+    content: '发布咯？',
     cancelText:"再瞅瞅",
-    confirmText:"对头嘞",
+    confirmText:"要得",
     confirmColor:" #669999",
     
     success(res) {
@@ -121,42 +120,6 @@ Push(){
 //时间相关
 Ntime() {
   let that = this;
-  console.log('yidianji');
-//获取当前时间
-  function getNowDate() {
-    var date = new Date(),
-      month = date.getMonth() + 1,
-      strDate = date.getDate(),
-      hourDate = date.getHours(),
-      minuteDate = date.getMinutes()
-    if (month >= 1 && month <= 9) {
-      month = "0" + month;
-    }
-    if (strDate >= 0 && strDate <= 9) {
-      strDate = "0" + strDate;
-    }
-    if (hourDate >= 0 && hourDate <= 9) {
-      hourDate = "0" + hourDate;
-    }
-    if (minuteDate >= 0 && minuteDate <= 9) {
-      minuteDate = "0" + minuteDate;
-    }
-    return month + "-" + strDate +
-      " " + hourDate + ":" + minuteDate;
-  };
-  this.setData({
-    Nowtime: getNowDate()
-  });
-
-  //传时间戳
-  function gettimestamp() {
-    var timestamp = new Date().getTime();
-    return timestamp;
-  };
-  this.setData({
-    Timestamp: gettimestamp()
-  });
-
   //向数据库传数据
   wx.cloud.callFunction({
     name: 'sendstudy',
@@ -170,7 +133,7 @@ Ntime() {
       id_study: that.data.id_study,
       id_mess: that.data.id_mess,
       beizhu: that.data.beizhu,
-      Timestamp:that.data.Timestamp,
+      Timestamp:new Date().getTime(),
     },
     success(res) {
       wx.cloud.callFunction({
@@ -180,6 +143,14 @@ Ntime() {
           getKind:0
         },
         success(res) {
+          let ret = res.result.data
+          ret.forEach(element => {
+            // console.log(element);
+            let interlTime = that.NowDate(element.Timestamp)
+            element.interlTime = interlTime
+            // console.log(interlTime);
+          });
+
           that.setData({
             arroldstudy:res.result.data
           })
@@ -194,6 +165,37 @@ Ntime() {
     }
   })
 },
+
+  //转换发布时间显示格式
+  NowDate(dateTimeStamp) {
+    var minute = 1000 * 60;
+    var hour = minute * 60;
+    var day = hour * 24;
+    var now = new Date().getTime();
+
+    // 计算时间差
+    var diffvalue = now - dateTimeStamp;
+    let result = ''
+    if (diffvalue < 0) {
+      console.log("服务器创建时间获取失败");
+      return result = "刚刚";
+    }
+    var dayC = diffvalue / day;
+    var hourC = diffvalue / hour;
+    var minC = diffvalue / minute;
+    if (parseInt(dayC) > 1) {
+      result = "" + parseInt(dayC) + "天前";
+    } else if (parseInt(dayC) === 1) {
+      result = "昨天";
+    } else if (parseInt(hourC) >= 1) {
+      result = "" + parseInt(hourC) + "小时前";
+    } else if (parseInt(minC) >= 1) {
+      result = "" + parseInt(minC) + "分钟前";
+    } else {
+      result = "刚刚";
+    }
+    return result;
+  },
 
   // 关闭时间选择器
   onClose() {
@@ -240,7 +242,7 @@ onDelete(res) {
       break;
     case 'right':
       Dialog.confirm({
-        message: '确定删除？',
+        message: '删除咯？',
         closeOnClickOverlay: true,
       }).then(() => {
         console.log('用户点击确定')
@@ -287,7 +289,14 @@ getliststudy() {
     },
     success(res) {
       console.log("取到条数了");
-      console.log(res);
+      let ret = res.result.data
+      ret.forEach(element => {
+        // console.log(element);
+        let interlTime = that.NowDate(element.Timestamp)
+        element.interlTime = interlTime
+        // console.log(interlTime);
+      });
+
       let arroldstudy = that.data.arroldstudy.concat(res.result.data)//连接两个数组
       let length = res.result.data.length
       that.setData({

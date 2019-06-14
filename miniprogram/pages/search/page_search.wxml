@@ -9,14 +9,14 @@
   <view class="searchtab">
     <van-search value="{{ vasearch }}" focus placeholder="请输入搜索关键词" bind:change="onSearch" shape="round"></van-search>
   </view>
-  <view style="height:2vw;"></view>
+  <view style="height:2vh;"></view>
   <view class='content' wx:for="{{article}}" wx:key="125">
     <van-panel>
       <view class="userinfo" slot="header">
         <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
         <view class="headinfo">
           <text class="userinfo-nickname">{{item.nickname}}</text>
-          <view class="nowtime">发布时间：{{item.Nowtime}}</view>
+          <view class="nowtime">{{item.interlTime}}</view>
         </view>
       </view>
       <view class="push">
@@ -62,15 +62,17 @@
           </van-collapse-item>
         </view>
       </van-collapse>
-      <view style="height:5vw;background-color:rgb(251,251,251);"></view>
+      
     </van-panel>
   </view>
   <view class="backnews" wx:if="{{article.length==0}}">
     <image src="https://neauhand.hhp.im/img/kong.png" class="pickong"></image>
     <view>什么都没有哦～～</view>
   </view>
+   <view style="height:2vh;"></view>
   <view class="loading" wx:if="{{loading}}">
     <van-loading type="spinner" color="#333366" size="5vw" />
   </view>
   <view wx:if="{{end}}" class="newsdown">已经到底了哦~</view>
+   <view style="height:2vh;"></view>
 </view>

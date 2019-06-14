@@ -27,17 +27,17 @@
       <van-datetime-picker type="datetime" value="{{ currentDate }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" bind:confirm="onInput" bind:cancel="onClose" />
     </van-popup>
   </view>
-  <view style="height:5vw;"></view>
+  <!-- <view style="height:5vw;"></view>
   <view class="haspush">
     <van-icon custom-style="display:flex;align-items:center;" name="certificate" size="20px" />
     <view>已</view>
     <view>发</view>
     <view>布</view>
   </view>
-  <view style="height:5vw;"></view>
+  <view style="height:5vw;"></view> -->
   <!-- 输出面板 -->
   <view class="hiscus">
-    <view style="height:2vw;background-color:rgb(251,251,251);"></view>
+   
     <view class='content' wx:for="{{arroldcustomize}}" wx:key="223">
       <van-dialog id="van-dialog" />
       <van-swipe-cell id="swipe-cell" right-width="{{ 90 }}" async-close bind:close="onDelete" data-id='{{item._id}}' data-index='{{index}}'>
@@ -46,7 +46,7 @@
             <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
             <view class="headinfo">
               <text class="userinfo-nickname">{{item.nickname}}</text>
-              <view class="nowtime">发布时间：{{item.Nowtime}}</view>
+              <view class="nowtime">{{item.interlTime}}</view>
             </view>
           </view>
           <view class="push">
@@ -58,15 +58,17 @@
           </view>
         </van-panel>
       </van-swipe-cell>
-      <view style="height:5vw;background-color:rgb(251,251,251);"></view>
+     
     </view>
     <view class="backnews" wx:if="{{arroldcustomize.length==0}}">
       <image src="../../img/kong.png" class="pickong"></image>
       <view>快去发布新内容吧～～</view>
     </view>
+     <view style="height:2vh;"></view>
     <view class="loading" wx:if="{{loadingcus}}">
       <van-loading type="spinner" color="#333366" size="5vw" />
     </view>
     <view wx:if="{{endcus}}" class="newsdown">已经到底了哦~</view>
+     <view style="height:2vh;"></view>
   </view>
 </view>

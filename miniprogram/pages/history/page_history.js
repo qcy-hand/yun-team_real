@@ -14,7 +14,7 @@ Page({
     //拼车发布上传内容
     touxiang: '', //头像
     nickname: "", //昵称
-    Nowtime: '', //发布时间
+
     time: '', //选择的时间 
     qidian: '', //起点
     zhongdian: '', //终点
@@ -50,7 +50,7 @@ Page({
 
   },
 
-  turnTo(){
+  turnTo() {
     wx.navigateTo({
       url: '../search/page_search'
     });
@@ -61,7 +61,7 @@ Page({
     console.log(typeof (res.detail.index))
     this.setData({
       tabnum: res.detail.index,
-      currentPage:0
+      currentPage: 0
     })
     // if (this.data.tabnum === 0) {
     //   wx.cloud.callFunction({
@@ -109,6 +109,38 @@ Page({
     });
   },
 
+  //转换发布时间显示格式
+  NowDate(dateTimeStamp) {
+    var minute = 1000 * 60;
+    var hour = minute * 60;
+    var day = hour * 24;
+    var now = new Date().getTime();
+
+    // 计算时间差
+    var diffvalue = now - dateTimeStamp;
+    let result = ''
+    if (diffvalue < 0) {
+      console.log("服务器创建时间获取失败");
+      return result = "刚刚";
+    }
+    var dayC = diffvalue / day;
+    var hourC = diffvalue / hour;
+    var minC = diffvalue / minute;
+    if (parseInt(dayC) > 1) {
+      result = "" + parseInt(dayC) + "天前";
+    } else if (parseInt(dayC) === 1) {
+      result = "昨天";
+    } else if (parseInt(hourC) >= 1) {
+      result = "" + parseInt(hourC) + "小时前";
+    } else if (parseInt(minC) >= 1) {
+      result = "" + parseInt(minC) + "分钟前";
+    } else {
+      result = "刚刚";
+    }
+    return result;
+  },
+
+
   //上拉加载取回拼车数据
   getlistcar() {
     let that = this
@@ -121,7 +153,14 @@ Page({
       },
       success(res) {
         console.log("取到条数了");
-        console.log(that.data.currentPage);
+        let ret = res.result.data
+        ret.forEach(element => {
+          // console.log(element);
+          let interlTime = that.NowDate(element.Timestamp)
+          element.interlTime = interlTime
+          // console.log(interlTime);
+        });
+
         let arroldcar = that.data.arroldcar.concat(res.result.data); //连接两个数组
         let length = res.result.data.length;
         that.setData({
@@ -169,7 +208,7 @@ Page({
         wx.stopPullDownRefresh();
         wx.showModal({
           title: '提示',
-          content: '加载错误，请下拉刷新试试',
+          content: '加载错误，请刷新重试',
         })
       }
     })
@@ -186,6 +225,14 @@ Page({
       },
       success(res) {
         console.log("取到条数了");
+        let ret = res.result.data
+        ret.forEach(element => {
+          // console.log(element);
+          let interlTime = that.NowDate(element.Timestamp)
+          element.interlTime = interlTime
+          // console.log(interlTime);
+        });
+
         let arroldsport = that.data.arroldsport.concat(res.result.data);
         let length = res.result.data.length;
 
@@ -208,7 +255,7 @@ Page({
         wx.stopPullDownRefresh();
         wx.showModal({
           title: '提示',
-          content: '加载错误，请下拉刷新试试',
+          content: '加载错误，请刷新重试',
         })
       }
     })
@@ -226,6 +273,14 @@ Page({
       },
       success(res) {
         console.log("取到条数了");
+        let ret = res.result.data
+        ret.forEach(element => {
+          // console.log(element);
+          let interlTime = that.NowDate(element.Timestamp)
+          element.interlTime = interlTime
+          // console.log(interlTime);
+        });
+
         let arroldstudy = that.data.arroldstudy.concat(res.result.data);
         let length = res.result.data.length;
 
@@ -248,7 +303,7 @@ Page({
         wx.stopPullDownRefresh();
         wx.showModal({
           title: '提示',
-          content: '加载错误，请下拉刷新试试',
+          content: '加载错误，请刷新重试',
         })
       }
     })
@@ -265,6 +320,14 @@ Page({
       },
       success(res) {
         console.log("取到条数了");
+        let ret = res.result.data
+        ret.forEach(element => {
+          // console.log(element);
+          let interlTime = that.NowDate(element.Timestamp)
+          element.interlTime = interlTime
+          // console.log(interlTime);
+        });
+
         let arroldcustomize = that.data.arroldcustomize.concat(res.result.data) //连接两个数组
         let length = res.result.data.length
         that.setData({
@@ -286,7 +349,7 @@ Page({
         wx.stopPullDownRefresh();
         wx.showModal({
           title: '提示',
-          content: '加载错误，请下拉刷新试试',
+          content: '加载错误，请刷新重试',
         })
       }
     })
@@ -431,20 +494,98 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    // let that = this;
-    if(this.data.tabnum === 0){
-this.getlistcar()
+    let that = this;
+    if (this.data.tabnum === 0) {
+      console.log(0);
+      wx.cloud.callFunction({
+        name: "getoldcar",
+        data: {
+          currentPage: that.data.currentPage,
+          getKind: 0
+        },
+        success(res) {
+          let ret = res.result.data
+          ret.forEach(element => {
+            // console.log(element);
+            let interlTime = that.NowDate(element.Timestamp)
+            element.interlTime = interlTime
+            // console.log(interlTime);
+          });
+
+          that.setData({
+            arroldcar: res.result.data,
+          })
+        },
+      })
     }
 
-    if(this.data.tabnum === 1){
-      this.getlistsport()
+    if (this.data.tabnum === 1) {
+      console.log(1);
+      wx.cloud.callFunction({
+        name: "getoldsport",
+        data: {
+          currentPage: that.data.currentPage,
+          getKind:0
+        },
+        success(res) {
+          let ret = res.result.data
+          ret.forEach(element => {
+            // console.log(element);
+            let interlTime = that.NowDate(element.Timestamp)
+            element.interlTime = interlTime
+            // console.log(interlTime);
+          });
+
+          that.setData({
+            arroldsport: res.result.data
+          })
+        },
+      })
     }
     if (this.data.tabnum === 2) {
-      
-          this.getliststudy();
+      console.log(2);
+      wx.cloud.callFunction({
+        name: "getoldstudy",
+        data: {
+          currentPage: that.data.currentPage,
+          getKind:0
+        },
+        success(res) {
+          let ret = res.result.data
+          ret.forEach(element => {
+            // console.log(element);
+            let interlTime = that.NowDate(element.Timestamp)
+            element.interlTime = interlTime
+            // console.log(interlTime);
+          });
+
+          that.setData({
+            arroldstudy:res.result.data
+          })
+        },
+      })
     }
     if (this.data.tabnum === 3) {
-          this.getlistcus();
+      wx.cloud.callFunction({
+        name: 'getoldcustom',
+        data: {
+          currentPage: that.data.currentPage,
+          getKind: 0
+        },
+        success(res) {
+          let ret = res.result.data
+          ret.forEach(element => {
+            // console.log(element);
+            let interlTime = that.NowDate(element.Timestamp)
+            element.interlTime = interlTime
+            // console.log(interlTime);
+          });
+
+          that.setData({
+            arroldcustomize: res.result.data
+          })
+        }
+      })
     }
     // wx.cloud.callFunction({
     //   name: "getoldcar",

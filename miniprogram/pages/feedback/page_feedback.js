@@ -1,4 +1,6 @@
 // pages/feedback/page_feedback.js
+
+import Notify from '../../vant-weapp/dist/notify/notify'; //信息填充不完整提示
 Page({
 
   /**
@@ -21,6 +23,14 @@ Page({
   Push() {
     //回调函数中不能直接使用this，需要在外面定义var that = this 然后 that.自定义的方法
     let that = this;
+    if (that.data.feedinfo === "" ) {
+      Notify({
+        text: '内容不可为空',
+        duration: 1000,
+        selector: '#custom-selector',
+        backgroundColor: '#1989fa'
+      });
+    } else {
     wx.showModal({
       content: '感谢您的支持与反馈！',
       showCancel:false,
@@ -46,6 +56,7 @@ Page({
         })
       }
     })
+  }
   },
 
   //获取当前时间
