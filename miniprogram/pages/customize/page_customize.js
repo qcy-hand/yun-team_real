@@ -111,9 +111,9 @@ Page({
           }
         },
         fail() {
-          wx.showModal({
-            title: '提示',
-            content: '系统错误，请稍后重试',
+          wx.showToast({
+            title: '系统错误，请稍后重试!',
+          duration:1000
           })
         }
       })
@@ -163,9 +163,9 @@ Page({
         })
       },
       fail() {
-        wx.showModal({
-          title: '提示',
-          content: '系统错误，请稍后重试',
+        wx.showToast({
+          title: '系统错误，请稍后重试!',
+          duration:1000
         })
       }
     })
@@ -269,9 +269,9 @@ Page({
               instance.close();
             },
             fail() {
-              wx.showModal({
-                title: '提示',
-                content: '系统错误，请稍后重试',
+              wx.showToast({
+                title: '系统错误，请稍后重试!',
+          duration:1000
               })
             }
           })
@@ -344,10 +344,6 @@ Page({
       },
       fail() {
         wx.hideLoading();
-        wx.showModal({
-          title: '提示',
-          content: '加载错误，请稍后重试',
-        })
       }
     })
   },

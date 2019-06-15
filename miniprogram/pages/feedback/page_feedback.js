@@ -50,9 +50,9 @@ Page({
         }
       },
       fail() {
-        wx.showModal({
-          title: '提示',
-          content: '系统错误，请稍后重试',
+        wx.showToast({
+          title: '系统错误，请稍后重试!',
+          duration:1000
         })
       }
     })
@@ -102,9 +102,9 @@ Page({
         console.log(res);
       },
       fail() {
-        wx.showModal({
-          title: '提示',
-          content: '系统错误，请稍后重试',
+        wx.showToast({
+          title: '系统错误，请稍后重试!',
+          duration:1000
         })
       }
     })

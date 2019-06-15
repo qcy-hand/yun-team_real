@@ -64,7 +64,10 @@ Page({
     this.setData({
       tabnum: res.detail.index,
       currentPage: 0,
-      endcar:false
+      endcar: false,
+      endsport: false,
+      endstudy: false,
+      endcus: false
     })
     // if (this.data.tabnum === 0) {
     //   wx.cloud.callFunction({
@@ -80,6 +83,10 @@ Page({
     //   })
     // }
     if (this.data.tabnum === 0) {
+      wx.showLoading({
+        title: "加载中...",
+        mask: true,
+      });
       wx.cloud.callFunction({
         name: "getoldcar",
         data: {
@@ -93,36 +100,93 @@ Page({
             element.interlTime = interlTime
           });
           that.setData({
-                  arroldcar: res.result.data,
-                }, () => {
-                  wx.hideLoading();
+            arroldcar: res.result.data,
+          }, () => {
+            wx.hideLoading();
 
-    console.log(that.data.currentPage);
-                })
-        }, fail() {
+            console.log(that.data.currentPage);
+          })
+        },
+        fail() {
           wx.hideLoading();
-          wx.showModal({
-            title: '提示',
-            content: '加载错误，请刷新重试',
+          wx.showToast({
+            title: '加载错误，请刷新重试!',
+            duration:1000
           })
         }
       })
     }
+
+
     if (this.data.tabnum === 1) {
       wx.showLoading({
         title: "加载中...",
         mask: true,
       });
-      
-      this.getlistsport()
+      wx.cloud.callFunction({
+        name: "getoldsport",
+        data: {
+          currentPage: that.data.currentPage,
+          getKind: 1
+        },
+        success(res) {
+          let ret = res.result.data
+          ret.forEach(element => {
+            let interlTime = that.NowDate(element.Timestamp)
+            element.interlTime = interlTime
+          });
+          that.setData({
+            arroldsport: res.result.data,
+          }, () => {
+            wx.hideLoading();
+
+            console.log(that.data.currentPage);
+          })
+        },
+        fail() {
+          wx.hideLoading();
+          wx.showToast({
+             title: '加载错误，请刷新重试!',
+            duration:1000
+          })
+        }
+      })
     }
+
 
     if (this.data.tabnum === 2) {
       wx.showLoading({
         title: "加载中...",
         mask: true,
       });
-      this.getliststudy()
+      wx.cloud.callFunction({
+        name: "getoldstudy",
+        data: {
+          currentPage: that.data.currentPage,
+          getKind: 1
+        },
+        success(res) {
+          let ret = res.result.data
+          ret.forEach(element => {
+            let interlTime = that.NowDate(element.Timestamp)
+            element.interlTime = interlTime
+          });
+          that.setData({
+            arroldstudy: res.result.data,
+          }, () => {
+            wx.hideLoading();
+
+            console.log(that.data.currentPage);
+          })
+        },
+        fail() {
+          wx.hideLoading();
+          wx.showToast({
+             title: '加载错误，请刷新重试!',
+            duration:1000
+          })
+        }
+      })
     }
 
     if (this.data.tabnum === 3) {
@@ -130,7 +194,34 @@ Page({
         title: "加载中...",
         mask: true,
       });
-      this.getlistcus()
+      wx.cloud.callFunction({
+        name: "getoldcustom",
+        data: {
+          currentPage: that.data.currentPage,
+          getKind: 1
+        },
+        success(res) {
+          let ret = res.result.data
+          ret.forEach(element => {
+            let interlTime = that.NowDate(element.Timestamp)
+            element.interlTime = interlTime
+          });
+          that.setData({
+            arroldcustomize: res.result.data,
+          }, () => {
+            wx.hideLoading();
+
+            console.log(that.data.currentPage);
+          })
+        },
+        fail() {
+          wx.hideLoading();
+          wx.showToast({
+             title: '加载错误，请刷新重试!',
+            duration:1000
+          })
+        }
+      })
     }
   },
 
@@ -238,11 +329,6 @@ Page({
       },
       fail() {
         wx.hideLoading();
-        wx.stopPullDownRefresh();
-        wx.showModal({
-          title: '提示',
-          content: '加载错误，请刷新重试',
-        })
       }
     })
   },
@@ -285,11 +371,7 @@ Page({
       },
       fail() {
         wx.hideLoading();
-        wx.stopPullDownRefresh();
-        wx.showModal({
-          title: '提示',
-          content: '加载错误，请刷新重试',
-        })
+        
       }
     })
   },
@@ -333,11 +415,7 @@ Page({
       },
       fail() {
         wx.hideLoading();
-        wx.stopPullDownRefresh();
-        wx.showModal({
-          title: '提示',
-          content: '加载错误，请刷新重试',
-        })
+        
       }
     })
   },
@@ -379,11 +457,7 @@ Page({
       },
       fail() {
         wx.hideLoading();
-        wx.stopPullDownRefresh();
-        wx.showModal({
-          title: '提示',
-          content: '加载错误，请刷新重试',
-        })
+        
       }
     })
   },
@@ -499,11 +573,11 @@ Page({
       mask: true,
     });
     that.setData({
-      currentPage:0,
-      endcar:false,
-      endsport:false,
-      endstudy:false,
-      endcus:false
+      currentPage: 0,
+      endcar: false,
+      endsport: false,
+      endstudy: false,
+      endcus: false
     })
     if (this.data.tabnum === 0) {
       wx.cloud.callFunction({
@@ -519,17 +593,18 @@ Page({
             element.interlTime = interlTime
           });
           that.setData({
-                  arroldcar: res.result.data,
-                }, () => {
-                  wx.hideLoading();
+            arroldcar: res.result.data,
+          }, () => {
+            wx.hideLoading();
 
-    console.log(that.data.currentPage);
-                })
-        }, fail() {
+            console.log(that.data.currentPage);
+          })
+        },
+        fail() {
           wx.hideLoading();
-          wx.showModal({
-            title: '提示',
-            content: '加载错误，请刷新重试',
+          wx.showToast({
+             title: '加载错误，请刷新重试!',
+            duration:1000
           })
         }
       })
@@ -548,17 +623,18 @@ Page({
             element.interlTime = interlTime
           });
           that.setData({
-                  arroldsport: res.result.data,
-                }, () => {
-                  wx.hideLoading();
+            arroldsport: res.result.data,
+          }, () => {
+            wx.hideLoading();
 
-    console.log(that.data.currentPage);
-                })
-        }, fail() {
+            console.log(that.data.currentPage);
+          })
+        },
+        fail() {
           wx.hideLoading();
-          wx.showModal({
-            title: '提示',
-            content: '加载错误，请刷新重试',
+          wx.showToast({
+             title: '加载错误，请刷新重试!',
+            duration:1000
           })
         }
       })
@@ -577,17 +653,18 @@ Page({
             element.interlTime = interlTime
           });
           that.setData({
-                  arroldstudy: res.result.data,
-                }, () => {
-                  wx.hideLoading();
+            arroldstudy: res.result.data,
+          }, () => {
+            wx.hideLoading();
 
-    console.log(that.data.currentPage);
-                })
-        }, fail() {
+            console.log(that.data.currentPage);
+          })
+        },
+        fail() {
           wx.hideLoading();
-          wx.showModal({
-            title: '提示',
-            content: '加载错误，请刷新重试',
+          wx.showToast({
+             title: '加载错误，请刷新重试!',
+            duration:1000
           })
         }
       })
@@ -606,17 +683,18 @@ Page({
             element.interlTime = interlTime
           });
           that.setData({
-                  arroldcustomize: res.result.data,
-                }, () => {
-                  wx.hideLoading();
+            arroldcustomize: res.result.data,
+          }, () => {
+            wx.hideLoading();
 
-    console.log(that.data.currentPage);
-                })
-        }, fail() {
+            console.log(that.data.currentPage);
+          })
+        },
+        fail() {
           wx.hideLoading();
-          wx.showModal({
-            title: '提示',
-            content: '加载错误，请刷新重试',
+          wx.showToast({
+             title: '加载错误，请刷新重试!',
+            duration:1000
           })
         }
       })
@@ -660,7 +738,7 @@ Page({
 
           that.setData({
             arroldcar: res.result.data,
-          },() => {
+          }, () => {
             wx.stopPullDownRefresh();
           })
         },
@@ -686,7 +764,7 @@ Page({
 
           that.setData({
             arroldsport: res.result.data
-          },() => {
+          }, () => {
             wx.stopPullDownRefresh();
           })
         },
@@ -735,7 +813,7 @@ Page({
 
           that.setData({
             arroldcustomize: res.result.data
-          },() => {
+          }, () => {
             wx.stopPullDownRefresh();
           })
         }
@@ -762,7 +840,7 @@ Page({
     console.log("触底了");
     if (this.data.tabnum === 0) {
       console.log(that.data.currentPage);
-      if (!that.data.endcar) {
+      if (!that.data.endcar) { //if语句条件为真才执行，反之跳过
         that.setData({
           loadingcar: true,
           currentPage: ++currentPage
