@@ -8,7 +8,7 @@ App({
 
     //初始化
     wx.cloud.init({
-      env: 'teamtest-q4g25'
+      env: 'cloundteam-zngfx'
     })
     // 登录
     wx.login({

@@ -290,10 +290,10 @@ getliststudy() {
     success(res) {
       console.log("取到条数了");
       let ret = res.result.data
-      ret.forEach(element => {
-        // console.log(element);
-        let interlTime = that.NowDate(element.Timestamp)
-        element.interlTime = interlTime
+        ret.forEach(element => {
+          // console.log(element);
+          let interlTime = that.NowDate(element.Timestamp)
+          element.interlTime = interlTime
         // console.log(interlTime);
       });
 

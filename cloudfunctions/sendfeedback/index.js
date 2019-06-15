@@ -2,7 +2,7 @@
 const cloud = require('wx-server-sdk')
 
 cloud.init({
-  env:"teamtest-q4g25",
+  env:"cloundteam-zngfx",
 })
 const db = cloud.database();
 // 云函数入口函数

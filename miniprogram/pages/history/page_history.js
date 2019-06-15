@@ -58,10 +58,13 @@ Page({
 
   //切换标签
   changetab(res) {
-    console.log(typeof (res.detail.index))
+    console.log("标签已切换")
+
+    let that = this;
     this.setData({
       tabnum: res.detail.index,
-      currentPage: 0
+      currentPage: 0,
+      endcar:false
     })
     // if (this.data.tabnum === 0) {
     //   wx.cloud.callFunction({
@@ -76,11 +79,41 @@ Page({
     //     },
     //   })
     // }
+    if (this.data.tabnum === 0) {
+      wx.cloud.callFunction({
+        name: "getoldcar",
+        data: {
+          currentPage: that.data.currentPage,
+          getKind: 1
+        },
+        success(res) {
+          let ret = res.result.data
+          ret.forEach(element => {
+            let interlTime = that.NowDate(element.Timestamp)
+            element.interlTime = interlTime
+          });
+          that.setData({
+                  arroldcar: res.result.data,
+                }, () => {
+                  wx.hideLoading();
+
+    console.log(that.data.currentPage);
+                })
+        }, fail() {
+          wx.hideLoading();
+          wx.showModal({
+            title: '提示',
+            content: '加载错误，请刷新重试',
+          })
+        }
+      })
+    }
     if (this.data.tabnum === 1) {
       wx.showLoading({
         title: "加载中...",
         mask: true,
       });
+      
       this.getlistsport()
     }
 
@@ -415,12 +448,13 @@ Page({
     let that = this;
     //页面加载过程中调用函数进行授权判断
     that.hislogin();
-    //加载logo
-    wx.showLoading({
-      title: "加载中...",
-      mask: true,
-    });
-    that.getlistcar();
+
+    // //加载logo
+    // wx.showLoading({
+    //   title: "加载中...",
+    //   mask: true,
+    // });
+    // that.getlistcar();
 
     // //经过500毫秒后加载图标
     // setTimeout(() => {
@@ -458,22 +492,135 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    // let that = this;
-    // //每次页面加载过程中调取数据并封装
-    // console.log(this.data.currentPage);
-    // if (this.data.tabnum === 0) {
-    //   wx.cloud.callFunction({
-    //     name: "getoldcar",
-    //     data: {
-    //       currentPage: that.data.currentPage
-    //     },
-    //     success(res) {
-    //       that.setData({
-    //         arroldcar: res.result.data,
-    //       })
-    //     },
-    //   })
-    // }
+    let that = this;
+    //加载logo
+    wx.showLoading({
+      title: "加载中...",
+      mask: true,
+    });
+    that.setData({
+      currentPage:0,
+      endcar:false,
+      endsport:false,
+      endstudy:false,
+      endcus:false
+    })
+    if (this.data.tabnum === 0) {
+      wx.cloud.callFunction({
+        name: "getoldcar",
+        data: {
+          currentPage: that.data.currentPage,
+          getKind: 1
+        },
+        success(res) {
+          let ret = res.result.data
+          ret.forEach(element => {
+            let interlTime = that.NowDate(element.Timestamp)
+            element.interlTime = interlTime
+          });
+          that.setData({
+                  arroldcar: res.result.data,
+                }, () => {
+                  wx.hideLoading();
+
+    console.log(that.data.currentPage);
+                })
+        }, fail() {
+          wx.hideLoading();
+          wx.showModal({
+            title: '提示',
+            content: '加载错误，请刷新重试',
+          })
+        }
+      })
+    }
+    if (this.data.tabnum === 1) {
+      wx.cloud.callFunction({
+        name: "getoldsport",
+        data: {
+          currentPage: that.data.currentPage,
+          getKind: 1
+        },
+        success(res) {
+          let ret = res.result.data
+          ret.forEach(element => {
+            let interlTime = that.NowDate(element.Timestamp)
+            element.interlTime = interlTime
+          });
+          that.setData({
+                  arroldsport: res.result.data,
+                }, () => {
+                  wx.hideLoading();
+
+    console.log(that.data.currentPage);
+                })
+        }, fail() {
+          wx.hideLoading();
+          wx.showModal({
+            title: '提示',
+            content: '加载错误，请刷新重试',
+          })
+        }
+      })
+    }
+    if (this.data.tabnum === 2) {
+      wx.cloud.callFunction({
+        name: "getoldstudy",
+        data: {
+          currentPage: that.data.currentPage,
+          getKind: 1
+        },
+        success(res) {
+          let ret = res.result.data
+          ret.forEach(element => {
+            let interlTime = that.NowDate(element.Timestamp)
+            element.interlTime = interlTime
+          });
+          that.setData({
+                  arroldstudy: res.result.data,
+                }, () => {
+                  wx.hideLoading();
+
+    console.log(that.data.currentPage);
+                })
+        }, fail() {
+          wx.hideLoading();
+          wx.showModal({
+            title: '提示',
+            content: '加载错误，请刷新重试',
+          })
+        }
+      })
+    }
+    if (this.data.tabnum === 3) {
+      wx.cloud.callFunction({
+        name: "getoldcustom",
+        data: {
+          currentPage: that.data.currentPage,
+          getKind: 1
+        },
+        success(res) {
+          let ret = res.result.data
+          ret.forEach(element => {
+            let interlTime = that.NowDate(element.Timestamp)
+            element.interlTime = interlTime
+          });
+          that.setData({
+                  arroldcustomize: res.result.data,
+                }, () => {
+                  wx.hideLoading();
+
+    console.log(that.data.currentPage);
+                })
+        }, fail() {
+          wx.hideLoading();
+          wx.showModal({
+            title: '提示',
+            content: '加载错误，请刷新重试',
+          })
+        }
+      })
+    }
   },
 
   /**
@@ -496,12 +643,11 @@ Page({
   onPullDownRefresh: function () {
     let that = this;
     if (this.data.tabnum === 0) {
-      console.log(0);
       wx.cloud.callFunction({
         name: "getoldcar",
         data: {
           currentPage: that.data.currentPage,
-          getKind: 0
+          getKind: 1
         },
         success(res) {
           let ret = res.result.data
@@ -514,6 +660,8 @@ Page({
 
           that.setData({
             arroldcar: res.result.data,
+          },() => {
+            wx.stopPullDownRefresh();
           })
         },
       })
@@ -525,7 +673,7 @@ Page({
         name: "getoldsport",
         data: {
           currentPage: that.data.currentPage,
-          getKind:0
+          getKind: 1
         },
         success(res) {
           let ret = res.result.data
@@ -538,6 +686,8 @@ Page({
 
           that.setData({
             arroldsport: res.result.data
+          },() => {
+            wx.stopPullDownRefresh();
           })
         },
       })
@@ -548,7 +698,7 @@ Page({
         name: "getoldstudy",
         data: {
           currentPage: that.data.currentPage,
-          getKind:0
+          getKind: 1
         },
         success(res) {
           let ret = res.result.data
@@ -560,7 +710,9 @@ Page({
           });
 
           that.setData({
-            arroldstudy:res.result.data
+            arroldstudy: res.result.data
+          }, () => {
+            wx.stopPullDownRefresh();
           })
         },
       })
@@ -570,7 +722,7 @@ Page({
         name: 'getoldcustom',
         data: {
           currentPage: that.data.currentPage,
-          getKind: 0
+          getKind: 1
         },
         success(res) {
           let ret = res.result.data
@@ -583,21 +735,12 @@ Page({
 
           that.setData({
             arroldcustomize: res.result.data
+          },() => {
+            wx.stopPullDownRefresh();
           })
         }
       })
     }
-    // wx.cloud.callFunction({
-    //   name: "getoldcar",
-    //   data: {
-    //     // listcar: that.data.listcar
-    //   },
-    //   success(res) {
-    //     that.setData({
-    //       arroldcar: res.result.data
-    //     })
-    //   },
-    // })
 
     // setTimeout(() => {
     //   wx.stopPullDownRefresh({
@@ -612,6 +755,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
+    console.log(this.data.currentPage)
     let that = this;
     let currentPage = this.data.currentPage
 
@@ -629,6 +773,7 @@ Page({
     }
 
     if (this.data.tabnum === 1) {
+      console.log(that.data.currentPage);
       if (!that.data.endsport) {
         this.setData({
           loadingsport: true,
@@ -639,6 +784,7 @@ Page({
       }
     }
     if (this.data.tabnum === 2) {
+      console.log(that.data.currentPage);
       if (!that.data.endstudy) {
         that.setData({
           loadingstudy: true,
@@ -649,6 +795,7 @@ Page({
       }
     }
     if (this.data.tabnum === 3) {
+      console.log(that.data.currentPage);
       if (!that.data.endcus) {
         this.setData({
           loadingcus: true,

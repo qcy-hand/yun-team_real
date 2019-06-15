@@ -1,19 +1,30 @@
 {
-	"miniprogramRoot": "miniprogram/",
-	"cloudfunctionRoot": "cloudfunctions/",
+	"description": "项目配置文件",
+	"packOptions": {
+		"ignore": []
+	},
 	"setting": {
 		"urlCheck": true,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
-		"newFeature": true
+		"newFeature": true,
+		"autoAudits": false,
+		"checkInvalidKey": true
 	},
-	"appid": "wxcc7099c108747223",
-	"projectname": "yun-team",
+	"compileType": "miniprogram",
 	"libVersion": "2.2.5",
+	"appid": "wx9d33d6267dc1b3b5",
+	"projectname": "yun-team",
+	"miniprogramRoot": "miniprogram/",
+	"cloudfunctionRoot": "cloudfunctions/",
+	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
+	"debugOptions": {
+		"hidedInDevtools": []
+	},
+	"scripts": {},
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
-	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -31,7 +42,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 4,
+			"current": -1,
 			"list": [
 				{
 					"id": -1,
@@ -64,6 +75,7 @@
 					"id": -1,
 					"name": "pushsport",
 					"pathName": "pages/study/page_study",
+					"query": "",
 					"scene": null
 				}
 			]
