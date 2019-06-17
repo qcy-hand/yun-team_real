@@ -48,6 +48,8 @@ Page({
 
     getKind: Number, //后端决定渲染个人或者所有人的参数
 
+    messcar: ""
+
   },
 
   turnTo() {
@@ -83,10 +85,10 @@ Page({
     //   })
     // }
     if (this.data.tabnum === 0) {
-      wx.showLoading({
-        title: "加载中...",
-        mask: true,
-      });
+      // wx.showLoading({
+      //   title: "加载中...",
+      //   mask: true,
+      // });
       wx.cloud.callFunction({
         name: "getoldcar",
         data: {
@@ -108,10 +110,11 @@ Page({
           })
         },
         fail() {
-          wx.hideLoading();
+          // wx.hideLoading();
           wx.showToast({
             title: '加载错误，请刷新重试!',
-            duration:1000
+            duration: 1000,
+            icon: "none"
           })
         }
       })
@@ -119,10 +122,10 @@ Page({
 
 
     if (this.data.tabnum === 1) {
-      wx.showLoading({
-        title: "加载中...",
-        mask: true,
-      });
+      // wx.showLoading({
+      //   title: "加载中...",
+      //   mask: true,
+      // });
       wx.cloud.callFunction({
         name: "getoldsport",
         data: {
@@ -138,7 +141,7 @@ Page({
           that.setData({
             arroldsport: res.result.data,
           }, () => {
-            wx.hideLoading();
+            // wx.hideLoading();
 
             console.log(that.data.currentPage);
           })
@@ -146,8 +149,9 @@ Page({
         fail() {
           wx.hideLoading();
           wx.showToast({
-             title: '加载错误，请刷新重试!',
-            duration:1000
+            title: '加载错误，请刷新重试!',
+            duration: 1000,
+            icon: "none"
           })
         }
       })
@@ -155,10 +159,10 @@ Page({
 
 
     if (this.data.tabnum === 2) {
-      wx.showLoading({
-        title: "加载中...",
-        mask: true,
-      });
+      // wx.showLoading({
+      //   title: "加载中...",
+      //   mask: true,
+      // });
       wx.cloud.callFunction({
         name: "getoldstudy",
         data: {
@@ -180,20 +184,21 @@ Page({
           })
         },
         fail() {
-          wx.hideLoading();
+          // wx.hideLoading();
           wx.showToast({
-             title: '加载错误，请刷新重试!',
-            duration:1000
+            title: '加载错误，请刷新重试!',
+            duration: 1000,
+            icon: "none"
           })
         }
       })
     }
 
     if (this.data.tabnum === 3) {
-      wx.showLoading({
-        title: "加载中...",
-        mask: true,
-      });
+      // wx.showLoading({
+      //   title: "加载中...",
+      //   mask: true,
+      // });
       wx.cloud.callFunction({
         name: "getoldcustom",
         data: {
@@ -209,7 +214,7 @@ Page({
           that.setData({
             arroldcustomize: res.result.data,
           }, () => {
-            wx.hideLoading();
+            // wx.hideLoading();
 
             console.log(that.data.currentPage);
           })
@@ -217,8 +222,9 @@ Page({
         fail() {
           wx.hideLoading();
           wx.showToast({
-             title: '加载错误，请刷新重试!',
-            duration:1000
+            title: '加载错误，请刷新重试!',
+            duration: 1000,
+            icon: "none"
           })
         }
       })
@@ -232,6 +238,64 @@ Page({
       activeNames: event.detail
     });
   },
+  // .js文件
+
+  // 一键复制事件
+  Copy: function (e) {
+    console.log(e)
+    let mess = e.currentTarget.dataset.mess
+
+    wx.setClipboardData({
+      //准备复制的数据
+      data: mess,
+      success: function (res) {
+        wx.getClipboardData({
+          success: function (res) {
+            console.log(res) // data  
+            wx.showToast({
+              title: '复制成功',
+            });
+          }
+        })
+        console.log(res);
+      }
+    });
+  },
+
+  // Copy() {
+  //   var that = this;
+  //   wx.cloud.callFunction({
+  //     name: "getoldcar",
+  //     data: {
+  //       currentPage: that.data.id_mess,
+  //       getKind: 1
+  //     },
+  //     success(res) {
+  //       that.setData({
+  //         arroldcar: res.result.data,
+  //       })
+  //       wx.setClipboardData({
+
+  //         //准备复制的数据
+  //         data: item.id_mess,
+  //         success (res) {
+  //           console.log(1);
+  //           wx.getClipboardData({
+
+  //             // data: that.data.id_mess,
+  //             success (res) {
+  //               console.log(res) // data
+  //               wx.showToast({
+  //                 title: "已复制！",
+  //                 icon:"none"
+  //               });
+  //             }
+  //           })
+  //         }
+  //       });
+  //     }
+  //   })
+  // },
 
   //转换发布时间显示格式
   NowDate(dateTimeStamp) {
@@ -371,7 +435,7 @@ Page({
       },
       fail() {
         wx.hideLoading();
-        
+
       }
     })
   },
@@ -415,7 +479,7 @@ Page({
       },
       fail() {
         wx.hideLoading();
-        
+
       }
     })
   },
@@ -457,7 +521,7 @@ Page({
       },
       fail() {
         wx.hideLoading();
-        
+
       }
     })
   },
@@ -570,7 +634,7 @@ Page({
     //加载logo
     wx.showLoading({
       title: "加载中...",
-      mask: true,
+      // mask: true,
     });
     that.setData({
       currentPage: 0,
@@ -603,8 +667,9 @@ Page({
         fail() {
           wx.hideLoading();
           wx.showToast({
-             title: '加载错误，请刷新重试!',
-            duration:1000
+            title: '加载错误，请刷新重试!',
+            duration: 1000,
+            icon: "none"
           })
         }
       })
@@ -633,8 +698,9 @@ Page({
         fail() {
           wx.hideLoading();
           wx.showToast({
-             title: '加载错误，请刷新重试!',
-            duration:1000
+            title: '加载错误，请刷新重试!',
+            duration: 1000,
+            icon: "none"
           })
         }
       })
@@ -663,8 +729,9 @@ Page({
         fail() {
           wx.hideLoading();
           wx.showToast({
-             title: '加载错误，请刷新重试!',
-            duration:1000
+            title: '加载错误，请刷新重试!',
+            duration: 1000,
+            icon: "none"
           })
         }
       })
@@ -693,8 +760,9 @@ Page({
         fail() {
           wx.hideLoading();
           wx.showToast({
-             title: '加载错误，请刷新重试!',
-            duration:1000
+            title: '加载错误，请刷新重试!',
+            duration: 1000,
+            icon: "none"
           })
         }
       })

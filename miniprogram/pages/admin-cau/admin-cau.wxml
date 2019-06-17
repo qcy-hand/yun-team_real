@@ -30,6 +30,8 @@
   </van-field>
 </van-cell-group>
 
+
+<view  style="height:20vh;"></view>
 <van-radio-group value="{{ radio }}" bind:change="onChange">
   <van-radio name="1">七天</van-radio>
   <van-radio name="2">十五天</van-radio>

@@ -40,131 +40,121 @@ Page({
     getKind: 0
   },
 
-  //学习发布部分
-  //按钮点击显示时间选择器
-  onTap() {
-    this.setData({
-      showTime: true
-    })
-  },
+//学习发布部分
+//按钮点击显示时间选择器
+onTap() {
+  this.setData({
+    showTime: true
+  })
+},
 
-  // 学习地点
-  Location_study(event) {
-    // event.detail 为当前输入的值
-    this.setData({
-      didian_study: event.detail,
-    })
-  },
+// 学习地点
+Location_study(event) {
+  // event.detail 为当前输入的值
+  this.setData({
+    didian_study: event.detail,
+  })
+},
 
-  //学习项目
-  Input_study(event) {
-    // event.detail 为当前输入的值
-    this.setData({
-      id_study: event.detail,
-    })
-  },
-  //联系方式
-  Input_mess(event) {
-    // event.detail 为当前输入的值
-    this.setData({
-      id_mess: event.detail,
-    })
-  },
-  //备注
-  Input_beizhu(event) {
-    // event.detail 为当前输入的值
-    this.setData({
-      beizhu: event.detail,
-    })
-  },
+//学习项目
+Input_study(event) {
+  // event.detail 为当前输入的值
+  this.setData({
+    id_study: event.detail,
+  })
+},
+//联系方式
+Input_mess(event) {
+  // event.detail 为当前输入的值
+  this.setData({
+    id_mess: event.detail,
+  })
+},
+//备注
+Input_beizhu(event) {
+  // event.detail 为当前输入的值
+  this.setData({
+    beizhu: event.detail,
+  })
+},
 
-  Push() {
-    let that = this;
-    if (that.data.time === "" || that.data.didian_study === "" || that.data.id_study === "" || that.data.id_mess === "") {
-      Notify({
-        text: '备注以外的选项不可为空',
-        duration: 1000,
-        selector: '#custom-selector',
-        backgroundColor: '#1989fa'
+Push(){
+  let that = this;
+  if (that.data.time === "" || that.data. didian_study === "" || that.data.id_study === "" || that.data.id_mess === "") {
+    Notify({
+      text: '备注以外的选项不可为空',
+      duration: 1000,
+      selector: '#custom-selector',
+      backgroundColor: '#1989fa'
+    });
+  } else {
+    Dialog.confirm({
+      message: '发布咯？',
+      closeOnClickOverlay: true,
+      cancelButtonText:"再瞅瞅",
+      confirmButtonText:"要得"
+    }).then(() => {
+      console.log('用户点击确定');
+      that.Ntime(); //调用传值函数
+      wx.showToast({
+        title: '成功',
+        icon: 'success',
+        duration: 2000,
       });
-    } else {
-      wx.showModal({
-        content: '发布咯？',
-        cancelText: "再瞅瞅",
-        confirmText: "要得",
-        confirmColor: " #669999",
+     }).catch(() => {
+          console.log('用户点击取消');
+        });
+  }
+},
 
-        success(res) {
-          if (res.confirm) {
-            console.log('用户点击确定')
-            that.Ntime();
-            wx.showToast({
-              title: '成功',
-              icon: 'success',
-              duration: 2000,
-            });
-          } else if (res.cancel) {
-            console.log('用户点击取消')
-          }
+//时间相关
+Ntime() {
+  let that = this;
+  //向数据库传数据
+  wx.cloud.callFunction({
+    name: 'sendstudy',
+    data: {
+      type: 'study',
+      touxiang:that.data.touxiang,
+      nickname:that.data.nickname,
+      Nowtime: that.data.Nowtime,
+      time: that.data.time,
+      didian_study: that.data.didian_study,
+      id_study: that.data.id_study,
+      id_mess: that.data.id_mess,
+      beizhu: that.data.beizhu,
+      Timestamp:new Date().getTime(),
+    },
+    success(res) {
+      wx.cloud.callFunction({
+        name: "getoldstudy",
+        data: {
+          currentPage: that.data.currentPage,
+          getKind:0
         },
-        fail() {
-          wx.showToast({
-            title: '系统错误，请稍后重试!',
-            duration: 1000
+        success(res) {
+          let ret = res.result.data
+          ret.forEach(element => {
+            // console.log(element);
+            let interlTime = that.NowDate(element.Timestamp)
+            element.interlTime = interlTime
+            // console.log(interlTime);
+          });
+          that.setData({
+            arroldstudy: res.result.data,
           })
-        }
+        },
+      })
+    },
+    fail() {
+      wx.showToast({
+        title: '系统错误，请稍后重试!',
+        duration:1000,
+        icon:"none"
       })
     }
-  },
-
-  //时间相关
-  Ntime() {
-    let that = this;
-    //向数据库传数据
-    wx.cloud.callFunction({
-      name: 'sendstudy',
-      data: {
-        type: 'study',
-        touxiang: that.data.touxiang,
-        nickname: that.data.nickname,
-        Nowtime: that.data.Nowtime,
-        time: that.data.time,
-        didian_study: that.data.didian_study,
-        id_study: that.data.id_study,
-        id_mess: that.data.id_mess,
-        beizhu: that.data.beizhu,
-        Timestamp: new Date().getTime(),
-      },
-      success(res) {
-        wx.cloud.callFunction({
-          name: "getoldstudy",
-          data: {
-            currentPage: that.data.currentPage,
-            getKind: 0
-          },
-          success(res) {
-            let ret = res.result.data
-            ret.forEach(element => {
-              // console.log(element);
-              let interlTime = that.NowDate(element.Timestamp)
-              element.interlTime = interlTime
-              // console.log(interlTime);
-            });
-
-            that.setData({
-              arroldstudy: res.result.data
-            })
-          },
-        })
-      },
-      fail() {
-        wx.showToast({
-          title: '系统错误，请稍后重试!',
-          duration: 1000
-        })
-      }
-    })
-  },
+  })
+},
 
   //转换发布时间显示格式
   NowDate(dateTimeStamp) {
@@ -227,54 +217,54 @@ Page({
     }
   },
 
-  //学习动态部分
-  //学习删除历史部分
-  onDelete(res) {
-    console.log(res);
-    let index = res.currentTarget.dataset.index
-    let arroldstudy = this.data.arroldstudy
-    let that = this
-    console.log(index);
-    const {
-      position,
-      instance
-    } = res.detail;
-    switch (position) {
-      case 'left':
-      case 'cell':
-        instance.close();
-        break;
-      case 'right':
-        Dialog.confirm({
-          message: '删除咯？',
-          closeOnClickOverlay: true,
-        }).then(() => {
-          console.log('用户点击确定')
-          wx.cloud.callFunction({
-            name: "delete",
-            data: {
-              delid: res.currentTarget.dataset.id
-            },
-            success(res) {
-              arroldstudy.splice(index, 1)
-              that.setData({
-                arroldstudy,
-              })
-              wx.showToast({
-                title: '完成',
-                icon: 'success',
-                duration: 1500,
-              });
-              instance.close();
-            },
-            fail() {
-              wx.showToast({
-                title: '系统错误，请稍后重试!',
-                duration: 1000
-              })
-            }
-          })
-
+//学习动态部分
+//学习删除历史部分
+onDelete(res) {
+  console.log(res);
+  let index = res.currentTarget.dataset.index
+  let arroldstudy = this.data.arroldstudy
+  let that = this
+  console.log(index);
+  const {
+    position,
+    instance
+  } = res.detail;
+  switch (position) {
+    case 'left':
+    case 'cell':
+      instance.close();
+      break;
+    case 'right':
+      Dialog.confirm({
+        message: '删除咯？',
+        closeOnClickOverlay: true,
+      }).then(() => {
+        console.log('用户点击确定')
+        wx.cloud.callFunction({
+          name: "delete",
+          data: {
+            delid: res.currentTarget.dataset.id
+          },
+          success(res) {
+            arroldstudy.splice(index, 1)
+            that.setData({
+              arroldstudy,
+            })
+            wx.showToast({
+              title: '完成',
+              icon: 'success',
+              duration: 1500,
+            });
+            instance.close();
+          },
+          fail() {
+            wx.showToast({
+              title: '系统错误，请稍后重试!',
+          duration:1000,
+          icon:"none"
+            })
+          }
+        })
         }).catch(() => {
           console.log('用户点击取消');
           instance.close();
@@ -354,8 +344,8 @@ Page({
     let that = this;
     //加载logo
     wx.showLoading({
-      title: "加载中...",
-      mask: true,
+      title:"加载中...",
+      // mask:true,
     })
     //学习动态部分
     that.getliststudy();

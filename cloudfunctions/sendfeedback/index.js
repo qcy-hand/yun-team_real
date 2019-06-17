@@ -9,7 +9,7 @@ const db = cloud.database();
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
 console.log(event);
-  return await db.collection('datas').add({
+  return await db.collection('feedback').add({
     data: {
       feedinfo:event.feedinfo,
       Nowtime: event.Nowtime,

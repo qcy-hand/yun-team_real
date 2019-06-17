@@ -15,7 +15,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.2.5",
 	"appid": "wx9d33d6267dc1b3b5",
-	"projectname": "yun-team_real-1",
+	"projectname": "yun-team",
 	"miniprogramRoot": "miniprogram/",
 	"cloudfunctionRoot": "cloudfunctions/",
 	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",

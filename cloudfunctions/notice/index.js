@@ -10,7 +10,7 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   if (event.find === 1){
     return await db.collection('notice').where({
-      _id: "96561f06-6463-448c-9b60-5dcf484a14c0"
+      _id: "20f4b98d-bd56-45e8-8d2f-1fcc3635e453"
     }).update({
       data: {
         showNotice: event.showNotice
@@ -20,7 +20,7 @@ exports.main = async (event, context) => {
   if(event.find === 2){
     console.log(event.text)
     return await db.collection('notice').where({
-      _id: "96561f06-6463-448c-9b60-5dcf484a14c0"
+      _id: "20f4b98d-bd56-45e8-8d2f-1fcc3635e453"
     }).update({
       data: {
         text: event.text
@@ -29,7 +29,7 @@ exports.main = async (event, context) => {
   }
   if(event.find === 3){
     return await db.collection('notice').where({
-      _id: "96561f06-6463-448c-9b60-5dcf484a14c0"
+      _id: "20f4b98d-bd56-45e8-8d2f-1fcc3635e453"
     }).get()
   }
 }

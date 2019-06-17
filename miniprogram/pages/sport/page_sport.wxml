@@ -2,6 +2,7 @@
 <view class="all">
   <view class="head_input">
     <van-notify id="custom-selector" />
+    <van-dialog id="van-dialog" />
     <van-cell title="时间" icon="clock-o" is-link bind:click="onTap" value="{{time}}" />
     <van-cell title="地点" icon="location-o" is-link bind:click="getUserLocation" value="{{didian}}" center="{{true}}" />
     <van-cell-group>
@@ -35,14 +36,12 @@
       <van-datetime-picker type="datetime" value="{{ currentDate }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" bind:confirm="onInput" bind:cancel="onClose" />
     </van-popup>
   </view>
-  <!-- <view style="height:5vw;"></view>
-  <view class="haspush">
-    <van-icon custom-style="display:flex;align-items:center;" name="certificate" size="20px" />
-    <view>已</view>
-    <view>发</view>
-    <view>布</view>
+ 
+  <view style="height:1vh;"></view>
+  <view style="height:2vh;display:flex;justify-content:flex-end;line-height:2vh;font-size:10px;color:#999;">
+  <view style="padding:0 4vw 0 0 ">左滑以删除内容(¯^¯ )</view>
   </view>
-  <view style="height:5vw;"></view> -->
+   <view style="height:1vh;"></view>
   <!-- 输出面板 -->
   <view class="hissport">
    
@@ -74,7 +73,7 @@
     </view>
      <view style="height:2vh;"></view>
     <view class="loading" wx:if="{{loadingsport}}">
-      <van-loading type="spinner" color="#333366" size="5vw" />
+      <van-loading  color="#333366" size="5vw" />正在加载...
     </view>
     <view wx:if="{{endsport}}" class="newsdown">已经到底了哦~</view>
      <view style="height:2vh;"></view>
