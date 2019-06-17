@@ -26,7 +26,9 @@ Page({
     qidian: "", //起点
     zhongdian: "", //终点
     id_mess: "", //联系方式
+    id_messValue: "",
     beizhu: "", //备注
+    beizhuValue: '',
     Timestamp: "", //时间戳 用于排序
     thistime: null, //页面加载时的时间戳
     //拼车动态部分
@@ -85,7 +87,7 @@ Page({
       fail() {
         wx.showToast({
           title: '系统错误，请稍后重试!',
-          duration:1000
+          duration: 1000
         })
       }
     })
@@ -125,7 +127,7 @@ Page({
       fail() {
         wx.showToast({
           title: '系统错误，请稍后重试!',
-          duration:1000
+          duration: 1000
         })
       }
     })
@@ -133,6 +135,7 @@ Page({
 
   // 输入联系方式
   Input_mess(event) {
+
     // event.detail 为当前输入的值
     this.setData({
       id_mess: event.detail,
@@ -263,7 +266,7 @@ Page({
       fail() {
         wx.showToast({
           title: '系统错误，请稍后重试!',
-          duration:1000
+          duration: 1000
         })
       }
     })
@@ -320,7 +323,7 @@ Page({
       fail() {
         wx.showToast({
           title: '系统错误，请稍后重试!',
-          duration:1000
+          duration: 1000
         })
       }
     })
@@ -328,21 +331,32 @@ Page({
 
   //  转换已选取的时间戳，(时间选择器)
   onInput(event) {
-    var a = event.detail
-
-    function getdate(a) {
-      var now = new Date(a),
-        y = now.getFullYear(),
-        m = now.getMonth() + 1,
-        d = now.getDate(),
-        h = now.getHours(),
-        n = now.getMinutes()
-      return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + (h < 10 ? "0" + h : h) + ":" + (n < 10 ? "0" + n : n);
+    if (event.type == 'input') { return }
+    else {
+      var a = event.detail
+      console.log(event)
+      let that = this
+      function getdate(a) {
+        var now = new Date(a),
+          y = now.getFullYear(),
+          m = now.getMonth() + 1,
+          d = now.getDate(),
+          h = now.getHours(),
+          n = now.getMinutes()
+        return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + (h < 10 ? "0" + h : h) + ":" + (n < 10 ? "0" + n : n);
+      }
+      this.setData({
+        showTime: false,
+        time: getdate(a)
+      }, () => {
+        console.log(that.data.time)
+      });
     }
-    this.setData({
-      showTime: false,
-      time: getdate(a)
-    });
+
+  },
+  //禁用input事件
+  input(event) {
+
   },
 
   // 关闭时间选择器
@@ -395,7 +409,7 @@ Page({
             fail() {
               wx.showToast({
                 title: '系统错误，请稍后重试!',
-          duration:1000
+                duration: 1000
               })
             }
           })
@@ -442,7 +456,7 @@ Page({
             loadingcar: false
           })
         }
-      },fail() {
+      }, fail() {
         wx.hideLoading();
       }
     })
@@ -499,12 +513,12 @@ Page({
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {},
+  onHide: function () { },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {},
+  onUnload: function () { },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作

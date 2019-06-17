@@ -7,11 +7,11 @@
     <van-cell title="终点" icon="location-o" is-link bind:click="getUserLocationover" value="{{zhongdian}}" center="{{true}}" />
     <van-cell-group>
       <!-- 输入框 -->
-      <van-field maxlength="30" value="{{ id_mess }}" left-icon="phone-o" center clearable label="联系方式" placeholder="请注意保护敏感信息" border="{{ false }}" bind:input="Input_mess" use-button-slot></van-field>
+      <van-field maxlength="30" value="{{ id_messValue }}" left-icon="phone-o" center clearable label="联系方式" placeholder="请注意保护敏感信息" border="{{ false }}" bind:input="Input_mess" use-button-slot></van-field>
     </van-cell-group>
     <van-cell-group>
       <!-- 输入框 -->
-      <van-field maxlength="150" value="{{ beizhu }}" left-icon="edit" center clearable label="备注" placeholder="说点想补充的吧" border="{{ false }}" bind:input="Input_beizhu" use-button-slot>
+      <van-field maxlength="150" value="{{ beizhuValue }}" left-icon="edit" center clearable label="备注" placeholder="说点想补充的吧" border="{{ false }}" bind:input="Input_beizhu" use-button-slot>
         <van-button slot="button" size="small" type="primary" bind:click="Push">发布</van-button>
       </van-field>
     </van-cell-group>
