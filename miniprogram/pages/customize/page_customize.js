@@ -200,21 +200,26 @@ Page({
 
   //  转换已选取的时间戳，
   onInput(event) {
-    var a = event.detail
 
-    function getdate(a) {
-      var now = new Date(a),
-        y = now.getFullYear(),
-        m = now.getMonth() + 1,
-        d = now.getDate(),
-        h = now.getHours(),
-        n = now.getMinutes()
-      return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + (h < 10 ? "0" + h : h) + ":" + (n < 10 ? "0" + n : n);
+    if (event.type == 'input') { return }
+    else {
+      var a = event.detail
+
+      function getdate(a) {
+        var now = new Date(a),
+          y = now.getFullYear(),
+          m = now.getMonth() + 1,
+          d = now.getDate(),
+          h = now.getHours(),
+          n = now.getMinutes()
+        return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + (h < 10 ? "0" + h : h) + ":" + (n < 10 ? "0" + n : n);
+      }
+      this.setData({
+        showTime: false,
+        time: getdate(a)
+      });
     }
-    this.setData({
-      showTime: false,
-      time: getdate(a)
-    });
+
   },
 
   //自定义动态部分

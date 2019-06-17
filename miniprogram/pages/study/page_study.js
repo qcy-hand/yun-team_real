@@ -18,14 +18,14 @@ Page({
     showTime: false,//时间选择器默认
 
     //学习发布上传内容
-    touxiang:"",//头像
-    nickname:"",//昵称
+    touxiang: "",//头像
+    nickname: "",//昵称
     time: '',//选择活动时间
     didian_study: '',//学习地点
     id_study: '',//学习项目
     id_mess: '',//联系方式
     beizhu: '',//备注
-    Timestamp:"",//时间戳
+    Timestamp: "",//时间戳
 
     //学习动态部分
     arroldstudy: [],//后端回调学习历史数组
@@ -37,7 +37,7 @@ Page({
     currentPage: 0, // 取数据时的倍数
     // liststudy: 10, //学习初始取回条数
 
-    getKind:0
+    getKind: 0
   },
 
 //学习发布部分
@@ -140,9 +140,8 @@ Ntime() {
             element.interlTime = interlTime
             // console.log(interlTime);
           });
-
           that.setData({
-            arroldstudy:res.result.data
+            arroldstudy: res.result.data,
           })
         },
       })
@@ -150,8 +149,8 @@ Ntime() {
     fail() {
       wx.showToast({
         title: '系统错误，请稍后重试!',
-          duration:1000,
-          icon:"none"
+        duration:1000,
+        icon:"none"
       })
     }
   })
@@ -197,21 +196,25 @@ Ntime() {
 
   //  转换已选取的时间戳，
   onInput(event) {
-    var a = event.detail
 
-    function getdate(a) {
-      var now = new Date(a),
-        y = now.getFullYear(),
-        m = now.getMonth() + 1,
-        d = now.getDate(),
-        h = now.getHours(),
-        n = now.getMinutes()
-      return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + (h < 10 ? "0" + h : h) + ":" + (n < 10 ? "0" + n : n);
+    if (event.type == 'input') { return }
+    else {
+      var a = event.detail
+
+      function getdate(a) {
+        var now = new Date(a),
+          y = now.getFullYear(),
+          m = now.getMonth() + 1,
+          d = now.getDate(),
+          h = now.getHours(),
+          n = now.getMinutes()
+        return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + (h < 10 ? "0" + h : h) + ":" + (n < 10 ? "0" + n : n);
+      }
+      this.setData({
+        showTime: false,
+        time: getdate(a)
+      });
     }
-    this.setData({
-      showTime: false,
-      time: getdate(a)
-    });
   },
 
 //学习动态部分
@@ -262,92 +265,91 @@ onDelete(res) {
             })
           }
         })
+        }).catch(() => {
+          console.log('用户点击取消');
+          instance.close();
+        });;
+        break;
+    }
+  },
 
-      }).catch(() => {
-        console.log('用户点击取消');
-        instance.close();
-      });;
-      break;
-  }
-},
-
-getliststudy() {
-  let that = this
-  wx.cloud.callFunction({
-    name: "getoldstudy",
-    data: {
-      currentPage: that.data.currentPage, //向后端传currentPage
-      getKind:0
-    },
-    success(res) {
-      console.log("取到条数了");
-      let ret = res.result.data
+  getliststudy() {
+    let that = this
+    wx.cloud.callFunction({
+      name: "getoldstudy",
+      data: {
+        currentPage: that.data.currentPage, //向后端传currentPage
+        getKind: 0
+      },
+      success(res) {
+        console.log("取到条数了");
+        let ret = res.result.data
         ret.forEach(element => {
           // console.log(element);
           let interlTime = that.NowDate(element.Timestamp)
           element.interlTime = interlTime
-        // console.log(interlTime);
-      });
+          // console.log(interlTime);
+        });
 
-      let arroldstudy = that.data.arroldstudy.concat(res.result.data)//连接两个数组
-      let length = res.result.data.length
-      that.setData({
-        arroldstudy: arroldstudy
-      }, () => {
-        wx.hideLoading()
-      })
-
-      if (length < 10 && res.result.data.length !== 0) {
+        let arroldstudy = that.data.arroldstudy.concat(res.result.data)//连接两个数组
+        let length = res.result.data.length
         that.setData({
-          endstudy: true,
-          loadingstudy: false
+          arroldstudy: arroldstudy
+        }, () => {
+          wx.hideLoading()
         })
-      }
 
-
-
-      //成功后条数判断
-      // let listjudgestudy = that.data.liststudy - 10;
-      // if (res.result.data.length > listjudgestudy) {
-      //   console.log(3)
-      //   that.setData({
-      //     arroldstudy: res.result.data
-      //   })
-      // }
-      // if (res.result.data.length === 0) {
-      //   console.log("数据库空");
-      //   that.setData({
-      //     arroldstudy: res.result.data,
-      //     endstudy: false,
-      //     loadingstudy: false
-      //   })
-      // }
-      // if (res.result.data.length <= listjudgestudy && res.result.data.length !== 0) {
-      //   console.log(2)
-      //   that.setData({
-      //     arroldstudy: res.result.data,
-      //     endstudy: true,
-      //     loadingstudy: false
-      //   })
-      // }
-    },fail() {
-      wx.hideLoading();
+        if (length < 10 && res.result.data.length !== 0) {
+          that.setData({
+            endstudy: true,
+            loadingstudy: false
+          })
         }
-  })
-},
+
+
+
+        //成功后条数判断
+        // let listjudgestudy = that.data.liststudy - 10;
+        // if (res.result.data.length > listjudgestudy) {
+        //   console.log(3)
+        //   that.setData({
+        //     arroldstudy: res.result.data
+        //   })
+        // }
+        // if (res.result.data.length === 0) {
+        //   console.log("数据库空");
+        //   that.setData({
+        //     arroldstudy: res.result.data,
+        //     endstudy: false,
+        //     loadingstudy: false
+        //   })
+        // }
+        // if (res.result.data.length <= listjudgestudy && res.result.data.length !== 0) {
+        //   console.log(2)
+        //   that.setData({
+        //     arroldstudy: res.result.data,
+        //     endstudy: true,
+        //     loadingstudy: false
+        //   })
+        // }
+      }, fail() {
+        wx.hideLoading();
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     let that = this;
-//加载logo
+    //加载logo
     wx.showLoading({
       title:"加载中...",
       // mask:true,
     })
     //学习动态部分
     that.getliststudy();
-    
+
     //缓用户昵称头像
     wx.getStorage({
       key: "key",
@@ -394,7 +396,7 @@ getliststudy() {
    */
   onPullDownRefresh: function () {
     // let that = this;
-   
+
     // //学习动态部分
     // wx.cloud.callFunction({
     //   name: "getoldstudy",
@@ -413,7 +415,7 @@ getliststudy() {
     //     })
     //   }
     // })
-   
+
     // setTimeout(() => {
     //   wx.stopPullDownRefresh({
     //     success(res) {
@@ -428,14 +430,14 @@ getliststudy() {
    */
   onReachBottom: function () {
     let that = this;
-   let currentPage = this.data.currentPage
+    let currentPage = this.data.currentPage
     //学习动态部分
     if (!that.data.endstudy) {
       console.log(1)
       that.setData({
         loadingstudy: true,
-        currentPage:++currentPage
-      },()=>{
+        currentPage: ++currentPage
+      }, () => {
         this.getliststudy();
       })
     }
