@@ -39,7 +39,7 @@ Page({
     endsport: false, //到底文字，无更多条数时激活
     currentPage: 0, // 取数据时的倍数
 
-    getKind:0
+    getKind: 0
   },
 
   //运动发布部分
@@ -84,7 +84,7 @@ Page({
       fail() {
         wx.showToast({
           title: '系统错误，请稍后重试!',
-          duration:1000
+          duration: 1000
         })
       }
     })
@@ -145,7 +145,7 @@ Page({
         fail() {
           wx.showToast({
             title: '系统错误，请稍后重试!',
-            duration:1000
+            duration: 1000
           })
         }
       })
@@ -176,7 +176,7 @@ Page({
           name: "getoldsport",
           data: {
             currentPage: that.data.currentPage,
-            getKind:0
+            getKind: 0
           },
           success(res) {
             let ret = res.result.data
@@ -196,7 +196,7 @@ Page({
       fail() {
         wx.showToast({
           title: '系统错误，请稍后重试!',
-          duration:1000
+          duration: 1000
         })
       }
 
@@ -256,7 +256,7 @@ Page({
       fail() {
         wx.showToast({
           title: '系统错误，请稍后重试!',
-          duration:1000
+          duration: 1000
         })
       }
     })
@@ -271,21 +271,25 @@ Page({
 
   //  转换已选取的时间戳，
   onInput(event) {
-    var a = event.detail
 
-    function getdate(a) {
-      var now = new Date(a),
-        y = now.getFullYear(),
-        m = now.getMonth() + 1,
-        d = now.getDate(),
-        h = now.getHours(),
-        n = now.getMinutes()
-      return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + (h < 10 ? "0" + h : h) + ":" + (n < 10 ? "0" + n : n);
+    if (event.type == 'input') { return }
+    else {
+      var a = event.detail
+
+      function getdate(a) {
+        var now = new Date(a),
+          y = now.getFullYear(),
+          m = now.getMonth() + 1,
+          d = now.getDate(),
+          h = now.getHours(),
+          n = now.getMinutes()
+        return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + (h < 10 ? "0" + h : h) + ":" + (n < 10 ? "0" + n : n);
+      }
+      this.setData({
+        showTime: false,
+        time: getdate(a)
+      });
     }
-    this.setData({
-      showTime: false,
-      time: getdate(a)
-    });
   },
 
   //运动动态部分
@@ -331,7 +335,7 @@ Page({
             fail() {
               wx.showToast({
                 title: '系统错误，请稍后重试!',
-          duration:1000
+                duration: 1000
               })
             }
           })
@@ -351,7 +355,7 @@ Page({
       name: "getoldsport",
       data: {
         currentPage: that.data.currentPage, //向后端传currentPage
-        getKind:0
+        getKind: 0
       },
       success(res) {
         console.log("取到条数了");
@@ -402,9 +406,9 @@ Page({
         //     loadingsport: false
         //   })
         // }
-      },fail() {
+      }, fail() {
         wx.hideLoading();
-          }
+      }
     })
   },
 
@@ -419,7 +423,7 @@ Page({
       mask: true,
     });
     that.getlistsport();
-   
+
     //缓用户昵称头像
     wx.getStorage({
       key: "key",
@@ -445,7 +449,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+
 
   },
 
@@ -516,8 +520,8 @@ Page({
       console.log(2)
       this.setData({
         loadingsport: true,
-        currentPage:++currentPage
-      },()=>{
+        currentPage: ++currentPage
+      }, () => {
         this.getlistsport()
       })
     }
