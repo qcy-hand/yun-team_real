@@ -71,7 +71,7 @@
   </view>
    <view style="height:2vh;"></view>
   <view class="loading" wx:if="{{loading}}">
-    <van-loading type="spinner" color="#333366" size="5vw" />
+    <van-loading  color="#333366" size="5vw" />正在加载...
   </view>
   <view wx:if="{{end}}" class="newsdown">已经到底了哦~</view>
    <view style="height:2vh;"></view>

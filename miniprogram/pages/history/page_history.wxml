@@ -1,8 +1,7 @@
 <!-- pages/card/page_card.wxml -->
 <view class="all">
-    <view class="searchtab">
-        <van-search value="{{ vasearch }}" bind:focus="turnTo" placeholder="请输入搜索关键词" shape="round">
-        </van-search>
+    <view class="searchtab" bindtap="turnTo">
+        <van-search value="{{ vasearch }}" disabled field-class="searchwidth" input-align="center" placeholder="请输入搜索关键词" shape="round"></van-search>
     </view>
     <van-tabs sticky swipeable bind:change='changetab' color="#ffaf00">
         <!-- 拼车界面 -->
@@ -26,7 +25,10 @@
                         <van-collapse value="{{ activeNames }}" bind:change="onChange" border="{{border}}">
                             <view style="padding:1vw 0vw 2vw 12vw;">
                                 <van-collapse-item value="顺道" icon="logistics" name="{{index}}" border="{{border}}">
-                                    <view>联系方式：{{ item.id_mess }}</view>
+                                    <view>
+                                        <text selectable="true">联系方式：{{ item.id_mess }}</text>
+                                        <van-icon color="#336666" data-mess="{{item.id_mess}}" bind:click="Copy" name="description" style="margin:0 0 0 2vw;" />
+                                    </view>
                                     <view>备注：{{ item.beizhu }}</view>
                                 </van-collapse-item>
                             </view>
@@ -35,7 +37,8 @@
                 </view>
                 <view style="height:2vh;"></view>
                 <view class="loading" wx:if="{{loadingcar}}">
-                    <van-loading type="spinner" color="#333366" size="5vw" />
+                    <van-loading color="#333366" size="5vw" />
+                    正在加载...
                 </view>
                 <view wx:if="{{endcar}}" class="newsdown">已经到底了哦~</view>
                 <view style="height:2vh;"></view>
@@ -61,7 +64,10 @@
                         <van-collapse border="{{border}}" value="{{ activeNames }}" bind:change="onChange">
                             <view style="padding:1vw 0vw 2vw 12vw;">
                                 <van-collapse-item border="{{border}}" value="结伴" icon="friends-o" name="{{index}}">
-                                    <view>联系方式：{{item.id_mess}}</view>
+                                    <view>
+                                        <text selectable="true">联系方式：{{ item.id_mess }}</text>
+                                        <van-icon color="#336666" name="description" data-mess="{{item.id_mess}}" bind:click="Copy" style="margin:0 0 0 2vw;" />
+                                    </view>
                                     <view>备注：{{item.beizhu}}</view>
                                 </van-collapse-item>
                             </view>
@@ -70,7 +76,8 @@
                 </view>
                 <view style="height:2vh;"></view>
                 <view class="loading" wx:if="{{loadingsport}}">
-                    <van-loading type="spinner" color="#333366" size="5vw" />
+                    <van-loading color="#333366" size="5vw" />
+                    正在加载...
                 </view>
                 <view wx:if="{{endsport}}" class="newsdown">已经到底了哦~</view>
                 <view style="height:2vh;"></view>
@@ -80,7 +87,6 @@
         <van-tab title="学习" title-style="color: #24343b;">
             <view class="hisstudy">
                 <view class='content' wx:for="{{arroldstudy}}" wx:key="122">
-                   
                     <van-panel>
                         <view class="userinfo" slot="header">
                             <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
@@ -97,17 +103,20 @@
                         <van-collapse border="{{border}}" value="{{ activeNames }}" bind:change="onChange">
                             <view style="padding:1vw 0vw 2vw 12vw;">
                                 <van-collapse-item border="{{border}}" value="一起进步" icon="records" name="{{index}}">
-                                    <view>联系方式：{{ item.id_mess }}</view>
+                                    <view>
+                                        <text selectable="true">联系方式：{{ item.id_mess }}</text>
+                                        <van-icon color="#336666" name="description" data-mess="{{item.id_mess}}" bind:click="Copy" style="margin:0 0 0 2vw;" />
+                                    </view>
                                     <view>备注：{{ item.beizhu }}</view>
                                 </van-collapse-item>
                             </view>
                         </van-collapse>
-                    
                     </van-panel>
                 </view>
                 <view style="height:2vh;"></view>
                 <view class="loading" wx:if="{{loadingstudy}}">
-                    <van-loading type="spinner" color="#333366" size="5vw" />
+                    <van-loading color="#333366" size="5vw" />
+                    正在加载...
                 </view>
                 <view wx:if="{{endstudy}}" class="newsdown">已经到底了哦~</view>
                 <view style="height:2vh;"></view>
@@ -117,7 +126,6 @@
         <van-tab title="自定义" title-style="color: #24343b;">
             <view class="hiscus">
                 <view wx:for="{{arroldcustomize}}" wx:key="123">
-                    
                     <van-panel>
                         <view class="userinfo" slot="header">
                             <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
@@ -134,18 +142,20 @@
                         <van-collapse border="{{border}}" value="{{ activeNames }}" bind:change="onChange">
                             <view style="padding:1vw 0vw 2vw 12vw;">
                                 <van-collapse-item border="{{border}}" value="了解下" icon="add-o" name="{{index}}">
-                                    <view>联系方式：{{ item.id_mess }}</view>
+                                    <view>
+                                        <text selectable="true">联系方式：{{ item.id_mess }}</text>
+                                        <van-icon color="#336666" name="description" data-mess="{{item.id_mess}}" bind:click="Copy" style="margin:0 0 0 2vw;" />
+                                    </view>
                                     <view>备注：{{item.beizhu}}</view>
                                 </van-collapse-item>
                             </view>
                         </van-collapse>
-                    
                     </van-panel>
-
                 </view>
                 <view style="height:2vh;"></view>
                 <view class="loading" wx:if="{{loadingcus}}">
-                    <van-loading type="spinner" color="#333366" size="5vw" />
+                    <van-loading color="#333366" size="5vw" />
+                    正在加载...
                 </view>
                 <view wx:if="{{endcus}}" class="newsdown">已经到底了哦~</view>
                 <view style="height:2vh;"></view>

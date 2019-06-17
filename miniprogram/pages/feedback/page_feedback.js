@@ -52,7 +52,8 @@ Page({
       fail() {
         wx.showToast({
           title: '系统错误，请稍后重试!',
-          duration:1000
+          duration:1000,
+          icon:"none"
         })
       }
     })
@@ -104,7 +105,8 @@ Page({
       fail() {
         wx.showToast({
           title: '系统错误，请稍后重试!',
-          duration:1000
+          duration:1000,
+          icon:"none"
         })
       }
     })

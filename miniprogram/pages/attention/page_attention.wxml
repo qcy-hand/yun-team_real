@@ -8,7 +8,10 @@
         </view>
     </view>
     <view >
-    <view style="margin:5vw 0 5vw 0">如遇不良信息发布者,欢迎用户由反馈通道举报</view>
-    <view  style="margin:5vw 0 5vw 0">良好的网络环境需要我们共同维持！</view>
+    <view style="margin:5vw 0 5vw 0;font-size:14px;">如遇不良信息发布者,欢迎用户由反馈通道举报</view>
+    <view style="height:5vh;border-bottom:1px;"></view>
+    <view  style="margin:5vw 0 5vw 0;font-size:12px;">免责声明</view>
+    <view  style="margin:5vw 0 5vw 0;font-size:12px;">校园组队仅为用户提供内容支持</view>
+    <view  style="margin:5vw 0 5vw 0;font-size:12px;">不对用户所发内容承担责任，请用户谨慎对待</view>
     </view>
 </view>

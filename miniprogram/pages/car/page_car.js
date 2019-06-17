@@ -85,7 +85,8 @@ Page({
       fail() {
         wx.showToast({
           title: '系统错误，请稍后重试!',
-          duration:1000
+          duration:1000,
+          icon:"none"
         })
       }
     })
@@ -125,7 +126,8 @@ Page({
       fail() {
         wx.showToast({
           title: '系统错误，请稍后重试!',
-          duration:1000
+          duration:1000,
+          icon:"none"
         })
       }
     })
@@ -158,27 +160,23 @@ Page({
         backgroundColor: '#1989fa'
       });
     } else {
-      wx.showModal({
-        content: '发布咯？',
-        cancelText: "再瞅瞅",
-        confirmText: "要得",
-        confirmColor: " #669999",
-        success(res) {
-          if (res.confirm) {
-            console.log('用户点击确定')
-
-            that.Ntime(); //调用传值函数
-
-            wx.showToast({
-              title: '成功',
-              icon: 'success',
-              duration: 2000,
-            });
-          } else if (res.cancel) {
-            console.log('用户点击取消')
-          }
-        }
-      })
+    
+    Dialog.confirm({
+      message: '发布咯？',
+      closeOnClickOverlay: true,
+      cancelButtonText:"再瞅瞅",
+      confirmButtonText:"要得"
+    }).then(() => {
+      console.log('用户点击确定');
+      that.Ntime(); //调用传值函数
+      wx.showToast({
+        title: '成功',
+        icon: 'success',
+        duration: 2000,
+      });
+     }).catch(() => {
+          console.log('用户点击取消');
+        });
     }
   },
 
@@ -263,7 +261,8 @@ Page({
       fail() {
         wx.showToast({
           title: '系统错误，请稍后重试!',
-          duration:1000
+          duration:1000,
+          icon:"none"
         })
       }
     })
@@ -320,7 +319,8 @@ Page({
       fail() {
         wx.showToast({
           title: '系统错误，请稍后重试!',
-          duration:1000
+          duration:1000,
+          icon:"none"
         })
       }
     })
@@ -329,6 +329,8 @@ Page({
   //  转换已选取的时间戳，(时间选择器)
   onInput(event) {
     var a = event.detail
+
+    console.log(a);
 
     function getdate(a) {
       var now = new Date(a),
@@ -339,16 +341,17 @@ Page({
         n = now.getMinutes()
       return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + (h < 10 ? "0" + h : h) + ":" + (n < 10 ? "0" + n : n);
     }
+    console.log(getdate(a));
     this.setData({
-      showTime: false,
-      time: getdate(a)
+      time: getdate(a),
+      showTime: false
     });
   },
 
   // 关闭时间选择器
   onClose() {
     this.setData({
-      showTime: false,
+      showTime: false
     });
   },
 
@@ -395,7 +398,8 @@ Page({
             fail() {
               wx.showToast({
                 title: '系统错误，请稍后重试!',
-          duration:1000
+          duration:1000,
+          icon:"none"
               })
             }
           })
@@ -457,7 +461,7 @@ Page({
     //拼车动态部分
     wx.showLoading({
       title: "加载中...",
-      mask: true,
+      // mask: true,
     });
     that.getlistcar();
 

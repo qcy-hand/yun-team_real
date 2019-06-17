@@ -10,7 +10,9 @@
 
       "van-loading": "/vant-weapp/dist/loading/index",
 
-      "van-search": "/vant-weapp/dist/search/index"
+      "van-search": "/vant-weapp/dist/search/index",
+      "van-icon": "/vant-weapp/dist/icon/index"
+
   },
   "enablePullDownRefresh":true
 }

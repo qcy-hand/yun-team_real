@@ -89,34 +89,22 @@ Page({
         backgroundColor: '#1989fa'
       });
     } else {
-      wx.showModal({
-        content: '发布咯？',
-        cancelText: "再瞅瞅",
-        confirmText: "要得",
-        confirmColor: " #669999",
-
-        success(res) {
-          if (res.confirm) {
-            console.log('用户点击确定');
-
-            that.Ntime(); //调用传值函数
-
-            wx.showToast({
-              title: '成功',
-              icon: 'success',
-              duration: 2000,
-            });
-          } else if (res.cancel) {
+      Dialog.confirm({
+        message: '发布咯？',
+        closeOnClickOverlay: true,
+        cancelButtonText:"再瞅瞅",
+        confirmButtonText:"要得"
+      }).then(() => {
+        console.log('用户点击确定');
+        that.Ntime(); //调用传值函数
+        wx.showToast({
+          title: '成功',
+          icon: 'success',
+          duration: 2000,
+        });
+       }).catch(() => {
             console.log('用户点击取消');
-          }
-        },
-        fail() {
-          wx.showToast({
-            title: '系统错误，请稍后重试!',
-          duration:1000
           })
-        }
-      })
     }
   },
 
@@ -165,7 +153,8 @@ Page({
       fail() {
         wx.showToast({
           title: '系统错误，请稍后重试!',
-          duration:1000
+          duration:1000,
+          icon:"none"
         })
       }
     })
@@ -271,7 +260,8 @@ Page({
             fail() {
               wx.showToast({
                 title: '系统错误，请稍后重试!',
-          duration:1000
+          duration:1000,
+          icon:"none"
               })
             }
           })
@@ -357,7 +347,7 @@ Page({
     //加载logo
     wx.showLoading({
       title: "加载中...",
-      mask: true,
+      // mask: true,
     });
     that.getlistcus();
 
