@@ -7,12 +7,154 @@ Page({
   data: {
     authorize: '',
     unauthorize: '',
-    radio: '1'
+    mutename: '',
+    unmutename: '',
+    radio: '1',
+    type: '1'
   },
   onChange(event) {
     this.setData({
       radio: event.detail
     });
+  },
+  type(event) {
+    this.setData({
+      type: event.detail
+    });
+  },
+
+  mute() {
+    let type = this.data.type
+    let mutename = this.data.mutename
+    let now = new Date().getTime()
+    if (type === '1') {
+      wx.cloud.callFunction({
+        name: 'mute',
+        data: {
+          type: 1,
+          nickName: mutename,
+          now: now
+        },
+        success(res) {
+          if (res.result.stats.updated === 0) {
+            wx.showModal({
+              title: '提示',
+              content: '未查询到该用户，请检查昵称。',
+              showCancel: false,
+              success(res) { }
+            })
+          }
+          if (res.result.stats.updated !== 0) {
+            wx.showModal({
+              title: '提示',
+              content: '禁言成功。',
+              showCancel: false,
+              success(res) { }
+            })
+          }
+        }
+      })
+    }
+    if (type === '2') {
+      wx.cloud.callFunction({
+        name: 'mute',
+        data: {
+          type: 2,
+          nickName: mutename,
+          now: now
+        },
+        success(res) {
+          if (res.result.stats.updated === 0) {
+            wx.showModal({
+              title: '提示',
+              content: '未查询到该用户，请检查昵称。',
+              showCancel: false,
+              success(res) { }
+            })
+          }
+          if (res.result.stats.updated !== 0) {
+            wx.showModal({
+              title: '提示',
+              content: '禁言成功。',
+              showCancel: false,
+              success(res) { }
+            })
+          }
+        }
+      })
+    }
+    if (type === '3') {
+      wx.cloud.callFunction({
+        name: 'mute',
+        data: {
+          type: 3,
+          nickName: mutename,
+          now: now
+        },
+        success(res) {
+          if (res.result.stats.updated === 0) {
+            wx.showModal({
+              title: '提示',
+              content: '未查询到该用户，请检查昵称。',
+              showCancel: false,
+              success(res) { }
+            })
+          }
+          if (res.result.stats.updated !== 0) {
+            wx.showModal({
+              title: '提示',
+              content: '禁言成功。',
+              showCancel: false,
+              success(res) { }
+            })
+          }
+        }
+      })
+    }
+  },
+  unmute() {
+    let that = this
+    wx.cloud.callFunction({
+      name: 'getopenid',
+      data: { nickname: that.data.unmutename },
+      success(res) {
+        console.log(res.result.data[0].openid)
+        let openid = res.result.data[0].openid
+        wx.cloud.callFunction({
+          name: 'mute',
+          data: {
+            type: 4,
+            openid: openid
+          },
+          success(res) {
+            if (res.result.stats.updated === 0) {
+              wx.showModal({
+                title: '提示',
+                content: '昵称错误或此用户并未被禁言，请检查。',
+                showCancel: false,
+                success(res) { }
+              })
+            }
+            if (res.result.stats.updated !== 0) {
+              wx.showModal({
+                title: '提示',
+                content: '取消禁言成功。',
+                showCancel: false,
+                success(res) { }
+              })
+            }
+          }
+        })
+      }
+    })
+
+    // wx.cloud.callFunction({
+    //   name:'mute',
+    //   data:{
+    //     type:4,
+
+    //   }
+    // })
   },
   clear() {
     let that = this
@@ -31,7 +173,7 @@ Page({
               success(res) {
                 wx.showModal({
                   title: '提示',
-                  content: '成功清除了'+res.result.stats.removed+'条数据',
+                  content: '成功清除了' + res.result.stats.removed + '条数据',
                   showCancel: false,
                   success(res) {
 
@@ -58,13 +200,13 @@ Page({
               success(res) {
                 wx.showModal({
                   title: '提示',
-                  content: '成功清除了'+res.result.stats.removed+'条数据',
+                  content: '成功清除了' + res.result.stats.removed + '条数据',
                   showCancel: false,
                   success(res) {
 
                   }
                 })
-               }
+              }
             })
           }
         }
@@ -85,10 +227,25 @@ Page({
               success(res) {
                 wx.showModal({
                   title: '提示',
-                  content: '成功清除了'+res.result.stats.removed+'条数据',
+                  content: '成功清除了' + res.result.stats.removed + '条数据',
                   showCancel: false,
                   success(res) {
-
+                    if (res.result.stats.updated === 0) {
+                      wx.showModal({
+                        title: '提示',
+                        content: '昵称错误或此用户并未被授权，请检查。',
+                        showCancel: false,
+                        success(res) { }
+                      })
+                    }
+                    if (res.result.stats.updated !== 0) {
+                      wx.showModal({
+                        title: '提示',
+                        content: '取消授权成功。',
+                        showCancel: false,
+                        success(res) { }
+                      })
+                    }
                   }
                 })
               }
@@ -109,6 +266,16 @@ Page({
       unauthorize: res.detail
     })
   },
+  changemute(res) {
+    this.setData({
+      mutename: res.detail
+    })
+  },
+  changeunmute(res) {
+    this.setData({
+      unmutename: res.detail
+    })
+  },
   authorize() {
     let that = this
     wx.showModal({
@@ -126,7 +293,7 @@ Page({
               if (res.result.stats.updated === 0) {
                 wx.showModal({
                   title: '提示',
-                  content: '为查询到该用户，请检查昵称。',
+                  content: '未查询到该用户，请检查昵称。',
                   showCancel: false,
                   success(res) { }
                 })
@@ -164,7 +331,7 @@ Page({
               if (res.result.stats.updated === 0) {
                 wx.showModal({
                   title: '提示',
-                  content: '昵称错误或此用户并未授权，请检查。',
+                  content: '昵称错误或此用户并未被授权，请检查。',
                   showCancel: false,
                   success(res) { }
                 })

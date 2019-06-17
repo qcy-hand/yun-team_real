@@ -1,6 +1,6 @@
 <!--miniprogram/pages/admin-notice/admin-notice.wxml-->
 <view wx:if="{{showNotice}}">
-<van-notice-bar
+<van-notice-bar 
   mode="closeable"
   text="{{text}}"
 />

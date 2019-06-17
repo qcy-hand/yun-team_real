@@ -1,5 +1,8 @@
 <!-- pages/card/page_card.wxml -->
 <view class="all">
+    <view wx:if="{{showNotice}}">
+        <van-notice-bar color='#5438a0' backgroundColor='#e2eaee' mode="closeable" text="{{text}}" />
+    </view>
     <view class="searchtab" bindtap="turnTo">
         <van-search value="{{ vasearch }}" disabled field-class="searchwidth" input-align="center" placeholder="请输入搜索关键词" shape="round"></van-search>
     </view>

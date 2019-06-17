@@ -15,7 +15,8 @@
     "pages/admin/admin",
     "pages/admin-delete/admin-delete",
     "pages/admin-notice/admin-notice",
-    "pages/admin-cau/admin-cau"
+    "pages/admin-cau/admin-cau",
+    "pages/mute/mute"
   ],
   "window": {
     "backgroundColor": "#c5d7d8",

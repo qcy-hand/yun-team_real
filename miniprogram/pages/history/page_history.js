@@ -615,6 +615,33 @@ Page({
         })
       }
     })
+    wx.cloud.callFunction({
+      name:'mute',
+      data:{type:0},
+      success(res){
+        console.log(res)
+        let now = new Date().getTime()
+        if(res.result.data.length !== 0){
+          wx.reLaunch({
+            url: '../mute/mute?time='+res.result.data[0].mutetime+'&now='+now
+          })
+          
+        }
+      }
+    })
+    wx.cloud.callFunction({
+      name:'notice',
+      data:{
+        find: 3 //find = 3时表示获取通告栏的状态与内容
+      },
+      success(res){
+        console.log(res)
+        that.setData({
+          showNotice: res.result.data[0].showNotice,
+          text: res.result.data[0].text
+        })
+      }
+    })
 
   },
 
