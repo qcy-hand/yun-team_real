@@ -13,11 +13,13 @@ exports.main = async (event, context) => {
       Timestamp: _.lte(event.date - 604800000)
     }).remove()
   }
+
   if(event.radio === '2'){
     return await db.collection('datas').where({
       Timestamp: _.lte(event.date - 1296000000)
     }).remove()
   }
+  
   if(event.radio === '3'){
     return await db.collection('datas').where({
       Timestamp: _.lte(event.date - 2592000000)

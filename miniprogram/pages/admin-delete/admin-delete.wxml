@@ -1,4 +1,5 @@
 <!--miniprogram/pages/admin-delete/admin-delete.wxml-->
+   <view >
 <view class="searchbox">
     <view class="head">
         <image src="../../img/zudui.png" class="logo"></image>
@@ -6,21 +7,20 @@
     </view>
 </view>
 <view class="searchtab">
-    <van-search value="{{ vasearch }}" placeholder="请输入搜索关键词" use-action-slot bind:search="onSearch" shape="round">
-        <!-- <view slot="action" bind:tap="onSearch" data-search='{{vasearch}}'>搜索</view> -->
-    </van-search>
+    <van-search value="{{ vasearch }}" placeholder="请输入搜索关键词" use-action-slot bind:search="onSearch" shape="round"></van-search>
 </view>
 <view style="height:2vw;"></view>
 <view class='content' wx:for="{{article}}" wx:key="125">
     <van-dialog id="van-dialog" />
     <van-swipe-cell id="swipe-cell" right-width="{{ 90 }}" async-close bind:close="onClose" data-id='{{item._id}}' data-index='{{index}}'>
-        <view class="userinfo">
-            <block>
-                <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
-                <text class="userinfo-nickname">{{item.nickname}}</text>
-            </block>
+        <van-panel >
+        <view class="userinfo" slot="header">
+        <image class="userinfo-avatar" src="{{item.touxiang}}"></image>
+        <view class="headinfo">
+          <text class="userinfo-nickname">{{item.nickname}}</text>
+          <view class="nowtime">{{item.interlTime}}</view>
         </view>
-        <van-panel desc="发布时间：{{item.Nowtime}}">
+      </view>
             <view class="push">
                 <view class="item">时间：{{item.time}}</view>
                 <view wx:if='{{item.type == "car"}}' class="item">起点：{{item.qidian}}</view>
@@ -36,26 +36,26 @@
                     自定义项目：{{item.id_customize}}
                 </view>
             </view>
-            <van-collapse wx:if='{{item.type == "car"}}' value="{{ activeNames }}" bind:change="onChange">
-                <van-collapse-item value="顺道" icon="logistics" name="{{index}}">
+            <van-collapse wx:if='{{item.type == "car"}}' value="{{ activeNames }}" border="{{border}}" bind:change="onChange">
+                <van-collapse-item value="顺道" icon="logistics" border="{{border}}" name="{{index}}">
                     <view>联系方式：{{ item.id_mess }}</view>
                     <view>备注：{{ item.beizhu }}</view>
                 </van-collapse-item>
             </van-collapse>
-            <van-collapse wx:if='{{item.type == "sport"}}' value="{{ activeNames }}" bind:change="onChange">
-                <van-collapse-item value="结伴" icon="friends-o" name="{{index}}">
+            <van-collapse wx:if='{{item.type == "sport"}}' value="{{ activeNames }}" border="{{border}}" bind:change="onChange">
+                <van-collapse-item value="结伴" icon="friends-o" border="{{border}}" name="{{index}}">
                     <view>联系方式：{{item.id_mess}}</view>
                     <view>备注：{{item.beizhu}}</view>
                 </van-collapse-item>
             </van-collapse>
-            <van-collapse wx:if='{{item.type == "study"}}' value="{{ activeNames }}" bind:change="onChange">
-                <van-collapse-item value="一起进步" icon="records" name="{{index}}">
+            <van-collapse wx:if='{{item.type == "study"}}' value="{{ activeNames }}" border="{{border}}" bind:change="onChange">
+                <van-collapse-item value="一起进步" icon="records" border="{{border}}" name="{{index}}">
                     <view>联系方式：{{ item.id_mess }}</view>
                     <view>备注：{{ item.beizhu }}</view>
                 </van-collapse-item>
             </van-collapse>
-            <van-collapse wx:if='{{item.type == "customize"}}' value="{{ activeNames }}" bind:change="onChange">
-                <van-collapse-item value="了解下" icon="add-o" name="{{index}}">
+            <van-collapse wx:if='{{item.type == "customize"}}' border="{{border}}" value="{{ activeNames }}" bind:change="onChange">
+                <van-collapse-item value="了解下" icon="add-o" border="{{border}}" name="{{index}}">
                     <view>联系方式：{{ item.id_mess }}</view>
                     <view>备注：{{item.beizhu}}</view>
                 </van-collapse-item>
@@ -64,11 +64,14 @@
         </van-panel>
     </van-swipe-cell>
 </view>
-<view class="backnews" wx:if="{{article.length==0}}">
-    <image src="../../img/kong.png" class="pickong"></image>
+ <view class="backnews" wx:if="{{article.length==0}}">
+    <image src="https://neauhand.hhp.im/img/kong.png" class="pickong"></image>
     <view>什么都没有哦～～</view>
+  </view>
+   <view style="height:2vh;"></view>
+  <view class="loading" wx:if="{{loading}}">
+    <van-loading  color="#333366" size="5vw" />正在加载...
+  </view>
+  <view wx:if="{{end}}" class="newsdown">已经到底了哦~</view>
+   <view style="height:2vh;"></view>
 </view>
-<view class="loading" wx:if="{{loading}}">
-    <van-loading type="spinner" color="#333366" size="5vw" />
-</view>
-<view wx:if="{{end}}" class="newsdown">已经到底了哦~</view>
