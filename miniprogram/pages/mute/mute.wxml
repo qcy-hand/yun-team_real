@@ -1,4 +1,13 @@
 <!--miniprogram/pages/mute/mute.wxml-->
-<view >
-经查，您最近有违规现象您已经被此小程序禁言{{type}}小时！(如有问题请联系管理员～)
+<view class="searchbox">
+    <view class="head">
+      <image src="../../img/zudui.png" class="logo"></image>
+      <view style="padding:2vw 0 0 0;">To seek,to find!</view>
+    </view>
+  </view>
+
+  <view class="attentionbox">
+  <view style="height:3vh;"></view>
+  <view style="margin:5vw 0 5vw 0;font-size:14px;">经查，您最近有违规现象您已经被此小程序禁言{{type}}小时！</view>
+ <view style="margin:5vw 0 5vw 0;font-size:14px;">(如有问题请联系管理员～)</view>
 </view>
