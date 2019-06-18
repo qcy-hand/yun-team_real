@@ -1,5 +1,6 @@
 <!-- miniprogram/pages/admin-cau/admin-cau.wxml -->
 <van-cell-group>
+<view style="height:3vh"></view>
   <van-field
     value="{{ authorize }}"
     center
@@ -14,6 +15,7 @@
     <van-button slot="button" size="small" type="primary" bind:tap="authorize">授权</van-button>
   </van-field>
 </van-cell-group>
+<view style="2vh"></view>
 <van-cell-group>
   <van-field
     value="{{ unauthorize }}"
@@ -30,6 +32,9 @@
   </van-field>
 </van-cell-group>
 
+
+
+<view  style="height:10vh;"></view>
 <van-radio-group value="{{ type }}" bind:change="type">
   <van-radio name="1">24小时</van-radio>
   <van-radio name="2">36小时</van-radio>
@@ -67,7 +72,7 @@
 </van-cell-group>
 
 
-<view  style="height:20vh;"></view>
+<view  style="height:10vh;"></view>
 <van-radio-group value="{{ radio }}" bind:change="onChange">
   <van-radio name="1">七天</van-radio>
   <van-radio name="2">十五天</van-radio>

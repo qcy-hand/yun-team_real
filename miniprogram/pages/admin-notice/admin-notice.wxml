@@ -1,11 +1,13 @@
 <!--miniprogram/pages/admin-notice/admin-notice.wxml-->
+<view >
+<view style="height:5vh"></view>
 <view wx:if="{{showNotice}}">
 <van-notice-bar 
   mode="closeable"
   text="{{text}}"
 />
 </view>
-
+<view style="height:5vh"></view>
 <van-cell-group>
   <van-field
     value="{{ value }}"
@@ -13,10 +15,15 @@
     border="{{ false }}"
     bind:change="onChangeContent"
   />
+
+<view style="height:5vh"></view>
 </van-cell-group>
+
+<view style="height:5vh"></view>
 <van-button type="primary" bind:tap="sendContent">发布</van-button>
 <van-switch-cell
   title="标题"
   checked="{{ showNotice }}"
   bind:change="onChange"
 />
+</view>
