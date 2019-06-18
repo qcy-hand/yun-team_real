@@ -1,0 +1,4 @@
+<!--miniprogram/pages/mute/mute.wxml-->
+<view >
+经查，您最近有违规现象您已经被此小程序禁言{{type}}小时！(如有问题请联系管理员～)
+</view>

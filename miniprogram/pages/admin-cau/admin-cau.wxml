@@ -30,6 +30,42 @@
   </van-field>
 </van-cell-group>
 
+<van-radio-group value="{{ type }}" bind:change="type">
+  <van-radio name="1">24小时</van-radio>
+  <van-radio name="2">36小时</van-radio>
+  <van-radio name="3">48小时</van-radio>
+</van-radio-group>
+<van-cell-group>
+  <van-field
+    value="{{ mutename }}"
+    center
+    clearable
+    title-width='35px'
+    label="昵称"
+    placeholder="请输入要禁言的用户名"
+    border="{{ false }}"
+    use-button-slot
+    bind:input="changemute"
+  >
+    <van-button slot="button" size="small" type="primary" bind:tap="mute">禁言</van-button>
+  </van-field>
+</van-cell-group>
+<van-cell-group>
+  <van-field
+    value="{{ unmutename }}"
+    center
+    clearable
+    title-width='35px'
+    label="昵称"
+    placeholder="请输入要取消禁言的用户名"
+    border="{{ false }}"
+    use-button-slot
+    bind:input="changeunmute"
+  >
+    <van-button slot="button" size="small" type="danger" bind:tap="unmute">取消禁言</van-button>
+  </van-field>
+</van-cell-group>
+
 
 <view  style="height:20vh;"></view>
 <van-radio-group value="{{ radio }}" bind:change="onChange">
